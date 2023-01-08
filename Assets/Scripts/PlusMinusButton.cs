@@ -11,7 +11,7 @@ public class PlusMinusButton : MonoBehaviour
     public int minValue = 0;
     public int maxValue = 10;
 
-    private int currentValue;
+    public int currentValue;
 
     void Start()
     {
