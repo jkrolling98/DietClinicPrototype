@@ -12,7 +12,7 @@ public class MealWindowManager : MonoBehaviour
 
     public void OnClick(Object sender)
     {
-        Debug.Log(sender);
+        //Debug.Log(sender);
         if (!mealWindow.activeSelf)
         {
             mealText.text = "Customise your \nBurger";
