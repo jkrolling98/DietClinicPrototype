@@ -16,15 +16,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //instantiate new patient and update patient info tab
-        Patient patient = PatientFactory.instance.CreateNewStudent();
-        patientInfo.text = $"Name: {patient.patientName}\n" +
-            $"Age: {patient.age} \n" +
-            $"Weight: {patient.weight} \n" +
-            $"Height: {patient.height} \n\n" +
-            $"Occupation: {patient.occupation} \n\n" +
-            $"FoodPreference: {patient.preference} \n" +
-            $"Allergies: {patient.allergies}";
+        NewPatient();
     }
 
     public void Serve()
@@ -69,7 +61,8 @@ public class GameManager : MonoBehaviour
         pickers = MealWindow.GetComponentsInChildren<PlusMinusButton>();
         for (int i = 0; i < pickers.Length; i++)
         {
-            pickers[i].currentValue= 0;
+            pickers[i].currentValue = 0;
+            pickers[i].UpdateValueText();
         }
     }
 
@@ -77,5 +70,14 @@ public class GameManager : MonoBehaviour
     {
         ResetPickers();
         TabManager.instance.ViewHelp();
+        //instantiate new patient and update patient info tab
+        Patient patient = PatientFactory.instance.CreateNewStudent();
+        patientInfo.text = $"Name: {patient.patientName}\n" +
+            $"Age: {patient.age} \n" +
+            $"Weight: {patient.weight} \n" +
+            $"Height: {patient.height} \n\n" +
+            $"Occupation: {patient.occupation} \n\n" +
+            $"FoodPreference: {patient.preference} \n" +
+            $"Allergies: {patient.allergies}";
     }
 }

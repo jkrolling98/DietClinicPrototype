@@ -34,7 +34,7 @@ public class PlusMinusButton : MonoBehaviour
         UpdateValueText();
     }
 
-    void UpdateValueText()
+    public void UpdateValueText()
     {
         valueText.text = currentValue.ToString();
     }
