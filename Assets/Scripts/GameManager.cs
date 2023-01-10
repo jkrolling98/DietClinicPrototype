@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     public GameObject patient;
-    public Text patientInfo;
+    public TextMeshProUGUI patientInfo;
 
     public GameObject MealWindow;
 
@@ -16,6 +17,14 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         //instantiate new patient and update patient info tab
+        Patient patient = PatientFactory.instance.CreateNewStudent();
+        patientInfo.text = $"Name: {patient.patientName}\n" +
+            $"Age: {patient.age} \n" +
+            $"Weight: {patient.weight} \n" +
+            $"Height: {patient.height} \n\n" +
+            $"Occupation: {patient.occupation} \n\n" +
+            $"FoodPreference: {patient.preference} \n" +
+            $"Allergies: {patient.allergies}";
     }
 
     public void Serve()
@@ -50,7 +59,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Success!");
             MealWindow.SetActive(false);
             SummaryWindow.GetComponentInChildren<Text>().text = "meal served, good job";
-            TabManager.Instance.ViewSummary();
+            TabManager.instance.ViewSummary();
         }
     }
 
@@ -67,6 +76,6 @@ public class GameManager : MonoBehaviour
     public void NewPatient()
     {
         ResetPickers();
-        TabManager.Instance.ViewHelp();
+        TabManager.instance.ViewHelp();
     }
 }

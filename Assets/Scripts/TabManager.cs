@@ -10,15 +10,15 @@ public class TabManager : MonoBehaviour
     public GameObject deviseMealsTab;
     public GameObject summaryTab;
 
-    public static TabManager Instance { get; private set; }
+    public static TabManager instance;
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (instance != null && instance != this)
         {
             Destroy(this);
             return;
         }
-        Instance = this;
+        instance = this;
     }
 
     public void ViewHelp()
