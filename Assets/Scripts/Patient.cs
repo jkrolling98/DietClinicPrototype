@@ -13,6 +13,8 @@ public class Patient : MonoBehaviour
     public FoodPref preference;
     public Allergies allergies;
 
+
+
     public enum Gender
     {
         Male,
