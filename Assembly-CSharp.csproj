@@ -59,12 +59,12 @@
     <Compile Include="Assets\Scripts\MealWindowManager.cs" />
     <Compile Include="Assets\Scripts\PlusMinusButton.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Scripts\HoverTip.cs" />
-    <Compile Include="Assets\Scripts\TabManager.cs" />
-    <Compile Include="Assets\Scripts\HoverTipManager.cs" />
     <Compile Include="Assets\Scripts\Patient.cs" />
-    <Compile Include="Assets\Scripts\PatientFactory.cs" />
+    <Compile Include="Assets\Scripts\HoverTip.cs" />
     <Compile Include="Assets\Scripts\ProgressBar.cs" />
+    <Compile Include="Assets\Scripts\TabManager.cs" />
+    <Compile Include="Assets\Scripts\PatientFactory.cs" />
+    <Compile Include="Assets\Scripts\HoverTipManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

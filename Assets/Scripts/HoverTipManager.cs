@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class HoverTipManager : MonoBehaviour
 {
-    public Text tipText;
+    public TextMeshProUGUI tipText;
     public RectTransform tipWindow;
 
     public static Action<string, Vector2> OnMouseHover;
@@ -31,7 +32,7 @@ public class HoverTipManager : MonoBehaviour
     private void ShowTip(string tip, Vector2 mousePos)
     {
         tipText.text = tip;
-        tipWindow.sizeDelta = new Vector2(tipText.preferredWidth > 100 ? 100 : tipText.preferredWidth, tipText.preferredHeight);
+        tipWindow.sizeDelta = new Vector2(tipText.preferredWidth > 200 ? 200 : tipText.preferredWidth, tipText.preferredHeight);
 
         tipWindow.gameObject.SetActive(true);
         //float pivotX = mousePos.x / Screen.width;

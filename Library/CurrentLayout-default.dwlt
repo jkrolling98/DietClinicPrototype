@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1280
     height: 637.3334
   m_ShowMode: 4
-  m_Title: Project
+  m_Title: Inspector
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 542}
   m_MaxSize: {x: 10000, y: 10000}
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_MinSize: {x: 677, y: 492}
   m_MaxSize: {x: 14001, y: 14042}
   vertical: 0
-  controlID: 16
+  controlID: 86
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -209,7 +209,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: GameView
+  m_Name: SceneView
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -220,13 +220,13 @@ MonoBehaviour:
     height: 310
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
-  m_ActualView: {fileID: 12}
+  m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 12}
   - {fileID: 14}
   - {fileID: 15}
-  m_Selected: 0
-  m_LastSelected: 2
+  m_Selected: 2
+  m_LastSelected: 0
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -350,7 +350,7 @@ MonoBehaviour:
       y: 21
       width: 644.6666
       height: 268
-    m_Scale: {x: 1.2232243, y: 1.2232244}
+    m_Scale: {x: 1.3217896, y: 1.3217896}
     m_Translation: {x: 322.3333, y: 134}
     m_MarginLeft: 0
     m_MarginRight: 0
@@ -358,10 +358,10 @@ MonoBehaviour:
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -263.5112
-      y: -109.54654
-      width: 527.0224
-      height: 219.09308
+      x: -243.86128
+      y: -101.37771
+      width: 487.72256
+      height: 202.75542
     m_MinimalGUI: 1
   m_defaultScale: 1
   m_LastWindowPixelSize: {x: 966.99994, y: 433.5}
@@ -397,10 +397,10 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 81.3578}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: 60fbffff324400007a440000a4440000a8440000
+      scrollPos: {x: 0, y: 180}
+      m_SelectedIDs: 709bffff
+      m_LastClickedID: -25744
+      m_ExpandedIDs: b09affff149bffff709bffff3ca7ffff40a7ffffeaa8ffffeca8ffff7cc9ffff9ec9ffffc2ddffffdef9ffffeaf9ffff28faffff66faffff60fbffff324400007a44000094440000a4440000a8440000c48e0000f48e0000128f00001e8f0000268f00002e8f0000328f0000508f0000728f0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -521,9 +521,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 482.86932, y: 229.406, z: -38.599144}
+    m_Target: {x: 272.5358, y: 232.42166, z: -75.63048}
     speed: 2
-    m_Value: {x: 482.86932, y: 229.406, z: -38.599144}
+    m_Value: {x: 357.5, y: 201, z: 0}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -574,9 +574,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 185.118
+    m_Target: 75.74229
     speed: 2
-    m_Value: 185.118
+    m_Value: 70.71068
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -639,22 +639,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets
+    - Assets/Resources/UI
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets
+  - Assets/Resources/UI
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\Hoojk\Documents\Unity\Diet Clinic Prototype
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: ae470000
-    m_LastClickedID: 18350
-    m_ExpandedIDs: 00000000ae470000b0470000b2470000b447000000ca9a3b
+    scrollPos: {x: 0, y: 103.666626}
+    m_SelectedIDs: 96950000
+    m_LastClickedID: 38294
+    m_ExpandedIDs: 00000000ae470000b24700005a8400005c84000084840000a88400009295000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -670,7 +670,7 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 0}
+      m_ClientGUIView: {fileID: 10}
     m_SearchString: 
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
@@ -710,7 +710,7 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c623000016f4ffffdcb70000f6b70000fab7000064c60000a24400001e4500002045000096c800004ec6000006450000be27010066e60000a8270100c86b00007047000034a6ffff0000000024660000324900008e450000e25e0000
+    m_ExpandedInstanceIDs: c623000016f4ffffdcb70000f6b70000fab7000064c60000a24400001e4500002045000096c800004ec6000006450000be27010066e60000a8270100c86b00007047000034a6ffff0000000024660000324900008e450000e25e000036450000268d00001e8d0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -790,7 +790,7 @@ MonoBehaviour:
   m_ViewDataDictionary: {fileID: 0}
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: -5962
+  m_LastSelectedObjectID: 36626
 --- !u!114 &19
 MonoBehaviour:
   m_ObjectHideFlags: 52
