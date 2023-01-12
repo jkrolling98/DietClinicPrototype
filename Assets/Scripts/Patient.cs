@@ -12,8 +12,7 @@ public class Patient : MonoBehaviour
     public Occupation occupation;
     public FoodPref preference;
     public Allergies allergies;
-
-
+    public Meal[] meals;
 
     public enum Gender
     {
@@ -44,7 +43,7 @@ public class Patient : MonoBehaviour
         Peanuts
     }
 
-    public Patient(string name, int age, int weight, int height, Gender gender, Occupation occupation, FoodPref pref, Allergies allergies)
+    public Patient(string name, int age, int weight, int height, Gender gender, Occupation occupation, FoodPref pref, Allergies allergies, Meal[] meals)
     {
         this.patientName = name;
         this.age = age;
@@ -54,5 +53,6 @@ public class Patient : MonoBehaviour
         this.occupation = occupation;
         this.preference = pref;
         this.allergies = allergies;
+        this.meals = meals;
     }
 }

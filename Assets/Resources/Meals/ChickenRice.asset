@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf17244bf8271c044ae457081fea52ea, type: 3}
+  m_Name: ChickenRice
+  m_EditorClassIdentifier: 
+  dishName: Chicken Rice
+  image: {fileID: 21300000, guid: 110fb04dcbf4e40408f048061773a669, type: 3}
+  description: A dish of poached chicken and seasoned rice, served with chilli sauce
+    and usually with cucumber garnishes.
+  cost: 4.5
+  wholeGrainServings: 2
+  proteinServings: 2
+  veggieServings: 0
+  calories: 557.7
+  protein: 28.05
+  totalFats: 13.86
+  saturatedFats: 4.95
+  dietaryFibre: 3.3
+  carbohydrate: 80.19
+  cholesterol: 36.63
+  sodium: 697.95

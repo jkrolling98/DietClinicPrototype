@@ -9,9 +9,9 @@ public class GameManager : MonoBehaviour
     public GameObject patient;
     public TextMeshProUGUI patientInfo;
 
-    public GameObject MealWindow;
+    public GameObject mealWindow;
 
-    public GameObject SummaryWindow;
+    public GameObject summaryWindow;
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
         //    Debug.Log("Dish served!");
         //}
         PlusMinusButton[] pickers;
-        pickers = MealWindow.GetComponentsInChildren<PlusMinusButton>();
+        pickers = mealWindow.GetComponentsInChildren<PlusMinusButton>();
         int sum = 0;
         for (int i = 0; i < pickers.Length; i++)
         {
@@ -49,8 +49,8 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.Log("Success!");
-            MealWindow.SetActive(false);
-            SummaryWindow.GetComponentInChildren<Text>().text = "meal served, good job";
+            mealWindow.SetActive(false);
+            summaryWindow.GetComponentInChildren<Text>().text = "meal served, good job";
             TabManager.instance.ViewSummary();
         }
     }
@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
     public void ResetPickers()
     {
         PlusMinusButton[] pickers;
-        pickers = MealWindow.GetComponentsInChildren<PlusMinusButton>();
+        pickers = mealWindow.GetComponentsInChildren<PlusMinusButton>();
         for (int i = 0; i < pickers.Length; i++)
         {
             pickers[i].currentValue = 0;
@@ -79,5 +79,8 @@ public class GameManager : MonoBehaviour
             $"Occupation: {patient.occupation} \n\n" +
             $"FoodPreference: {patient.preference} \n" +
             $"Allergies: {patient.allergies}";
+        Debug.Log(patient.meals);
+        Debug.Log(patient.meals[0].dishName);
+        Debug.Log(patient.meals[1].dishName);
     }
 }
