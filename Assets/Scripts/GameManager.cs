@@ -8,10 +8,15 @@ public class GameManager : MonoBehaviour
 {
     public GameObject patient;
     public TextMeshProUGUI patientInfo;
-
     public GameObject mealWindow;
-
+    public GameObject pastMealWindow;
+    public GameObject pastMealTemplate;
     public GameObject summaryWindow;
+    public GameObject wholeGrainsBar;
+    public GameObject proteinBar;
+    public GameObject fruitVeggieBar;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -82,5 +87,16 @@ public class GameManager : MonoBehaviour
         Debug.Log(patient.meals);
         Debug.Log(patient.meals[0].dishName);
         Debug.Log(patient.meals[1].dishName);
+        for (int i = 0; i < patient.meals.Length; i++)
+        {
+            Meal meal = patient.meals[i];
+            GameObject pastMeal = Instantiate(pastMealTemplate, pastMealWindow.transform);
+            pastMeal.GetComponent<Image>().sprite = meal.image;
+            pastMeal.GetComponent<HoverTip>().tipToShow = meal.dishName;
+            pastMeal.SetActive(true);
+            wholeGrainsBar.GetComponent<ProgressBar>().current += meal.wholeGrainServings;
+            proteinBar.GetComponent<ProgressBar>().current += meal.proteinServings;
+            fruitVeggieBar.GetComponent<ProgressBar>().current += meal.veggieServings;
+        }
     }
 }
