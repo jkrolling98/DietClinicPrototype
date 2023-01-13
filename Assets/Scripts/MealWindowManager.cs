@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MealWindowManager : MonoBehaviour
 {
     public GameObject mealWindow;
     public GameObject hint;
     public Image mealArt;
-    public Text mealText;
+    public TextMeshProUGUI mealText;
 
     public void OnClick(Object sender)
     {

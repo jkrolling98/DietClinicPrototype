@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,16 +13,31 @@ public class GameManager : MonoBehaviour
     public GameObject pastMealWindow;
     public GameObject pastMealTemplate;
     public GameObject summaryWindow;
+    public GameObject dishWindow;
+    public GameObject dishTemplate;
     public GameObject wholeGrainsBar;
     public GameObject proteinBar;
     public GameObject fruitVeggieBar;
 
-
+    private List<Meal> allDishes;
 
     // Start is called before the first frame update
     void Start()
     {
         NewPatient();
+        allDishes = Resources.LoadAll<Meal>("Meals").ToList();
+        SetDishWindow();
+    }
+
+    public void SetDishWindow()
+    {
+        foreach (Meal dish in allDishes)
+        {
+            GameObject dishItem = Instantiate(dishTemplate, dishWindow.transform);
+            dishItem.GetComponent<Image>().sprite = dish.image;
+            dishItem.GetComponent<HoverTip>().tipToShow = dish.dishName;
+            dishItem.SetActive(true);
+        }
     }
 
     public void Serve()
@@ -71,9 +87,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ResetPastMeals()
+    {
+        if(pastMealWindow.transform.childCount > 1)
+        {
+            for (int i = pastMealWindow.transform.childCount - 1; i >= 1; i--)
+            {
+                Debug.Log(pastMealWindow.transform.GetChild(i));
+                GameObject.Destroy(pastMealWindow.transform.GetChild(i).gameObject);
+            }
+        }
+        ResetNutrientBar();
+    }
+
+    public void ResetNutrientBar()
+    {
+        wholeGrainsBar.GetComponent<ProgressBar>().current = 0;
+        proteinBar.GetComponent<ProgressBar>().current = 0;
+        fruitVeggieBar.GetComponent<ProgressBar>().current = 0;
+    }
+
     public void NewPatient()
     {
         ResetPickers();
+        ResetPastMeals();
         TabManager.instance.ViewHelp();
         //instantiate new patient and update patient info tab
         Patient patient = PatientFactory.instance.CreateNewStudent();

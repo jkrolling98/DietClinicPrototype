@@ -18,7 +18,7 @@ MonoBehaviour:
     and usually with cucumber garnishes.
   cost: 4.5
   wholeGrainServings: 2
-  proteinServings: 2
+  proteinServings: 1
   veggieServings: 0
   calories: 557.7
   protein: 28.05

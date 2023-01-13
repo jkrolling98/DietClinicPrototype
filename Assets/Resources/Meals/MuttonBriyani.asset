@@ -16,8 +16,8 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: f398e0a94e1eeb045a9d24eae4963086, type: 3}
   description: Rice cooked with ghee and spices, served with spicy mutton
   cost: 7
-  wholeGrainServings: 0
-  proteinServings: 0
+  wholeGrainServings: 2
+  proteinServings: 1
   veggieServings: 0
   calories: 751.95
   protein: 35.85

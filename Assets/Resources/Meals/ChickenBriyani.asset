@@ -17,7 +17,7 @@ MonoBehaviour:
   description: Rice cooked with ghee and spices, served with spicy chicken
   cost: 6
   wholeGrainServings: 2
-  proteinServings: 2
+  proteinServings: 1
   veggieServings: 0
   calories: 756.4
   protein: 33.6

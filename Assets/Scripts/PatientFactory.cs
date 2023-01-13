@@ -36,6 +36,21 @@ public class PatientFactory : MonoBehaviour
         return femaleNames[index];
     }
 
+    public Meal[] GenerateRandomMeals(int mealCount)
+    {
+        List<Meal> result = new List<Meal>();
+        HashSet<int> indexes = new HashSet<int>();
+        while (indexes.Count < mealCount)
+        {
+            indexes.Add(Random.Range(0, allDishes.Count));
+        }
+        foreach(int index in indexes)
+        {
+            result.Add(allDishes[index]);
+        }
+        return result.ToArray();
+    }
+
     public Patient CreateNewStudent()
     {
         if(Random.Range(0, 2) == 0)
@@ -48,15 +63,7 @@ public class PatientFactory : MonoBehaviour
             Patient.Allergies allergies = Patient.Allergies.NIL; //to be changed
 
             //generate meals
-            int mealCount = 2;
-            Meal[] meals = new Meal[mealCount];
-            List<Meal> possibleMeals = allDishes;
-            for (int i = 0; i < mealCount; i++)
-            {
-                Meal meal = possibleMeals[Random.Range(0, allDishes.Count)];
-                meals[i] = meal;
-                possibleMeals.Remove(meal);
-            }
+            Meal[] meals = GenerateRandomMeals(2);
 
             return new Patient(name, age, weight, height, Patient.Gender.Male, Patient.Occupation.Student, pref, allergies, meals);
         }
@@ -70,15 +77,7 @@ public class PatientFactory : MonoBehaviour
             Patient.Allergies allergies = Patient.Allergies.NIL; //to be changed
 
             //generate meals
-            int mealCount = 2;
-            Meal[] meals = new Meal[mealCount];
-            List<Meal> possibleMeals = allDishes;
-            for (int i = 0; i < mealCount; i++)
-            {
-                Meal meal = possibleMeals[Random.Range(0, allDishes.Count)];
-                meals[i] = meal;
-                possibleMeals.Remove(meal);
-            }
+            Meal[] meals = GenerateRandomMeals(2);
 
             return new Patient(name, age, weight, height, Patient.Gender.Female, Patient.Occupation.Student, pref, allergies, meals);
         }
