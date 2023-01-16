@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public GameObject mealWindow;
     public GameObject pastMealWindow;
     public GameObject pastMealTemplate;
-    public GameObject summaryWindow;
+    public TextMeshProUGUI summaryText;
     public GameObject dishWindow;
     public GameObject dishTemplate;
     public GameObject wholeGrainsBar;
@@ -20,6 +20,11 @@ public class GameManager : MonoBehaviour
     public GameObject fruitVeggieBar;
 
     private List<Meal> allDishes;
+    private int initialGrainValue;
+    private int initialProteinValue;
+    private int initialFruitValue;
+
+    public int score = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -34,46 +39,45 @@ public class GameManager : MonoBehaviour
         foreach (Meal dish in allDishes)
         {
             GameObject dishItem = Instantiate(dishTemplate, dishWindow.transform);
+            dishItem.name = dish.dishName;
             dishItem.GetComponent<Image>().sprite = dish.image;
             dishItem.GetComponent<HoverTip>().tipToShow = dish.dishName;
             dishItem.SetActive(true);
         }
     }
 
-    public void Serve()
+    public void SelectDish(GameObject dish)
     {
-        //int valueA = int.Parse(IngredientA.GetComponent<Text>().text);
-        //int valueB = int.Parse(IngredientB.GetComponent<Text>().text);
-        //int valueC = int.Parse(IngredientC.GetComponent<Text>().text);
-        //MealWindow.ge
-
-        //if (valueA + valueB + valueC < 1)
-        //{
-        //    Debug.Log("insufficient Ingredients!");
-        //}
-        //else
-        //{
-        //    Debug.Log("Dish served!");
-        //}
-        PlusMinusButton[] pickers;
-        pickers = mealWindow.GetComponentsInChildren<PlusMinusButton>();
-        int sum = 0;
-        for (int i = 0; i < pickers.Length; i++)
+        string path = "Meals/" + dish.name.Replace(" ", "");
+        Meal currentDish = Resources.Load<Meal>(path);
+        // update seperate values
+        if (dish.GetComponent<Toggle>().isOn)
         {
-            Debug.Log($"Ingredient {i + 1} value: {pickers[i].currentValue}");
-            sum+= pickers[i].currentValue;
-        }
-        if (sum < 1)
-        {
-            Debug.Log("Please select at least one ingredient!");
+            wholeGrainsBar.GetComponent<ProgressBar>().current += currentDish.wholeGrainServings;
+            proteinBar.GetComponent<ProgressBar>().current += currentDish.proteinServings;
+            fruitVeggieBar.GetComponent<ProgressBar>().current += currentDish.veggieServings;
         }
         else
         {
-            Debug.Log("Success!");
-            mealWindow.SetActive(false);
-            summaryWindow.GetComponentInChildren<Text>().text = "meal served, good job";
-            TabManager.instance.ViewSummary();
+            wholeGrainsBar.GetComponent<ProgressBar>().current -= currentDish.wholeGrainServings;
+            proteinBar.GetComponent<ProgressBar>().current -= currentDish.proteinServings;
+            fruitVeggieBar.GetComponent<ProgressBar>().current -= currentDish.veggieServings;
         }
+    }
+
+
+    public void Serve()
+    {
+        double grainsScore = (double)wholeGrainsBar.GetComponent<ProgressBar>().current / (double)wholeGrainsBar.GetComponent<ProgressBar>().maximum;
+        double proteinScore = (double)proteinBar.GetComponent<ProgressBar>().current / (double)proteinBar.GetComponent<ProgressBar>().maximum;
+        double fruitScore = (double)fruitVeggieBar.GetComponent<ProgressBar>().current / (double)fruitVeggieBar.GetComponent<ProgressBar>().maximum;
+        Debug.Log("grainScore: "+ System.String.Format("{0:0.00}", grainsScore));
+        string summary = $"Grain score : {grainsScore.ToString("0.00")}\n" +
+            $"proteinScore : {proteinScore.ToString("0.00")}\n" +
+            $"fruitnVeggies Score : {fruitScore.ToString("0.00")}";
+        summaryText.text = summary; 
+        TabManager.instance.ViewSummary();
+        ResetDishWindow();
     }
 
     public void ResetPickers()
@@ -93,11 +97,20 @@ public class GameManager : MonoBehaviour
         {
             for (int i = pastMealWindow.transform.childCount - 1; i >= 1; i--)
             {
-                Debug.Log(pastMealWindow.transform.GetChild(i));
+                //Debug.Log(pastMealWindow.transform.GetChild(i));
                 GameObject.Destroy(pastMealWindow.transform.GetChild(i).gameObject);
             }
         }
         ResetNutrientBar();
+    }
+
+    public void ResetDishWindow()
+    {
+        for (int i = dishWindow.transform.childCount - 1; i >= 1; i--)
+        {
+            //Debug.Log(dishWindow.transform.GetChild(i));
+            dishWindow.transform.GetChild(i).GetComponent<Toggle>().isOn=false;
+        }
     }
 
     public void ResetNutrientBar()
@@ -121,13 +134,11 @@ public class GameManager : MonoBehaviour
             $"Occupation: {patient.occupation} \n\n" +
             $"FoodPreference: {patient.preference} \n" +
             $"Allergies: {patient.allergies}";
-        Debug.Log(patient.meals);
-        Debug.Log(patient.meals[0].dishName);
-        Debug.Log(patient.meals[1].dishName);
         for (int i = 0; i < patient.meals.Length; i++)
         {
             Meal meal = patient.meals[i];
             GameObject pastMeal = Instantiate(pastMealTemplate, pastMealWindow.transform);
+            pastMeal.name = meal.dishName;
             pastMeal.GetComponent<Image>().sprite = meal.image;
             pastMeal.GetComponent<HoverTip>().tipToShow = meal.dishName;
             pastMeal.SetActive(true);
@@ -135,5 +146,8 @@ public class GameManager : MonoBehaviour
             proteinBar.GetComponent<ProgressBar>().current += meal.proteinServings;
             fruitVeggieBar.GetComponent<ProgressBar>().current += meal.veggieServings;
         }
+        initialGrainValue = wholeGrainsBar.GetComponent<ProgressBar>().current;
+        initialProteinValue = proteinBar.GetComponent<ProgressBar>().current;
+        initialFruitValue = fruitVeggieBar.GetComponent<ProgressBar>().current;
     }
 }
