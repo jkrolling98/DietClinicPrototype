@@ -26,12 +26,41 @@ public class GameManager : MonoBehaviour
 
     public int score = 0;
 
+    public float timerDuration = 60f;
+    public TextMeshProUGUI timerText;
+    public GameObject timerBar;
+    private float currentTime;
+    private bool isRunning = false;
+
     // Start is called before the first frame update
     void Start()
     {
         NewPatient();
         allDishes = Resources.LoadAll<Meal>("Meals").ToList();
         SetDishWindow();
+    }
+
+    private void Update()
+    {
+        if (isRunning)
+        {
+            currentTime -= Time.deltaTime;
+            timerBar.GetComponent<ProgressBar>().current = (int)currentTime/1;
+            timerText.text = currentTime.ToString("F0")+"s";
+            if (currentTime <= 0)
+            {
+                isRunning = false;
+                OnTimerFinished();
+            }
+        }
+    }
+
+    public void OnTimerFinished()
+    {
+        Debug.Log("times up! gameover...");
+        summaryText.text = "Times up! Gameover!";
+        TabManager.instance.ViewSummary();
+        ResetDishWindow();
     }
 
     public void SetDishWindow()
@@ -41,7 +70,11 @@ public class GameManager : MonoBehaviour
             GameObject dishItem = Instantiate(dishTemplate, dishWindow.transform);
             dishItem.name = dish.dishName;
             dishItem.GetComponent<Image>().sprite = dish.image;
-            dishItem.GetComponent<HoverTip>().tipToShow = dish.dishName;
+            string tooltiptext = dish.dishName + "\n\n" +
+                $"Grain Serving: {dish.wholeGrainServings}\n" +
+                $"Protein Serving: {dish.proteinServings}\n" +
+                $"Fruits n Veggie Serving: {dish.veggieServings}";
+            dishItem.GetComponent<HoverTip>().tipToShow = tooltiptext;
             dishItem.SetActive(true);
         }
     }
@@ -140,7 +173,11 @@ public class GameManager : MonoBehaviour
             GameObject pastMeal = Instantiate(pastMealTemplate, pastMealWindow.transform);
             pastMeal.name = meal.dishName;
             pastMeal.GetComponent<Image>().sprite = meal.image;
-            pastMeal.GetComponent<HoverTip>().tipToShow = meal.dishName;
+            string tooltiptext = meal.dishName + "\n\n" +
+                $"Grain Serving: {meal.wholeGrainServings}\n" +
+                $"Protein Serving: {meal.proteinServings}\n" +
+                $"Fruits n Veggie Serving: {meal.veggieServings}";
+            pastMeal.GetComponent<HoverTip>().tipToShow = tooltiptext;
             pastMeal.SetActive(true);
             wholeGrainsBar.GetComponent<ProgressBar>().current += meal.wholeGrainServings;
             proteinBar.GetComponent<ProgressBar>().current += meal.proteinServings;
@@ -149,5 +186,7 @@ public class GameManager : MonoBehaviour
         initialGrainValue = wholeGrainsBar.GetComponent<ProgressBar>().current;
         initialProteinValue = proteinBar.GetComponent<ProgressBar>().current;
         initialFruitValue = fruitVeggieBar.GetComponent<ProgressBar>().current;
+        currentTime = timerDuration;
+        isRunning = true;
     }
 }

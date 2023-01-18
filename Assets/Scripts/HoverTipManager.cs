@@ -32,13 +32,20 @@ public class HoverTipManager : MonoBehaviour
     private void ShowTip(string tip, Vector2 mousePos)
     {
         tipText.text = tip;
-        tipWindow.sizeDelta = new Vector2(tipText.preferredWidth > 200 ? 200 : tipText.preferredWidth, tipText.preferredHeight);
+        tipWindow.sizeDelta = new Vector2(tipText.preferredWidth > 250 ? 250 : tipText.preferredWidth, tipText.preferredHeight);
 
         tipWindow.gameObject.SetActive(true);
-        //float pivotX = mousePos.x / Screen.width;
-        //float pivotY = mousePos.y / Screen.height;
-        //tipWindow.pivot = new Vector2(pivotX, pivotY);
-        tipWindow.transform.position = new Vector2(mousePos.x + tipWindow.sizeDelta.x / 2, mousePos.y);
+        Vector2 viewportPosition = Camera.main.WorldToViewportPoint(Input.mousePosition);
+        Vector2 tooltipPosition;
+        if (viewportPosition.x > 0.5f)
+        {
+            tooltipPosition = new Vector2(Input.mousePosition.x - tipWindow.sizeDelta.x/2, Input.mousePosition.y);
+        }
+        else
+        {
+            tooltipPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        }
+        tipWindow.transform.position = tooltipPosition;
     }
 
     private void HideTip()
