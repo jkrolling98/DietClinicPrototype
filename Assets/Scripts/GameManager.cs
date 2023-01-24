@@ -101,6 +101,7 @@ public class GameManager : MonoBehaviour
 
     public void Serve()
     {
+        isRunning = false;
         double grainsScore = (double)wholeGrainsBar.GetComponent<ProgressBar>().current / (double)wholeGrainsBar.GetComponent<ProgressBar>().maximum;
         double proteinScore = (double)proteinBar.GetComponent<ProgressBar>().current / (double)proteinBar.GetComponent<ProgressBar>().maximum;
         double fruitScore = (double)fruitVeggieBar.GetComponent<ProgressBar>().current / (double)fruitVeggieBar.GetComponent<ProgressBar>().maximum;
@@ -110,7 +111,6 @@ public class GameManager : MonoBehaviour
             $"fruitnVeggies Score : {fruitScore.ToString("0.00")}";
         summaryText.text = summary; 
         TabManager.instance.ViewSummary();
-        ResetDishWindow();
     }
 
     public void ResetPickers()
@@ -155,7 +155,7 @@ public class GameManager : MonoBehaviour
 
     public void NewPatient()
     {
-        ResetPickers();
+        ResetDishWindow();
         ResetPastMeals();
         TabManager.instance.ViewHelp();
         //instantiate new patient and update patient info tab

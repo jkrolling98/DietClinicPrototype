@@ -35,15 +35,16 @@ public class HoverTipManager : MonoBehaviour
         tipWindow.sizeDelta = new Vector2(tipText.preferredWidth > 250 ? 250 : tipText.preferredWidth, tipText.preferredHeight);
 
         tipWindow.gameObject.SetActive(true);
-        Vector2 viewportPosition = Camera.main.WorldToViewportPoint(Input.mousePosition);
+        Debug.Log(Input.mousePosition.x);
+        Debug.Log(Screen.width/2);
         Vector2 tooltipPosition;
-        if (viewportPosition.x > 0.5f)
+        if (Input.mousePosition.x > Screen.width / 2)
         {
-            tooltipPosition = new Vector2(Input.mousePosition.x - tipWindow.sizeDelta.x/2, Input.mousePosition.y);
+            tooltipPosition = new Vector2(Input.mousePosition.x - (tipWindow.sizeDelta.x/3), Input.mousePosition.y);
         }
         else
         {
-            tooltipPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+            tooltipPosition = new Vector2(Input.mousePosition.x + (tipWindow.sizeDelta.x/3), Input.mousePosition.y);
         }
         tipWindow.transform.position = tooltipPosition;
     }
