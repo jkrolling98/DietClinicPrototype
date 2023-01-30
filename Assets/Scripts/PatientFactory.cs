@@ -9,7 +9,7 @@ public class PatientFactory : MonoBehaviour
 {
 
     public static PatientFactory instance;
-    public List<Meal> allDishes;
+    public List<Dish> allDishes;
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -18,7 +18,9 @@ public class PatientFactory : MonoBehaviour
             return;
         }
         instance = this;
-        allDishes = Resources.LoadAll<Meal>("Meals").ToList();
+        Debug.Log("calling get dishes");
+        allDishes = DishManager.instance.GetDishes();
+        Debug.Log("done");
     }
 
     private static string[] maleNames = { "John", "Ken", "Mike", "Peter", "Bob", "Sam" };
@@ -36,9 +38,9 @@ public class PatientFactory : MonoBehaviour
         return femaleNames[index];
     }
 
-    public Meal[] GenerateRandomMeals(int mealCount)
+    public Dish[] GenerateRandomMeals(int mealCount)
     {
-        List<Meal> result = new List<Meal>();
+        List<Dish> result = new List<Dish>();
         HashSet<int> indexes = new HashSet<int>();
         while (indexes.Count < mealCount)
         {
@@ -63,7 +65,7 @@ public class PatientFactory : MonoBehaviour
             Patient.Allergies allergies = Patient.Allergies.NIL; //to be changed
 
             //generate meals
-            Meal[] meals = GenerateRandomMeals(2);
+            Dish[] meals = GenerateRandomMeals(2);
 
             return new Patient(name, age, weight, height, Patient.Gender.Male, Patient.Occupation.Student, pref, allergies, meals);
         }
@@ -77,7 +79,7 @@ public class PatientFactory : MonoBehaviour
             Patient.Allergies allergies = Patient.Allergies.NIL; //to be changed
 
             //generate meals
-            Meal[] meals = GenerateRandomMeals(2);
+            Dish[] meals = GenerateRandomMeals(2);
 
             return new Patient(name, age, weight, height, Patient.Gender.Female, Patient.Occupation.Student, pref, allergies, meals);
         }

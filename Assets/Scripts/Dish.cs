@@ -6,6 +6,7 @@ using UnityEngine;
 public class Dish : MonoBehaviour
 {
     public string dishName;
+    public Sprite image;
     [TextArea]
     public string description;
     public double cost;
@@ -21,21 +22,23 @@ public class Dish : MonoBehaviour
     public double cholesterol; //in mg
     public double sodium; //in mg
 
-    public Dish(DishData data)
+    
+    public void setDishData(DishData data)
     {
-        data.dishName = dishName;
-        data.description = description;
-        data.cost = cost;
-        data.wholeGrainServings = wholeGrainServings;
-        data.proteinServings = proteinServings;
-        data.veggieServings = veggieServings;
-        data.calories = calories;
-        data.protein = protein;
-        data.totalFats = totalFats;
-        data.saturatedFats = saturatedFats;
-        data.dietaryFibre = dietaryFibre;
-        data.carbohydrate = carbohydrate;
-        data.cholesterol = cholesterol;
-        data.sodium = sodium;
+        this.dishName = data.dishName;
+        this.image = Resources.Load<Sprite>("Sprite/" + dishName.Replace(" ",""));
+        this.description = data.description;
+        this.cost = data.cost;
+        this.wholeGrainServings = data.wholeGrainServings;
+        this.proteinServings = data.proteinServings;
+        this.veggieServings = data.veggieServings;
+        this.calories = data.calories;
+        this.protein = data.protein;
+        this.totalFats = data.totalFats;
+        this.saturatedFats = data.saturatedFats;
+        this.dietaryFibre = data.dietaryFibre;
+        this.carbohydrate = data.carbohydrate;
+        this.cholesterol = data.cholesterol;
+        this.sodium = data.sodium;
     }
 }

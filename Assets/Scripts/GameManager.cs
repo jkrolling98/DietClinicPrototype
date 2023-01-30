@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public GameObject proteinBar;
     public GameObject fruitVeggieBar;
 
-    private List<Meal> allDishes;
+    private List<Dish> allDishes;
     private int initialGrainValue;
     private int initialProteinValue;
     private int initialFruitValue;
@@ -35,8 +35,11 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("making new patient");
         NewPatient();
-        allDishes = Resources.LoadAll<Meal>("Meals").ToList();
+        Debug.Log("getting dishes");
+        allDishes = DishManager.instance.GetDishes();
+        Debug.Log("setting dishes");
         SetDishWindow();
     }
 
@@ -65,7 +68,7 @@ public class GameManager : MonoBehaviour
 
     public void SetDishWindow()
     {
-        foreach (Meal dish in allDishes)
+        foreach (Dish dish in allDishes)
         {
             GameObject dishItem = Instantiate(dishTemplate, dishWindow.transform);
             dishItem.name = dish.dishName;
@@ -76,13 +79,14 @@ public class GameManager : MonoBehaviour
                 $"Fruits n Veggie Serving: {dish.veggieServings}";
             dishItem.GetComponent<HoverTip>().tipToShow = tooltiptext;
             dishItem.SetActive(true);
+            Dish dishComponent = dishItem.AddComponent<Dish>();
+            dishComponent = dish;
         }
     }
 
     public void SelectDish(GameObject dish)
     {
-        string path = "Meals/" + dish.name.Replace(" ", "");
-        Meal currentDish = Resources.Load<Meal>(path);
+        Dish currentDish = dish.GetComponent<Dish>();
         // update seperate values
         if (dish.GetComponent<Toggle>().isOn)
         {
@@ -169,7 +173,7 @@ public class GameManager : MonoBehaviour
             $"Allergies: {patient.allergies}";
         for (int i = 0; i < patient.meals.Length; i++)
         {
-            Meal meal = patient.meals[i];
+            Dish meal = patient.meals[i];
             GameObject pastMeal = Instantiate(pastMealTemplate, pastMealWindow.transform);
             pastMeal.name = meal.dishName;
             pastMeal.GetComponent<Image>().sprite = meal.image;
