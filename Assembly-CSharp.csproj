@@ -67,6 +67,9 @@
     <Compile Include="Assets\Scripts\TabManager.cs" />
     <Compile Include="Assets\Scripts\PatientFactory.cs" />
     <Compile Include="Assets\Scripts\HoverTipManager.cs" />
+    <Compile Include="Assets\Scripts\Dish.cs" />
+    <Compile Include="Assets\Scripts\DishManager.cs" />
+    <Compile Include="Assets\Scripts\DishData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

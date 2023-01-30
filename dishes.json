@@ -1,0 +1,20 @@
+{
+    "dishes": [
+        {
+            "dishName": "Banana",
+            "description": "A curved, yellow fruit with a thick skin and soft sweet flesh.",
+            "cost": 0.6,
+            "wholeGrainServings": 0,
+            "proteinServings": 0,
+            "veggieServings": 1,
+            "calories": 93.0,
+            "protein": 1.08,
+            "totalFats": 0.15,
+            "saturatedFats": 0.05,
+            "dietaryFibre": 2.0,
+            "carbohydrate": 21.91,
+            "cholesterol": 0.0,
+            "sodium": 16.91
+        }
+    ]
+}

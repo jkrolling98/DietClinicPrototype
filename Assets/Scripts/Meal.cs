@@ -22,3 +22,4 @@ public class Meal : ScriptableObject
     public float cholesterol; //in mg
     public float sodium; //in mg
 }
+
