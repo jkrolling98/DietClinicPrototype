@@ -41,4 +41,23 @@ public class Dish : MonoBehaviour
         this.cholesterol = data.cholesterol;
         this.sodium = data.sodium;
     }
+
+    public void setDishData(Dish data)
+    {
+        this.dishName = data.dishName;
+        this.image = data.image;
+        this.description = data.description;
+        this.cost = data.cost;
+        this.wholeGrainServings = data.wholeGrainServings;
+        this.proteinServings = data.proteinServings;
+        this.veggieServings = data.veggieServings;
+        this.calories = data.calories;
+        this.protein = data.protein;
+        this.totalFats = data.totalFats;
+        this.saturatedFats = data.saturatedFats;
+        this.dietaryFibre = data.dietaryFibre;
+        this.carbohydrate = data.carbohydrate;
+        this.cholesterol = data.cholesterol;
+        this.sodium = data.sodium;
+    }
 }

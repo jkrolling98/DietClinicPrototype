@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\MealWindowManager.cs" />
     <Compile Include="Assets\Scripts\PlusMinusButton.cs" />
+    <Compile Include="Assets\Scripts\copy.cs" />
     <Compile Include="Assets\Scripts\DishManager.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Meal.cs" />
@@ -70,7 +71,6 @@
     <Compile Include="Assets\Scripts\TabManager.cs" />
     <Compile Include="Assets\Scripts\PatientFactory.cs" />
     <Compile Include="Assets\Scripts\HoverTipManager.cs" />
-    <Compile Include="Assets\Scripts\copy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

@@ -23,15 +23,6 @@ public class DishManager : MonoBehaviour
         instance = this;
     }
 
-    void Start()
-    {
-        // Run once
-        //Initialise();
-        //Debug.Log("Initialised");
-        // Load the saved data
-        
-    }
-
     public void Save()
     {
         DishWrapper dishWrapper = new DishWrapper { dishes = dishes };

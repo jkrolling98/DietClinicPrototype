@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
             dishItem.GetComponent<HoverTip>().tipToShow = tooltiptext;
             dishItem.SetActive(true);
             Dish dishComponent = dishItem.AddComponent<Dish>();
-            dishComponent = dish;
+            dishComponent.setDishData(dish);
         }
     }
 
