@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour
     private int initialFruitValue;
 
     public int score = 0;
+    public double roundCost = 0;
+    public double money = 0;
+    public TextMeshProUGUI moneyText;
 
     public float timerDuration = 60f;
     public TextMeshProUGUI timerText;
@@ -32,14 +35,14 @@ public class GameManager : MonoBehaviour
     private float currentTime;
     private bool isRunning = false;
 
+
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("making new patient");
+        money = 0;
+        UpdateMoney();
         NewPatient();
-        Debug.Log("getting dishes");
         allDishes = DishManager.instance.GetDishes();
-        Debug.Log("setting dishes");
         SetDishWindow();
     }
 
@@ -66,6 +69,11 @@ public class GameManager : MonoBehaviour
         ResetDishWindow();
     }
 
+    public void UpdateMoney()
+    {
+        moneyText.text = money.ToString("0.00");
+    }
+
     public void SetDishWindow()
     {
         foreach (Dish dish in allDishes)
@@ -73,11 +81,7 @@ public class GameManager : MonoBehaviour
             GameObject dishItem = Instantiate(dishTemplate, dishWindow.transform);
             dishItem.name = dish.dishName;
             dishItem.GetComponent<Image>().sprite = dish.image;
-            string tooltiptext = dish.dishName + "\n\n" +
-                $"Grain Serving: {dish.wholeGrainServings}\n" +
-                $"Protein Serving: {dish.proteinServings}\n" +
-                $"Fruits n Veggie Serving: {dish.veggieServings}";
-            dishItem.GetComponent<HoverTip>().tipToShow = tooltiptext;
+            dishItem.GetComponent<HoverTip>().tipToShow = GetDishTooltipText(dish);
             dishItem.SetActive(true);
             Dish dishComponent = dishItem.AddComponent<Dish>();
             dishComponent.setDishData(dish);
@@ -88,31 +92,72 @@ public class GameManager : MonoBehaviour
     {
         Dish currentDish = dish.GetComponent<Dish>();
         // update seperate values
-        if (dish.GetComponent<Toggle>().isOn)
+        if (isRunning)
         {
-            wholeGrainsBar.GetComponent<ProgressBar>().current += currentDish.wholeGrainServings;
-            proteinBar.GetComponent<ProgressBar>().current += currentDish.proteinServings;
-            fruitVeggieBar.GetComponent<ProgressBar>().current += currentDish.veggieServings;
-        }
-        else
-        {
-            wholeGrainsBar.GetComponent<ProgressBar>().current -= currentDish.wholeGrainServings;
-            proteinBar.GetComponent<ProgressBar>().current -= currentDish.proteinServings;
-            fruitVeggieBar.GetComponent<ProgressBar>().current -= currentDish.veggieServings;
+            if (dish.GetComponent<Toggle>().isOn)
+            {
+                AddProgressBars(currentDish);
+                money -= currentDish.cost;
+                roundCost += currentDish.cost;
+                UpdateMoney();
+                UpdateDishBtns();
+                Debug.Log($"Called by {currentDish.dishName} to + round cost");
+            }
+            else
+            {
+                MinusProgressBars(currentDish);
+                money += currentDish.cost;
+                roundCost -= currentDish.cost;
+                UpdateMoney();
+                UpdateDishBtns();
+                Debug.Log($"Called by {currentDish.dishName} to - round cost");
+            }
         }
     }
 
+    public void UpdateDishBtns()
+    {
+        for (int i = dishWindow.transform.childCount - 1; i >= 1; i--)
+        {
+            //Debug.Log(dishWindow.transform.GetChild(i));
+            if(dishWindow.transform.GetChild(i).GetComponent<Toggle>().isOn == false)
+            {
+                dishWindow.transform.GetChild(i).GetComponent<Toggle>().interactable = (money >= dishWindow.transform.GetChild(i).GetComponent<Dish>().cost);
+            }
+        }
+    }
+
+    public void AddProgressBars(Dish dish)
+    {
+        wholeGrainsBar.GetComponent<ProgressBar>().current += dish.wholeGrainServings;
+        proteinBar.GetComponent<ProgressBar>().current += dish.proteinServings;
+        fruitVeggieBar.GetComponent<ProgressBar>().current += dish.veggieServings;
+    }
+    public void MinusProgressBars(Dish dish)
+    {
+        wholeGrainsBar.GetComponent<ProgressBar>().current -= dish.wholeGrainServings;
+        proteinBar.GetComponent<ProgressBar>().current -= dish.proteinServings;
+        fruitVeggieBar.GetComponent<ProgressBar>().current -= dish.veggieServings;
+    }
 
     public void Serve()
     {
         isRunning = false;
-        double grainsScore = (double)wholeGrainsBar.GetComponent<ProgressBar>().current / (double)wholeGrainsBar.GetComponent<ProgressBar>().maximum;
-        double proteinScore = (double)proteinBar.GetComponent<ProgressBar>().current / (double)proteinBar.GetComponent<ProgressBar>().maximum;
-        double fruitScore = (double)fruitVeggieBar.GetComponent<ProgressBar>().current / (double)fruitVeggieBar.GetComponent<ProgressBar>().maximum;
-        Debug.Log("grainScore: "+ System.String.Format("{0:0.00}", grainsScore));
-        string summary = $"Grain score : {grainsScore.ToString("0.00")}\n" +
+        UpdateMoney();
+        //change to current - initial / max
+        double grainConsumed = (double)wholeGrainsBar.GetComponent<ProgressBar>().current - initialGrainValue;
+        double proteinConsumed = (double)proteinBar.GetComponent<ProgressBar>().current - initialProteinValue;
+        double fruitConsumed = (double)fruitVeggieBar.GetComponent<ProgressBar>().current - initialFruitValue;
+        double grainsScore = grainConsumed / (double)wholeGrainsBar.GetComponent<ProgressBar>().maximum;
+        double proteinScore = proteinConsumed / (double)proteinBar.GetComponent<ProgressBar>().maximum;
+        double fruitScore = fruitConsumed / (double)fruitVeggieBar.GetComponent<ProgressBar>().maximum;
+        string summary = $"Grain consumed : {grainConsumed.ToString()}\n" +
+            $"Protein consumed : {proteinConsumed.ToString()}\n" +
+            $"Fruit consumed : {fruitConsumed.ToString()}\n\n" +
+            $"Grain score : {grainsScore.ToString("0.00")}\n" +
             $"proteinScore : {proteinScore.ToString("0.00")}\n" +
-            $"fruitnVeggies Score : {fruitScore.ToString("0.00")}";
+            $"fruitnVeggies Score : {fruitScore.ToString("0.00")}\n" +
+            $"Money spent : ${roundCost.ToString("0.00")}";
         summaryText.text = summary; 
         TabManager.instance.ViewSummary();
     }
@@ -148,6 +193,7 @@ public class GameManager : MonoBehaviour
             //Debug.Log(dishWindow.transform.GetChild(i));
             dishWindow.transform.GetChild(i).GetComponent<Toggle>().isOn=false;
         }
+        UpdateDishBtns();
     }
 
     public void ResetNutrientBar()
@@ -159,38 +205,52 @@ public class GameManager : MonoBehaviour
 
     public void NewPatient()
     {
+        roundCost = 0;
+        money += 10;
+        UpdateMoney();
         ResetDishWindow();
         ResetPastMeals();
         TabManager.instance.ViewHelp();
         //instantiate new patient and update patient info tab
         Patient patient = PatientFactory.instance.CreateNewStudent();
+        UpdatePatientInfo(patient);
+        initialGrainValue = wholeGrainsBar.GetComponent<ProgressBar>().current;
+        initialProteinValue = proteinBar.GetComponent<ProgressBar>().current;
+        initialFruitValue = fruitVeggieBar.GetComponent<ProgressBar>().current;
+        currentTime = timerDuration;
+        isRunning = true;
+    }
+
+    public void UpdatePatientInfo(Patient patient)
+    {
+        //update patient info text
         patientInfo.text = $"Name: {patient.patientName}\n" +
-            $"Age: {patient.age} \n" +
-            $"Weight: {patient.weight} \n" +
-            $"Height: {patient.height} \n\n" +
-            $"Occupation: {patient.occupation} \n\n" +
-            $"FoodPreference: {patient.preference} \n" +
-            $"Allergies: {patient.allergies}";
+                $"Age: {patient.age} \n" +
+                $"Weight: {patient.weight} \n" +
+                $"Height: {patient.height} \n\n" +
+                $"Occupation: {patient.occupation} \n\n" +
+                $"FoodPreference: {patient.preference} \n" +
+                $"Allergies: {patient.allergies}";
+        //update patients past meals
         for (int i = 0; i < patient.meals.Length; i++)
         {
             Dish meal = patient.meals[i];
             GameObject pastMeal = Instantiate(pastMealTemplate, pastMealWindow.transform);
             pastMeal.name = meal.dishName;
             pastMeal.GetComponent<Image>().sprite = meal.image;
-            string tooltiptext = meal.dishName + "\n\n" +
-                $"Grain Serving: {meal.wholeGrainServings}\n" +
-                $"Protein Serving: {meal.proteinServings}\n" +
-                $"Fruits n Veggie Serving: {meal.veggieServings}";
-            pastMeal.GetComponent<HoverTip>().tipToShow = tooltiptext;
+            pastMeal.GetComponent<HoverTip>().tipToShow = GetDishTooltipText(meal);
             pastMeal.SetActive(true);
-            wholeGrainsBar.GetComponent<ProgressBar>().current += meal.wholeGrainServings;
-            proteinBar.GetComponent<ProgressBar>().current += meal.proteinServings;
-            fruitVeggieBar.GetComponent<ProgressBar>().current += meal.veggieServings;
+            AddProgressBars(meal);
         }
-        initialGrainValue = wholeGrainsBar.GetComponent<ProgressBar>().current;
-        initialProteinValue = proteinBar.GetComponent<ProgressBar>().current;
-        initialFruitValue = fruitVeggieBar.GetComponent<ProgressBar>().current;
-        currentTime = timerDuration;
-        isRunning = true;
+    }
+
+    public string GetDishTooltipText(Dish dish)
+    {
+        string tooltiptext = dish.dishName + "\n"+
+                $"Cost: ${dish.cost.ToString("0.00")}\n" +
+                $"Grain Serving: {dish.wholeGrainServings}\n" +
+                $"Protein Serving: {dish.proteinServings}\n" +
+                $"Fruits n Veggie Serving: {dish.veggieServings}";
+        return tooltiptext;
     }
 }

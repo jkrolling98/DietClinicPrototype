@@ -58,7 +58,6 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\MealWindowManager.cs" />
     <Compile Include="Assets\Scripts\PlusMinusButton.cs" />
-    <Compile Include="Assets\Scripts\copy.cs" />
     <Compile Include="Assets\Scripts\DishManager.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Meal.cs" />

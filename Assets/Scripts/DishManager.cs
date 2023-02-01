@@ -14,7 +14,6 @@ public class DishManager : MonoBehaviour
     private void Awake()
     {
         Load();
-        Debug.Log("loaded");
         if (instance != null && instance != this)
         {
             Destroy(this);
@@ -39,20 +38,14 @@ public class DishManager : MonoBehaviour
         {
             // Read the JSON string from the file
             string loadData = System.IO.File.ReadAllText(filePath);
-            Debug.Log("loaddata: " + loadData);
             // Deserialize the JSON string to a list of Dish objects
             DishWrapper dishWrapper = JsonUtility.FromJson<DishWrapper>(loadData);
-            Debug.Log("dishwrapper: "+ JsonUtility.ToJson(dishWrapper, true));
-            Debug.Log(dishWrapper.dishes.Count);
             dishes = dishWrapper.dishes;
             string output = "";
             foreach(DishData dish in dishes)
             {
                 output += dish.dishName + " \n";
             }
-            Debug.Log("dishes: "+output);
-            Debug.Log(dishes);
-            Debug.Log(dishes.Count);
         }
         else
         {

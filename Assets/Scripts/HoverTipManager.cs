@@ -35,8 +35,6 @@ public class HoverTipManager : MonoBehaviour
         tipWindow.sizeDelta = new Vector2(tipText.preferredWidth > 250 ? 250 : tipText.preferredWidth, tipText.preferredHeight);
 
         tipWindow.gameObject.SetActive(true);
-        Debug.Log(Input.mousePosition.x);
-        Debug.Log(Screen.width/2);
         Vector2 tooltipPosition;
         if (Input.mousePosition.x > Screen.width / 2)
         {
