@@ -19,6 +19,10 @@ public class GameManager : MonoBehaviour
     public GameObject proteinBar;
     public GameObject fruitVeggieBar;
 
+    public GameObject star1;
+    public GameObject star2;
+    public GameObject star3;
+
     private List<Dish> allDishes;
     private int initialGrainValue;
     private int initialProteinValue;
@@ -28,6 +32,9 @@ public class GameManager : MonoBehaviour
     public double roundCost = 0;
     public double money = 0;
     public TextMeshProUGUI moneyText;
+    public int level = 1;
+    public GameObject levelBar;
+    public TextMeshProUGUI levelText;
 
     public float timerDuration = 60f;
     public TextMeshProUGUI timerText;
@@ -148,9 +155,9 @@ public class GameManager : MonoBehaviour
         double grainConsumed = (double)wholeGrainsBar.GetComponent<ProgressBar>().current - initialGrainValue;
         double proteinConsumed = (double)proteinBar.GetComponent<ProgressBar>().current - initialProteinValue;
         double fruitConsumed = (double)fruitVeggieBar.GetComponent<ProgressBar>().current - initialFruitValue;
-        double grainsScore = grainConsumed / (double)wholeGrainsBar.GetComponent<ProgressBar>().maximum;
-        double proteinScore = proteinConsumed / (double)proteinBar.GetComponent<ProgressBar>().maximum;
-        double fruitScore = fruitConsumed / (double)fruitVeggieBar.GetComponent<ProgressBar>().maximum;
+        double grainsScore = (double)wholeGrainsBar.GetComponent<ProgressBar>().current / (double)wholeGrainsBar.GetComponent<ProgressBar>().maximum;
+        double proteinScore = (double)proteinBar.GetComponent<ProgressBar>().current / (double)proteinBar.GetComponent<ProgressBar>().maximum;
+        double fruitScore = (double)fruitVeggieBar.GetComponent<ProgressBar>().current / (double)fruitVeggieBar.GetComponent<ProgressBar>().maximum;
         string summary = $"Grain consumed : {grainConsumed.ToString()}\n" +
             $"Protein consumed : {proteinConsumed.ToString()}\n" +
             $"Fruit consumed : {fruitConsumed.ToString()}\n\n" +
@@ -158,8 +165,27 @@ public class GameManager : MonoBehaviour
             $"proteinScore : {proteinScore.ToString("0.00")}\n" +
             $"fruitnVeggies Score : {fruitScore.ToString("0.00")}\n" +
             $"Money spent : ${roundCost.ToString("0.00")}";
+        double OverallScore = (grainsScore + proteinScore + fruitScore) / 3;
+        Debug.Log(OverallScore);
+        int starCount = (int)(OverallScore / 0.33);
+        PlayStarsAnim(starCount);
+        UpdateLevel(starCount);
         summaryText.text = summary; 
         TabManager.instance.ViewSummary();
+    }
+
+    void UpdateLevel(int count)
+    {
+        levelBar.GetComponent<ProgressBar>().current += count;
+        if(levelBar.GetComponent<ProgressBar>().current >= levelBar.GetComponent<ProgressBar>().maximum)
+        {
+            //int remainder = (levelBar.GetComponent<ProgressBar>().current - levelBar.GetComponent<ProgressBar>().maximum);
+            level++;
+            levelText.text = (level).ToString();
+
+            levelBar.GetComponent<ProgressBar>().maximum += (int)(level * 0.5 * 10);
+            //levelBar.GetComponent<ProgressBar>().current = remainder;
+        }
     }
 
     public void ResetPickers()
@@ -210,6 +236,7 @@ public class GameManager : MonoBehaviour
         UpdateMoney();
         ResetDishWindow();
         ResetPastMeals();
+        ResetStars();
         TabManager.instance.ViewHelp();
         //instantiate new patient and update patient info tab
         Patient patient = PatientFactory.instance.CreateNewStudent();
@@ -252,5 +279,21 @@ public class GameManager : MonoBehaviour
                 $"Protein Serving: {dish.proteinServings}\n" +
                 $"Fruits n Veggie Serving: {dish.veggieServings}";
         return tooltiptext;
+    }
+
+    void PlayStarsAnim(int count)
+    {
+        if (count >= 1) LeanTween.scale(star1, new Vector3(1f, 1f, 1f), 2f).setDelay(.1f).setEase(LeanTweenType.easeOutElastic);
+        if (count >= 2) LeanTween.scale(star2, new Vector3(1f, 1f, 1f), 2f).setDelay(.2f).setEase(LeanTweenType.easeOutElastic);
+        if (count >= 3) LeanTween.scale(star3, new Vector3(1f, 1f, 1f), 2f).setDelay(.3f).setEase(LeanTweenType.easeOutElastic);
+    }
+
+    void ResetStars()
+    {
+        Debug.Log("Resetting stars");
+        Vector3 scaleAmount = new Vector3(0f, 0f, 0f);
+        LeanTween.scale(star1, scaleAmount, 2f);
+        LeanTween.scale(star2, scaleAmount, 2f);
+        LeanTween.scale(star3, scaleAmount, 2f);
     }
 }
