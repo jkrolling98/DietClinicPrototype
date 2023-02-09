@@ -8,8 +8,9 @@ using System.Linq;
 public class GameManager : MonoBehaviour
 {
     public GameObject patient;
+    public Canvas canvas;
     public TextMeshProUGUI patientInfo;
-    public GameObject mealWindow;
+    public GameObject popUpWindow;
     public GameObject pastMealWindow;
     public GameObject pastMealTemplate;
     public TextMeshProUGUI summaryText;
@@ -51,6 +52,7 @@ public class GameManager : MonoBehaviour
         NewPatient();
         allDishes = DishManager.instance.GetDishes();
         SetDishWindow();
+        InstantiatePopUp();
     }
 
     private void Update()
@@ -74,6 +76,12 @@ public class GameManager : MonoBehaviour
         summaryText.text = "Times up! Gameover!";
         TabManager.instance.ViewSummary();
         ResetDishWindow();
+    }
+
+    public void InstantiatePopUp()
+    {
+        GameObject popUpInstance = Instantiate(popUpWindow, new Vector3(Screen.width / 2, Screen.height / 2, 100), Quaternion.identity);
+        popUpInstance.transform.SetParent(canvas.transform);
     }
 
     public void UpdateMoney()
@@ -188,17 +196,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ResetPickers()
-    {
-        PlusMinusButton[] pickers;
-        pickers = mealWindow.GetComponentsInChildren<PlusMinusButton>();
-        for (int i = 0; i < pickers.Length; i++)
-        {
-            pickers[i].currentValue = 0;
-            pickers[i].UpdateValueText();
-        }
-    }
-
     public void ResetPastMeals()
     {
         if(pastMealWindow.transform.childCount > 1)
@@ -252,12 +249,14 @@ public class GameManager : MonoBehaviour
     {
         //update patient info text
         patientInfo.text = $"Name: {patient.patientName}\n" +
-                $"Age: {patient.age} \n" +
-                $"Weight: {patient.weight} \n" +
-                $"Height: {patient.height} \n\n" +
+                $"Age: {patient.age} years old \n" +
+                $"Weight: {patient.weight} kg \n" +
+                $"Height: {patient.height} cm \n\n" +
                 $"Occupation: {patient.occupation} \n\n" +
                 $"FoodPreference: {patient.preference} \n" +
                 $"Allergies: {patient.allergies}";
+        patientInfo.text += $"\n\n" +
+            $"Activity Level: {patient.activityLevel}";
         //update patients past meals
         for (int i = 0; i < patient.meals.Length; i++)
         {
