@@ -80,8 +80,7 @@ public class GameManager : MonoBehaviour
 
     public void InstantiatePopUp()
     {
-        GameObject popUpInstance = Instantiate(popUpWindow, new Vector3(Screen.width / 2, Screen.height / 2, 100), Quaternion.identity);
-        popUpInstance.transform.SetParent(canvas.transform);
+        Instantiate(popUpWindow, canvas.transform.position, Quaternion.identity, canvas.transform);
     }
 
     public void UpdateMoney()
