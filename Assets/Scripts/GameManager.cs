@@ -41,8 +41,9 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI timerText;
     public GameObject timerBar;
     private float currentTime;
-    private bool isRunning = false;
+    public static bool isRunning = false;
 
+    public Sprite servingReference;
 
     // Start is called before the first frame update
     void Start()
@@ -52,7 +53,9 @@ public class GameManager : MonoBehaviour
         NewPatient();
         allDishes = DishManager.instance.GetDishes();
         SetDishWindow();
-        InstantiatePopUp();
+        string headerText = "Welcome to Diet Clinic!";
+        string bodyText = "Help our patient find the ideal meal combinations and aim to get as many 3* reviews as possible! \n\nHint: click on the ? icon to view recommended servings!";
+        InstantiatePopUp(headerText,bodyText, servingReference);
     }
 
     private void Update()
@@ -78,9 +81,19 @@ public class GameManager : MonoBehaviour
         ResetDishWindow();
     }
 
-    public void InstantiatePopUp()
+    public void InstantiatePopUp(string headerText, string bodyText, Sprite hintImage = null)
     {
-        Instantiate(popUpWindow, canvas.transform.position, Quaternion.identity, canvas.transform);
+        GameObject popUp = Instantiate(popUpWindow, canvas.transform.position, Quaternion.identity, canvas.transform);
+        TextMeshProUGUI header = popUp.transform.Find("Header").Find("HeaderText").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI body = popUp.transform.Find("BodyText").GetComponent<TextMeshProUGUI>();
+        header.text = headerText;
+        body.text = bodyText;
+        if (hintImage != null)
+        {
+            Image hint = popUp.transform.Find("HelpWindow").Find("HelpImage").GetComponent<Image>();
+            hint.sprite = hintImage;
+        }
+        isRunning = false;
     }
 
     public void UpdateMoney()

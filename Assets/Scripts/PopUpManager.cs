@@ -14,6 +14,7 @@ public class PopUpManager : MonoBehaviour
     public void OnClose()
     {
         Destroy(popUpWindow);
+        GameManager.isRunning = true;
     }
 
     public void toggleHelp()

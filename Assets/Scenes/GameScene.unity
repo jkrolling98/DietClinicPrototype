@@ -3434,7 +3434,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 239.99998, y: 0}
+  m_AnchoredPosition: {x: 240, y: 0}
   m_SizeDelta: {x: 0, y: 40}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &771915027
@@ -6929,6 +6929,7 @@ MonoBehaviour:
   timerDuration: 60
   timerText: {fileID: 276702119}
   timerBar: {fileID: 515892592}
+  servingReference: {fileID: 21300000, guid: 57a10ce66107f774788e7fd38f24ebf0, type: 3}
 --- !u!4 &1745536423
 Transform:
   m_ObjectHideFlags: 0
