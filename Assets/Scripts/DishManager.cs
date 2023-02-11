@@ -9,17 +9,9 @@ public class DishManager : MonoBehaviour
     private string filePath = "dishes.json";
     public static List<DishData> dishes = new List<DishData>();
 
-    public static DishManager instance;
-
     private void Awake()
     {
         Load();
-        if (instance != null && instance != this)
-        {
-            Destroy(this);
-            return;
-        }
-        instance = this;
     }
 
     public void Save()
@@ -41,26 +33,35 @@ public class DishManager : MonoBehaviour
             // Deserialize the JSON string to a list of Dish objects
             DishWrapper dishWrapper = JsonUtility.FromJson<DishWrapper>(loadData);
             dishes = dishWrapper.dishes;
-            string output = "";
             foreach(DishData dish in dishes)
             {
-                output += dish.dishName + " \n";
+                Debug.Log(dish.dishName + " \n");
+                foreach(Ingredient ingredient in dish.ingredients)
+                {
+                    Debug.Log(ingredient.ingredientName);
+                }
             }
         }
         else
         {
             // If the save file does not exist, create a new list
             dishes = new List<DishData>();
+            Initialise();
         }
     }
 
     public void Initialise()
     {
-        DishData banana = new DishData("Banana", "A curved, yellow fruit with a thick skin and soft sweet flesh.", 0.6, 0, 0, 1, 93, 1.08, 0.15, 0.05, 2, 21.91, 0, 16.91);
-        DishData chickenBriyani = new DishData("Chicken Briyani", "Rice cooked with ghee and spices, served with spicy chicken", 6, 2, 1, 0, 754.6, 33.6, 30, 12.8, 7.2, 88, 136, 1428);
-        DishData chickenRice = new DishData("Chicken Rice", "A dish of poached chicken and seasoned rice, served with chilli sauce and usually with cucumber garnishes.", 4.5, 2, 1, 0, 557.7, 28.05, 13.86, 4.95, 3.3, 80.19, 36.63, 697.95);
-        DishData muttonBriyani = new DishData("Mutton Briyani", "Rice cooked with ghee and spices, served with spicy mutton", 7, 2, 1, 0, 751.95, 35.85, 24.75, 12.12, 8.08, 96.46, 95.95, 1858.4);
-        DishData popiah = new DishData("Popiah", "Radish, eggs, chinese dried sausage and sweet black sauce wrapped in a flour-based skin", 3.5, 1, 1, 1, 187.57, 7.55, 11.19, 3.64, 4.06, 14.27, 44.76, 675.67);
+        Ingredient[] bananaIngredients = new Ingredient[] { new Ingredient("Banana") };
+        DishData banana = new DishData("Banana", "A curved, yellow fruit with a thick skin and soft sweet flesh.", 0.6, 0, 0, 1, 93, 1.08, 0.15, 0.05, 2, 21.91, 0, 16.91, bananaIngredients);
+        Ingredient[] chickenBriyaniIngredients = new Ingredient[] { new Ingredient("Rice"), new Ingredient("Chicken", Ingredient.allergen.NIL, false, false), new Ingredient("Ghee", Ingredient.allergen.Milk)};
+        DishData chickenBriyani = new DishData("Chicken Briyani", "Rice cooked with ghee and spices, served with spicy chicken", 6, 2, 1, 0, 754.6, 33.6, 30, 12.8, 7.2, 88, 136, 1428, chickenBriyaniIngredients);
+        Ingredient[] chickenRiceIngredients = new Ingredient[] { new Ingredient("Rice"), new Ingredient("Chicken",Ingredient.allergen.NIL,false,false), new Ingredient("Cucumber"), new Ingredient("Chilli") };
+        DishData chickenRice = new DishData("Chicken Rice", "A dish of poached chicken and seasoned rice, served with chilli sauce and usually with cucumber garnishes.", 4.5, 2, 1, 0, 557.7, 28.05, 13.86, 4.95, 3.3, 80.19, 36.63, 697.95, chickenRiceIngredients);
+        Ingredient[] muttonBriyaniIngredients = new Ingredient[] { new Ingredient("Rice"), new Ingredient("Mutton", Ingredient.allergen.NIL, false, false), new Ingredient("Ghee", Ingredient.allergen.Milk) };
+        DishData muttonBriyani = new DishData("Mutton Briyani", "Rice cooked with ghee and spices, served with spicy mutton", 7, 2, 1, 0, 751.95, 35.85, 24.75, 12.12, 8.08, 96.46, 95.95, 1858.4, muttonBriyaniIngredients);
+        Ingredient[] popiahIngredients = new Ingredient[] { new Ingredient("Radish"), new Ingredient("Egg",Ingredient.allergen.Eggs), new Ingredient("Chinese Sausage",Ingredient.allergen.NIL,false,false), new Ingredient("Flour") };
+        DishData popiah = new DishData("Popiah", "Radish, eggs, chinese dried sausage and sweet black sauce wrapped in a flour-based skin", 3.5, 1, 1, 1, 187.57, 7.55, 11.19, 3.64, 4.06, 14.27, 44.76, 675.67, popiahIngredients);
         dishes.Add(banana);
         dishes.Add(chickenBriyani);
         dishes.Add(chickenRice);
@@ -69,7 +70,7 @@ public class DishManager : MonoBehaviour
         Save();
     }
 
-    public List<Dish> GetDishes()
+    public static List<Dish> GetDishes()
     {
         Debug.Log("getting dishes");
         Debug.Log(dishes[0].dishName);
@@ -86,9 +87,15 @@ public class DishManager : MonoBehaviour
         return dishList;
     }
 
-    [System.Serializable]
+    [Serializable]
     private class DishWrapper
     {
         public List<DishData> dishes;
+    }
+
+    [Serializable]
+    private class IngredientWrapper
+    {
+        public List<Ingredient> ingredients;
     }
 }

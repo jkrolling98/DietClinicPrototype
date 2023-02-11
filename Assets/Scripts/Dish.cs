@@ -21,8 +21,9 @@ public class Dish : MonoBehaviour
     public double carbohydrate; // in g
     public double cholesterol; //in mg
     public double sodium; //in mg
+    public Ingredient[] ingredients;
 
-    
+
     public void setDishData(DishData data)
     {
         this.dishName = data.dishName;

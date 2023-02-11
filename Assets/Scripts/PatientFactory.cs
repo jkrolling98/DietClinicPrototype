@@ -19,7 +19,7 @@ public class PatientFactory : MonoBehaviour
         }
         instance = this;
         Debug.Log("calling get dishes");
-        allDishes = DishManager.instance.GetDishes();
+        allDishes = DishManager.GetDishes();
         Debug.Log("done");
     }
 

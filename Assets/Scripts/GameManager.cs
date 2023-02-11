@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
         money = 0;
         UpdateMoney();
         NewPatient();
-        allDishes = DishManager.instance.GetDishes();
+        allDishes = DishManager.GetDishes();
         SetDishWindow();
         string headerText = "Welcome to Diet Clinic!";
         string bodyText = "Help our patient find the ideal meal combinations and aim to get as many 3* reviews as possible! \n\nHint: click on the ? icon to view recommended servings!";

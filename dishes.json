@@ -14,7 +14,15 @@
             "dietaryFibre": 2.0,
             "carbohydrate": 21.91,
             "cholesterol": 0.0,
-            "sodium": 16.91
+            "sodium": 16.91,
+            "ingredients": [
+                {
+                    "ingredientName": "Banana",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
         },
         {
             "dishName": "Chicken Briyani",
@@ -30,7 +38,27 @@
             "dietaryFibre": 7.2,
             "carbohydrate": 88.0,
             "cholesterol": 136.0,
-            "sodium": 1428.0
+            "sodium": 1428.0,
+            "ingredients": [
+                {
+                    "ingredientName": "Rice",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Chicken",
+                    "allergenOf": 0,
+                    "isVegan": false,
+                    "isVegetarian": false
+                },
+                {
+                    "ingredientName": "Ghee",
+                    "allergenOf": 1,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
         },
         {
             "dishName": "Chicken Rice",
@@ -46,7 +74,33 @@
             "dietaryFibre": 3.3,
             "carbohydrate": 80.19,
             "cholesterol": 36.63,
-            "sodium": 697.95
+            "sodium": 697.95,
+            "ingredients": [
+                {
+                    "ingredientName": "Rice",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Chicken",
+                    "allergenOf": 0,
+                    "isVegan": false,
+                    "isVegetarian": false
+                },
+                {
+                    "ingredientName": "Cucumber",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Chilli",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
         },
         {
             "dishName": "Mutton Briyani",
@@ -62,7 +116,27 @@
             "dietaryFibre": 8.08,
             "carbohydrate": 96.46,
             "cholesterol": 95.95,
-            "sodium": 1858.4
+            "sodium": 1858.4,
+            "ingredients": [
+                {
+                    "ingredientName": "Rice",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Mutton",
+                    "allergenOf": 0,
+                    "isVegan": false,
+                    "isVegetarian": false
+                },
+                {
+                    "ingredientName": "Ghee",
+                    "allergenOf": 1,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
         },
         {
             "dishName": "Popiah",
@@ -78,7 +152,33 @@
             "dietaryFibre": 4.06,
             "carbohydrate": 14.27,
             "cholesterol": 44.76,
-            "sodium": 675.67
+            "sodium": 675.67,
+            "ingredients": [
+                {
+                    "ingredientName": "Radish",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Egg",
+                    "allergenOf": 2,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Chinese Sausage",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Flour",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
         }
     ]
 }

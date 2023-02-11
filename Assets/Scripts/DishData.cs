@@ -21,6 +21,26 @@ public class DishData
     public double carbohydrate; // in g
     public double cholesterol; //in mg
     public double sodium; //in mg
+    public Ingredient[] ingredients;
+
+    public DishData(string dishName, string description, double cost, int wholeGrainServings, int proteinServings, int veggieServings, double calories, double protein, double totalFats, double saturatedFats, double dietaryFibre, double carbohydrate, double cholesterol, double sodium, Ingredient[] ingredients)
+    {
+        this.dishName = dishName;
+        this.description = description;
+        this.cost = cost;
+        this.wholeGrainServings = wholeGrainServings;
+        this.proteinServings = proteinServings;
+        this.veggieServings = veggieServings;
+        this.calories = calories;
+        this.protein = protein;
+        this.totalFats = totalFats;
+        this.saturatedFats = saturatedFats;
+        this.dietaryFibre = dietaryFibre;
+        this.carbohydrate = carbohydrate;
+        this.cholesterol = cholesterol;
+        this.sodium = sodium;
+        this.ingredients = ingredients;
+    }
 
     public DishData(string dishName, string description, double cost, int wholeGrainServings, int proteinServings, int veggieServings, double calories, double protein, double totalFats, double saturatedFats, double dietaryFibre, double carbohydrate, double cholesterol, double sodium)
     {
