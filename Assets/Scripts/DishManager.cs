@@ -33,14 +33,14 @@ public class DishManager : MonoBehaviour
             // Deserialize the JSON string to a list of Dish objects
             DishWrapper dishWrapper = JsonUtility.FromJson<DishWrapper>(loadData);
             dishes = dishWrapper.dishes;
-            foreach(DishData dish in dishes)
-            {
-                Debug.Log(dish.dishName + " \n");
-                foreach(Ingredient ingredient in dish.ingredients)
-                {
-                    Debug.Log(ingredient.ingredientName);
-                }
-            }
+            //foreach(DishData dish in dishes)
+            //{
+            //    Debug.Log(dish.dishName + " \n");
+            //    foreach(Ingredient ingredient in dish.ingredients)
+            //    {
+            //        Debug.Log(ingredient.ingredientName);
+            //    }
+            //}
         }
         else
         {

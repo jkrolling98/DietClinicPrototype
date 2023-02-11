@@ -32,10 +32,12 @@ public class GameManager : MonoBehaviour
     public int score = 0;
     public double roundCost = 0;
     public double money = 0;
-    public TextMeshProUGUI moneyText;
+    public GameObject moneyText;
     public int level = 1;
     public GameObject levelBar;
     public TextMeshProUGUI levelText;
+    public GameObject popUpText;
+    public GameObject speechBubble;
 
     public float timerDuration = 60f;
     public TextMeshProUGUI timerText;
@@ -44,6 +46,8 @@ public class GameManager : MonoBehaviour
     public static bool isRunning = false;
 
     public Sprite servingReference;
+    public Patient currentPatient;
+    public List<string> selectedDishes;
 
     // Start is called before the first frame update
     void Start()
@@ -98,7 +102,7 @@ public class GameManager : MonoBehaviour
 
     public void UpdateMoney()
     {
-        moneyText.text = money.ToString("0.00");
+        moneyText.GetComponent<TextMeshProUGUI>().text = $"${money.ToString("0.00")}";
     }
 
     public void SetDishWindow()
@@ -129,6 +133,14 @@ public class GameManager : MonoBehaviour
                 UpdateMoney();
                 UpdateDishBtns();
                 Debug.Log($"Called by {currentDish.dishName} to + round cost");
+                AnimatePopUpText(moneyText,$"-${currentDish.cost.ToString("0.00")}", Color.yellow);
+                selectedDishes.Add(currentDish.dishName);
+                string res ="";
+                foreach(string thisDish in selectedDishes)
+                {
+                    res += thisDish+"\n";
+                }
+                Debug.Log(res);
             }
             else
             {
@@ -138,8 +150,29 @@ public class GameManager : MonoBehaviour
                 UpdateMoney();
                 UpdateDishBtns();
                 Debug.Log($"Called by {currentDish.dishName} to - round cost");
+                AnimatePopUpText(moneyText, $"+${currentDish.cost.ToString("0.00")}", Color.yellow);
+                selectedDishes.Remove(currentDish.dishName);
             }
         }
+    }
+
+    public void AnimatePopUpText(GameObject parent, string text, Color color)
+    {
+        GameObject popUp = Instantiate(popUpText, parent.transform.position, Quaternion.identity, parent.transform);
+        popUp.GetComponent<TextMeshProUGUI>().text = text;
+        popUp.GetComponent<TextMeshProUGUI>().color = color;
+        LeanTween.moveY(popUp, popUp.transform.position.y + 30, .2f)
+                 .setEase(LeanTweenType.easeInOutQuad)
+                 .setOnComplete(() =>
+                 {
+                     LeanTween.alpha(popUp, 0, .2f)
+                              .setEase(LeanTweenType.easeInOutQuad)
+                              .setOnComplete(() =>
+                              {
+                                  Destroy(popUp);
+                              });
+                 });
+
     }
 
     public void UpdateDishBtns()
@@ -175,21 +208,47 @@ public class GameManager : MonoBehaviour
         double grainConsumed = (double)wholeGrainsBar.GetComponent<ProgressBar>().current - initialGrainValue;
         double proteinConsumed = (double)proteinBar.GetComponent<ProgressBar>().current - initialProteinValue;
         double fruitConsumed = (double)fruitVeggieBar.GetComponent<ProgressBar>().current - initialFruitValue;
-        double grainsScore = (double)wholeGrainsBar.GetComponent<ProgressBar>().current / (double)wholeGrainsBar.GetComponent<ProgressBar>().maximum;
-        double proteinScore = (double)proteinBar.GetComponent<ProgressBar>().current / (double)proteinBar.GetComponent<ProgressBar>().maximum;
-        double fruitScore = (double)fruitVeggieBar.GetComponent<ProgressBar>().current / (double)fruitVeggieBar.GetComponent<ProgressBar>().maximum;
-        string summary = $"Grain consumed : {grainConsumed.ToString()}\n" +
-            $"Protein consumed : {proteinConsumed.ToString()}\n" +
-            $"Fruit consumed : {fruitConsumed.ToString()}\n\n" +
+        double grainsScore = grainConsumed / ((double)wholeGrainsBar.GetComponent<ProgressBar>().maximum-initialGrainValue);
+        double proteinScore = proteinConsumed / ((double)proteinBar.GetComponent<ProgressBar>().maximum-initialProteinValue);
+        double fruitScore = fruitConsumed / ((double)fruitVeggieBar.GetComponent<ProgressBar>().maximum-initialFruitValue);
+        string summary = $"Grain consumed : {grainConsumed}\n" +
+            $"Protein consumed : {proteinConsumed}\n" +
+            $"Fruit consumed : {fruitConsumed}\n\n" +
             $"Grain score : {grainsScore.ToString("0.00")}\n" +
             $"proteinScore : {proteinScore.ToString("0.00")}\n" +
             $"fruitnVeggies Score : {fruitScore.ToString("0.00")}\n" +
             $"Money spent : ${roundCost.ToString("0.00")}";
         double OverallScore = (grainsScore + proteinScore + fruitScore) / 3;
         Debug.Log(OverallScore);
+        Debug.Log("checking for repeats");
+        foreach(Dish dish in currentPatient.meals)
+        {
+            Debug.Log(dish.dishName);
+            if (selectedDishes.Contains(dish.dishName))
+            {
+                Debug.Log($"Penalty! {dish.dishName} is repeated.");
+                // add penalty
+            }
+        }
         int starCount = (int)(OverallScore / 0.33);
         PlayStarsAnim(starCount);
         UpdateLevel(starCount);
+        switch (starCount)
+        {
+            case 0:
+                UpdateSpeechBubble("That was the worst!");
+                break;
+            case 1:
+                UpdateSpeechBubble("Could be better...");
+                break;
+            case 2:
+                UpdateSpeechBubble("Not too shabby!");
+                break;
+            case 3:
+                UpdateSpeechBubble("That was awesome!");
+                break;
+            default: break;
+        }
         summaryText.text = summary; 
         TabManager.instance.ViewSummary();
     }
@@ -246,15 +305,22 @@ public class GameManager : MonoBehaviour
         ResetDishWindow();
         ResetPastMeals();
         ResetStars();
+        selectedDishes.Clear();
         TabManager.instance.ViewHelp();
         //instantiate new patient and update patient info tab
-        Patient patient = PatientFactory.instance.CreateNewStudent();
-        UpdatePatientInfo(patient);
+        currentPatient = PatientFactory.instance.CreateNewStudent();
+        UpdatePatientInfo(currentPatient);
         initialGrainValue = wholeGrainsBar.GetComponent<ProgressBar>().current;
         initialProteinValue = proteinBar.GetComponent<ProgressBar>().current;
         initialFruitValue = fruitVeggieBar.GetComponent<ProgressBar>().current;
         currentTime = timerDuration;
+        UpdateSpeechBubble("Cant wait to eat!");
         isRunning = true;
+    }
+
+    public void UpdateSpeechBubble(string text)
+    {
+        speechBubble.GetComponentInChildren<TextMeshProUGUI>().text = text;
     }
 
     public void UpdatePatientInfo(Patient patient)
@@ -269,6 +335,12 @@ public class GameManager : MonoBehaviour
                 $"Allergies: {patient.allergies}";
         patientInfo.text += $"\n\n" +
             $"Activity Level: {patient.activityLevel}";
+        //update patients past meals
+        UpdatePastMeals(patient);
+    }
+
+    public void UpdatePastMeals(Patient patient)
+    {
         //update patients past meals
         for (int i = 0; i < patient.meals.Length; i++)
         {
