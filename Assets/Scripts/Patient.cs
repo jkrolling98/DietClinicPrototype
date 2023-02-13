@@ -41,7 +41,7 @@ public class Patient : MonoBehaviour
         NIL,
         Milk,
         Eggs,
-        Crustacean,
+        ShellFish,
         Peanuts
     }
 

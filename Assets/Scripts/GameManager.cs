@@ -208,9 +208,9 @@ public class GameManager : MonoBehaviour
         double grainConsumed = (double)wholeGrainsBar.GetComponent<ProgressBar>().current - initialGrainValue;
         double proteinConsumed = (double)proteinBar.GetComponent<ProgressBar>().current - initialProteinValue;
         double fruitConsumed = (double)fruitVeggieBar.GetComponent<ProgressBar>().current - initialFruitValue;
-        double grainsScore = grainConsumed / ((double)wholeGrainsBar.GetComponent<ProgressBar>().maximum-initialGrainValue);
-        double proteinScore = proteinConsumed / ((double)proteinBar.GetComponent<ProgressBar>().maximum-initialProteinValue);
-        double fruitScore = fruitConsumed / ((double)fruitVeggieBar.GetComponent<ProgressBar>().maximum-initialFruitValue);
+        double grainsScore = wholeGrainsBar.GetComponent<ProgressBar>().current>= wholeGrainsBar.GetComponent<ProgressBar>().maximum? 1 : grainConsumed / ((double)wholeGrainsBar.GetComponent<ProgressBar>().maximum-initialGrainValue);
+        double proteinScore = proteinBar.GetComponent<ProgressBar>().current >= proteinBar.GetComponent<ProgressBar>().maximum ? 1 : proteinConsumed / ((double)proteinBar.GetComponent<ProgressBar>().maximum-initialProteinValue);
+        double fruitScore = fruitVeggieBar.GetComponent<ProgressBar>().current >= fruitVeggieBar.GetComponent<ProgressBar>().maximum ? 1 : (fruitConsumed / ((double)fruitVeggieBar.GetComponent<ProgressBar>().maximum-initialFruitValue));
         string summary = $"Grain consumed : {grainConsumed}\n" +
             $"Protein consumed : {proteinConsumed}\n" +
             $"Fruit consumed : {fruitConsumed}\n\n" +
@@ -300,7 +300,8 @@ public class GameManager : MonoBehaviour
     public void NewPatient()
     {
         roundCost = 0;
-        money += 10;
+        AnimatePopUpText(moneyText, $"+$15.00", Color.yellow);
+        money += 15;
         UpdateMoney();
         ResetDishWindow();
         ResetPastMeals();
@@ -314,7 +315,7 @@ public class GameManager : MonoBehaviour
         initialProteinValue = proteinBar.GetComponent<ProgressBar>().current;
         initialFruitValue = fruitVeggieBar.GetComponent<ProgressBar>().current;
         currentTime = timerDuration;
-        UpdateSpeechBubble("Cant wait to eat!");
+        UpdateSpeechBubble("Can't wait to eat!");
         isRunning = true;
     }
 

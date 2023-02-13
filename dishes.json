@@ -169,11 +169,149 @@
                 {
                     "ingredientName": "Chinese Sausage",
                     "allergenOf": 0,
+                    "isVegan": false,
+                    "isVegetarian": false
+                },
+                {
+                    "ingredientName": "Flour",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
+        },
+        {
+            "dishName": "GardenSalad",
+            "description": "Salad with 3 vegetable toppings, no salad dressing.",
+            "cost": 4.0,
+            "wholeGrainServings": 0,
+            "proteinServings": 0,
+            "veggieServings": 2,
+            "calories": 53.19,
+            "protein": 4.05,
+            "totalFats": 1.37,
+            "saturatedFats": 0.25,
+            "dietaryFibre": 4.3,
+            "carbohydrate": 7.59,
+            "cholesterol": 0.0,
+            "sodium": 326.37,
+            "ingredients": [
+                {
+                    "ingredientName": "Lettuce",
+                    "allergenOf": 0,
                     "isVegan": true,
                     "isVegetarian": true
                 },
                 {
-                    "ingredientName": "Flour",
+                    "ingredientName": "Tomatoes",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Spinach",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
+        },
+        {
+            "dishName": "Hokkien Mee",
+            "description": "Fried mixture of yellow noodle and thick rice vermicelli, with added prawn and cuttlefish.",
+            "cost": 5.5,
+            "wholeGrainServings": 2,
+            "proteinServings": 1,
+            "veggieServings": 0,
+            "calories": 521.56,
+            "protein": 18.12,
+            "totalFats": 19.01,
+            "saturatedFats": 7.34,
+            "dietaryFibre": 4.42,
+            "carbohydrate": 69.39,
+            "cholesterol": 132.6,
+            "sodium": 1423.24,
+            "ingredients": [
+                {
+                    "ingredientName": "Yellow Noodle",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Rice Vermicelli",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Prawn",
+                    "allergenOf": 3,
+                    "isVegan": false,
+                    "isVegetarian": false
+                },
+                {
+                    "ingredientName": "Cuttle Fish",
+                    "allergenOf": 3,
+                    "isVegan": false,
+                    "isVegetarian": false
+                }
+            ]
+        },
+        {
+            "dishName": "Seaweed Chicken",
+            "description": "Sliced chicken coated with seasoned flourand wrapped with seaweed, deep fried. Comes in 5.",
+            "cost": 2.0,
+            "wholeGrainServings": 0,
+            "proteinServings": 2,
+            "veggieServings": 0,
+            "calories": 214.2,
+            "protein": 15.95,
+            "totalFats": 12.15,
+            "saturatedFats": 3.85,
+            "dietaryFibre": 2.05,
+            "carbohydrate": 10.45,
+            "cholesterol": 31.5,
+            "sodium": 652.5,
+            "ingredients": [
+                {
+                    "ingredientName": "Chicken",
+                    "allergenOf": 0,
+                    "isVegan": false,
+                    "isVegetarian": false
+                },
+                {
+                    "ingredientName": "Seaweed",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
+        },
+        {
+            "dishName": "WholeGrain Cereal",
+            "description": "Wholegrain breakfast cereal.",
+            "cost": 2.5,
+            "wholeGrainServings": 2,
+            "proteinServings": 0,
+            "veggieServings": 0,
+            "calories": 95.4,
+            "protein": 2.25,
+            "totalFats": 0.93,
+            "saturatedFats": 0.2,
+            "dietaryFibre": 1.74,
+            "carbohydrate": 19.47,
+            "cholesterol": 0.0,
+            "sodium": 171.0,
+            "ingredients": [
+                {
+                    "ingredientName": "Chicken",
+                    "allergenOf": 0,
+                    "isVegan": false,
+                    "isVegetarian": false
+                },
+                {
+                    "ingredientName": "Seaweed",
                     "allergenOf": 0,
                     "isVegan": true,
                     "isVegetarian": true

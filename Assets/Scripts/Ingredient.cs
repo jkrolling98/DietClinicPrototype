@@ -16,7 +16,7 @@ public class Ingredient
         NIL,
         Milk,
         Eggs,
-        Crustacean,
+        ShellFish,
         Peanuts
     }
 
