@@ -46,7 +46,9 @@ public class GameManager : MonoBehaviour
     public static bool isRunning = false;
 
     public Sprite servingReference;
-    public Patient currentPatient;
+    public Sprite customer_boy;
+    public Sprite customer_girl;
+    private Patient currentPatient;
     public List<string> selectedDishes;
 
     // Start is called before the first frame update
@@ -310,6 +312,7 @@ public class GameManager : MonoBehaviour
         TabManager.instance.ViewHelp();
         //instantiate new patient and update patient info tab
         currentPatient = PatientFactory.instance.CreateNewStudent();
+        patient.GetComponent<Image>().sprite = currentPatient.gender == Patient.Gender.Male ? customer_boy : customer_girl;
         UpdatePatientInfo(currentPatient);
         initialGrainValue = wholeGrainsBar.GetComponent<ProgressBar>().current;
         initialProteinValue = proteinBar.GetComponent<ProgressBar>().current;
