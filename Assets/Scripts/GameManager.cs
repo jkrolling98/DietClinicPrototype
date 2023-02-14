@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
     public Sprite customer_boy;
     public Sprite customer_girl;
     private Patient currentPatient;
-    public List<string> selectedDishes;
+    public List<Dish> selectedDishes;
 
     // Start is called before the first frame update
     void Start()
@@ -136,11 +136,11 @@ public class GameManager : MonoBehaviour
                 UpdateDishBtns();
                 Debug.Log($"Called by {currentDish.dishName} to + round cost");
                 AnimatePopUpText(moneyText,$"-${currentDish.cost.ToString("0.00")}", Color.yellow);
-                selectedDishes.Add(currentDish.dishName);
+                selectedDishes.Add(currentDish);
                 string res ="";
-                foreach(string thisDish in selectedDishes)
+                foreach(Dish thisDish in selectedDishes)
                 {
-                    res += thisDish+"\n";
+                    res += thisDish.dishName+"\n";
                 }
                 Debug.Log(res);
             }
@@ -153,7 +153,7 @@ public class GameManager : MonoBehaviour
                 UpdateDishBtns();
                 Debug.Log($"Called by {currentDish.dishName} to - round cost");
                 AnimatePopUpText(moneyText, $"+${currentDish.cost.ToString("0.00")}", Color.yellow);
-                selectedDishes.Remove(currentDish.dishName);
+                selectedDishes.Remove(currentDish);
             }
         }
     }
@@ -202,36 +202,79 @@ public class GameManager : MonoBehaviour
         fruitVeggieBar.GetComponent<ProgressBar>().current -= dish.veggieServings;
     }
 
-    public void Serve()
+    public void updateSummary()
     {
-        isRunning = false;
-        UpdateMoney();
-        //change to current - initial / max
         double grainConsumed = (double)wholeGrainsBar.GetComponent<ProgressBar>().current - initialGrainValue;
         double proteinConsumed = (double)proteinBar.GetComponent<ProgressBar>().current - initialProteinValue;
         double fruitConsumed = (double)fruitVeggieBar.GetComponent<ProgressBar>().current - initialFruitValue;
-        double grainsScore = wholeGrainsBar.GetComponent<ProgressBar>().current>= wholeGrainsBar.GetComponent<ProgressBar>().maximum? 1 : grainConsumed / ((double)wholeGrainsBar.GetComponent<ProgressBar>().maximum-initialGrainValue);
-        double proteinScore = proteinBar.GetComponent<ProgressBar>().current >= proteinBar.GetComponent<ProgressBar>().maximum ? 1 : proteinConsumed / ((double)proteinBar.GetComponent<ProgressBar>().maximum-initialProteinValue);
-        double fruitScore = fruitVeggieBar.GetComponent<ProgressBar>().current >= fruitVeggieBar.GetComponent<ProgressBar>().maximum ? 1 : (fruitConsumed / ((double)fruitVeggieBar.GetComponent<ProgressBar>().maximum-initialFruitValue));
+        double grainsScore = wholeGrainsBar.GetComponent<ProgressBar>().current >= wholeGrainsBar.GetComponent<ProgressBar>().maximum ? 1 : grainConsumed / ((double)wholeGrainsBar.GetComponent<ProgressBar>().maximum - initialGrainValue);
+        double proteinScore = proteinBar.GetComponent<ProgressBar>().current >= proteinBar.GetComponent<ProgressBar>().maximum ? 1 : proteinConsumed / ((double)proteinBar.GetComponent<ProgressBar>().maximum - initialProteinValue);
+        double fruitScore = fruitVeggieBar.GetComponent<ProgressBar>().current >= fruitVeggieBar.GetComponent<ProgressBar>().maximum ? 1 : (fruitConsumed / ((double)fruitVeggieBar.GetComponent<ProgressBar>().maximum - initialFruitValue));
         string summary = $"Grain consumed : {grainConsumed}\n" +
             $"Protein consumed : {proteinConsumed}\n" +
             $"Fruit consumed : {fruitConsumed}\n\n" +
             $"Grain score : {grainsScore.ToString("0.00")}\n" +
             $"proteinScore : {proteinScore.ToString("0.00")}\n" +
             $"fruitnVeggies Score : {fruitScore.ToString("0.00")}\n" +
-            $"Money spent : ${roundCost.ToString("0.00")}";
+            $"Money spent : ${roundCost.ToString("0.00")}\n\n";
         double OverallScore = (grainsScore + proteinScore + fruitScore) / 3;
         Debug.Log(OverallScore);
         Debug.Log("checking for repeats");
-        foreach(Dish dish in currentPatient.meals)
+        List<string> penaltyList = new List<string>();
+        foreach (Dish dish in selectedDishes)
         {
             Debug.Log(dish.dishName);
-            if (selectedDishes.Contains(dish.dishName))
+            if (dish.dishName == currentPatient.meals[0].dishName || dish.dishName == currentPatient.meals[1].dishName)
             {
                 Debug.Log($"Penalty! {dish.dishName} is repeated.");
+                penaltyList.Add($"{dish.dishName} is repeated.");
                 // add penalty
             }
+            if (currentPatient.allergies != Patient.Allergies.NIL)
+            {
+                List<string> triggerlist = new List<string>();
+                foreach (Ingredient ingredient in dish.ingredients)
+                {
+                    if (ingredient.allergenOf.ToString() == currentPatient.allergies.ToString())
+                    {
+                        triggerlist.Add(ingredient.ingredientName);
+                        //penaltyList.Add($"Patient's {currentPatient.allergies.ToString()} Allergy triggered by {ingredient.ingredientName} present in {dish.dishName}.");
+                    }
+                }
+                if (triggerlist.Count != 0)
+                {
+                    string triggers = "";
+                    for (int i =0; i<triggerlist.Count;i++)
+                    {
+                        if (i > 0)
+                        {
+                            if (i == triggerlist.Count - 1)
+                            {
+                                triggers += $" and {triggerlist[i]}";
+                            }
+                            else
+                            {
+                                triggers += $", {triggerlist[i]}";
+                            }
+                        }
+                        else
+                        {
+                            triggers += triggerlist[i];
+                        }
+                    }
+                    penaltyList.Add($"Patient's {currentPatient.allergies.ToString()} Allergy triggered by {triggers} present in {dish.dishName}.");
+                }
+            }
         }
+        if(penaltyList.Count > 0)
+        {
+            summary += "Penalties\n";
+            foreach (string penaltyText in penaltyList)
+            {
+                summary += penaltyText + "\n";
+            }
+        }
+        
         int starCount = (int)(OverallScore / 0.33);
         PlayStarsAnim(starCount);
         UpdateLevel(starCount);
@@ -251,7 +294,15 @@ public class GameManager : MonoBehaviour
                 break;
             default: break;
         }
-        summaryText.text = summary; 
+        summaryText.text = summary;
+    }
+
+    public void Serve()
+    {
+        isRunning = false;
+        UpdateMoney();
+        //change to current - initial / max
+        updateSummary();
         TabManager.instance.ViewSummary();
     }
 
@@ -312,6 +363,7 @@ public class GameManager : MonoBehaviour
         TabManager.instance.ViewHelp();
         //instantiate new patient and update patient info tab
         currentPatient = PatientFactory.instance.CreateNewStudent();
+        currentPatient.allergies = Patient.Allergies.ShellFish;
         patient.GetComponent<Image>().sprite = currentPatient.gender == Patient.Gender.Male ? customer_boy : customer_girl;
         UpdatePatientInfo(currentPatient);
         initialGrainValue = wholeGrainsBar.GetComponent<ProgressBar>().current;
@@ -364,7 +416,28 @@ public class GameManager : MonoBehaviour
                 $"Cost: ${dish.cost.ToString("0.00")}\n" +
                 $"Grain Serving: {dish.wholeGrainServings}\n" +
                 $"Protein Serving: {dish.proteinServings}\n" +
-                $"Fruits n Veggie Serving: {dish.veggieServings}";
+                $"Fruits n Veggie Serving: {dish.veggieServings}\n\n";
+        tooltiptext += $"Contains: ";
+        if (dish.ingredients.Count() == 1)
+        {
+            tooltiptext += dish.ingredients[0].ingredientName.ToString();
+        }
+        else
+        {
+            foreach (Ingredient ingredient in dish.ingredients)
+            {
+                if (ingredient.ingredientName.Equals(dish.ingredients[dish.ingredients.Count() - 1].ingredientName))
+                {
+                    tooltiptext += ingredient.ingredientName.ToString();
+                }
+                else
+                {
+                    tooltiptext += ingredient.ingredientName.ToString() + ", ";
+                }
+
+            }
+        }
+
         return tooltiptext;
     }
 

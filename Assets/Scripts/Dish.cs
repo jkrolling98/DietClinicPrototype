@@ -41,6 +41,7 @@ public class Dish : MonoBehaviour
         this.carbohydrate = data.carbohydrate;
         this.cholesterol = data.cholesterol;
         this.sodium = data.sodium;
+        this.ingredients = data.ingredients;
     }
 
     public void setDishData(Dish data)
@@ -60,5 +61,6 @@ public class Dish : MonoBehaviour
         this.carbohydrate = data.carbohydrate;
         this.cholesterol = data.cholesterol;
         this.sodium = data.sodium;
+        this.ingredients = data.ingredients;
     }
 }
