@@ -95,7 +95,6 @@ public class DishManager : MonoBehaviour
             dishList.Add(dishclass);
             Debug.Log("adding dish: "+dishclass.dishName);
         }
-
         return dishList;
     }
 
