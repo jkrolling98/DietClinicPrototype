@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     public GameObject star2;
     public GameObject star3;
 
-    private List<Dish> allDishes;
+    public static List<Dish> allDishes;
     private int initialGrainValue;
     private int initialProteinValue;
     private int initialFruitValue;
