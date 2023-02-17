@@ -10,6 +10,12 @@ public class InfoManager : MonoBehaviour
     public GameObject DishInfoContentWindow;
     public GameObject dishTemplate;
     private List<Dish> allDishes;
+    public GameObject ingredientContentWindow;
+    public GameObject ingredientTemplate;
+    public Sprite tick;
+    public Sprite cross;
+    public GameObject detailsWindow;
+    public GameObject ingredientsWindow;
 
     public TextMeshProUGUI dishName;
     public TextMeshProUGUI wholeGrain;
@@ -45,6 +51,7 @@ public class InfoManager : MonoBehaviour
     public void DisplayDish(GameObject gameObject)
     {
         Dish currentDish = gameObject.GetComponent<Dish>();
+        //set info panel
         dishName.text = currentDish.dishName;
         wholeGrain.text = currentDish.wholeGrainServings.ToString();
         protein.text = currentDish.proteinServings.ToString();
@@ -59,6 +66,41 @@ public class InfoManager : MonoBehaviour
                            $"Carbohydrate {currentDish.carbohydrate.ToString()}g\n" +
                            $"Cholesterol {currentDish.cholesterol.ToString()}mg\n" +
                            $"Sodium {currentDish.sodium.ToString()}mg";
+        //set ingredient panel
+        ResetIngredients();
+        foreach (Ingredient ingredient in currentDish.ingredients)
+        {
+            GameObject ingredientRow = Instantiate(ingredientTemplate, ingredientContentWindow.transform);
+            ingredientRow.transform.Find("IngredientName").GetComponent<TextMeshProUGUI>().text = ingredient.ingredientName;
+            ingredientRow.transform.Find("Allergen").GetComponent<TextMeshProUGUI>().text = ingredient.allergenOf.ToString();
+            ingredientRow.transform.Find("Vegan").GetComponent<Image>().sprite = ingredient.isVegan? tick : cross;
+            ingredientRow.transform.Find("Vegetarian").GetComponent<Image>().sprite = ingredient.isVegetarian ? tick : cross;
+            ingredientRow.SetActive(true);
+        }
+    }
+
+    public void DisplayDishDetails()
+    {
+        detailsWindow.SetActive(true);
+        ingredientsWindow.SetActive(false);
+    }
+
+    public void DisplayDishIngredients()
+    {
+        ingredientsWindow.SetActive(true);
+        detailsWindow.SetActive(false);
+    }
+
+    public void ResetIngredients()
+    {
+        if (ingredientContentWindow.transform.childCount > 1)
+        {
+            for (int i = ingredientContentWindow.transform.childCount - 1; i >= 1; i--)
+            {
+                //Debug.Log(pastMealWindow.transform.GetChild(i));
+                GameObject.Destroy(ingredientContentWindow.transform.GetChild(i).gameObject);
+            }
+        }
     }
 
     public void DisplayWindow()
