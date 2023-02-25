@@ -59,9 +59,10 @@ public class GameManager : MonoBehaviour
         NewPatient();
         allDishes = DishManager.GetDishes();
         SetDishWindow();
-        string headerText = "Welcome to Diet Clinic!";
-        string bodyText = "Help our patient find the ideal meal combinations and aim to get as many 3* reviews as possible! \n\nHint: click on the ? icon to view recommended servings!";
-        InstantiatePopUp(headerText,bodyText, servingReference);
+        string headerText = "Welcome to Diet Clinic";
+        string bodyText = "Help our patient find the ideal meal combinations and aim to get as many 3* reviews as possible!";
+        string footerText = "Hint: click on the ? icon to view recommended servings!";
+        InstantiatePopUp(headerText,bodyText, footerText, servingReference);
     }
 
     private void Update()
@@ -87,16 +88,18 @@ public class GameManager : MonoBehaviour
         ResetDishWindow();
     }
 
-    public void InstantiatePopUp(string headerText, string bodyText, Sprite hintImage = null)
+    public void InstantiatePopUp(string headerText, string bodyText, string footerText, Sprite hintImage = null)
     {
         GameObject popUp = Instantiate(popUpWindow, canvas.transform.position, Quaternion.identity, canvas.transform);
-        TextMeshProUGUI header = popUp.transform.Find("Header").Find("HeaderText").GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI body = popUp.transform.Find("BodyText").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI header = popUp.transform.Find("PopUpWindow").Find("Header").Find("HeaderText").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI body = popUp.transform.Find("PopUpWindow").Find("BodyText").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI footer = popUp.transform.Find("PopUpWindow").Find("FooterText").GetComponent<TextMeshProUGUI>();
         header.text = headerText;
         body.text = bodyText;
+        footer.text = footerText;
         if (hintImage != null)
         {
-            Image hint = popUp.transform.Find("HelpWindow").Find("HelpImage").GetComponent<Image>();
+            Image hint = popUp.transform.Find("PopUpWindow").Find("HelpWindow").Find("HelpImage").GetComponent<Image>();
             hint.sprite = hintImage;
         }
         isRunning = false;

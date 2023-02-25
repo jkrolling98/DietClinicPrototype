@@ -31,7 +31,6 @@ public class InfoManager : MonoBehaviour
         //Auto select first child
         GameObject firstItem = DishInfoContentWindow.transform.GetChild(1).gameObject;
         firstItem.GetComponent<Toggle>().isOn = true;
-        //DisplayDish(firstItem);
     }
 
     public void SetDishInfoWindow()
