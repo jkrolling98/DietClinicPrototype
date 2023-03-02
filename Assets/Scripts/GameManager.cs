@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
     public GameObject wholeGrainsBar;
     public GameObject proteinBar;
     public GameObject fruitVeggieBar;
+    public GameObject wholeGrainPortionUI;
+    public GameObject proteinPortionUI;
+    public GameObject veggiePortionUI;
 
     public GameObject star1;
     public GameObject star2;
@@ -30,9 +33,13 @@ public class GameManager : MonoBehaviour
     private int initialFruitValue;
 
     public int score = 0;
+    public int roundWholeGrainServing = 0;
+    private int roundProteinServing = 0;
+    public int roundVeggieServing = 0;
     public double roundCost = 0;
     public double money = 0;
     public GameObject moneyText;
+    public GameObject costText;
     public int level = 1;
     public GameObject levelBar;
     public TextMeshProUGUI levelText;
@@ -101,6 +108,7 @@ public class GameManager : MonoBehaviour
         {
             Image hint = popUp.transform.Find("PopUpWindow").Find("HelpWindow").Find("HelpImage").GetComponent<Image>();
             hint.sprite = hintImage;
+            popUp.transform.Find("PopUpWindow").Find("Header").Find("HintBtn").gameObject.SetActive(true);
         }
         isRunning = false;
     }
@@ -108,6 +116,11 @@ public class GameManager : MonoBehaviour
     public void UpdateMoney()
     {
         moneyText.GetComponent<TextMeshProUGUI>().text = $"${money.ToString("0.00")}";
+    }
+
+    public void UpdateCost()
+    {
+        costText.GetComponent<TextMeshProUGUI>().text = $"${roundCost.ToString("0.00")}";
     }
 
     public void SetDishWindow()
@@ -133,29 +146,31 @@ public class GameManager : MonoBehaviour
             if (dish.GetComponent<Toggle>().isOn)
             {
                 AddProgressBars(currentDish);
-                money -= currentDish.cost;
+                AddServings(currentDish);
+                //money -= currentDish.cost;
                 roundCost += currentDish.cost;
-                UpdateMoney();
-                UpdateDishBtns();
-                Debug.Log($"Called by {currentDish.dishName} to + round cost");
-                AnimatePopUpText(moneyText,$"-${currentDish.cost.ToString("0.00")}", Color.yellow);
+                UpdateCost();
+                //UpdateDishBtns();
+                //Debug.Log($"Called by {currentDish.dishName} to + round cost");
+                AnimatePopUpText(costText,$"+${currentDish.cost.ToString("0.00")}", Color.yellow);
                 selectedDishes.Add(currentDish);
-                string res ="";
-                foreach(Dish thisDish in selectedDishes)
-                {
-                    res += thisDish.dishName+"\n";
-                }
-                Debug.Log(res);
+                //string res ="";
+                //foreach(Dish thisDish in selectedDishes)
+                //{
+                //    res += thisDish.dishName+"\n";
+                //}
+                //Debug.Log(res);
             }
             else
             {
                 MinusProgressBars(currentDish);
-                money += currentDish.cost;
+                RemoveServings(currentDish);
+                //money += currentDish.cost;
                 roundCost -= currentDish.cost;
-                UpdateMoney();
-                UpdateDishBtns();
-                Debug.Log($"Called by {currentDish.dishName} to - round cost");
-                AnimatePopUpText(moneyText, $"+${currentDish.cost.ToString("0.00")}", Color.yellow);
+                UpdateCost();
+                //UpdateDishBtns();
+                //Debug.Log($"Called by {currentDish.dishName} to - round cost");
+                AnimatePopUpText(costText, $"-${currentDish.cost.ToString("0.00")}", Color.yellow);
                 selectedDishes.Remove(currentDish);
             }
         }
@@ -192,17 +207,45 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void UpdatePortionUI()
+    {
+        wholeGrainPortionUI.SetActive(roundWholeGrainServing > 0);
+        wholeGrainPortionUI.GetComponentInChildren<TextMeshProUGUI>().text = roundWholeGrainServing.ToString();
+        proteinPortionUI.SetActive(roundProteinServing > 0);
+        proteinPortionUI.GetComponentInChildren<TextMeshProUGUI>().text = roundProteinServing.ToString();
+        veggiePortionUI.SetActive(roundVeggieServing > 0);
+        veggiePortionUI.GetComponentInChildren<TextMeshProUGUI>().text = roundVeggieServing.ToString();
+    }
+
     public void AddProgressBars(Dish dish)
     {
         wholeGrainsBar.GetComponent<ProgressBar>().current += dish.wholeGrainServings;
         proteinBar.GetComponent<ProgressBar>().current += dish.proteinServings;
         fruitVeggieBar.GetComponent<ProgressBar>().current += dish.veggieServings;
     }
+
+    public void AddServings(Dish dish)
+    {
+        roundWholeGrainServing += dish.wholeGrainServings;
+        roundProteinServing += dish.proteinServings;
+        roundVeggieServing += dish.veggieServings;
+        UpdatePortionUI();
+    }
+
     public void MinusProgressBars(Dish dish)
     {
         wholeGrainsBar.GetComponent<ProgressBar>().current -= dish.wholeGrainServings;
         proteinBar.GetComponent<ProgressBar>().current -= dish.proteinServings;
         fruitVeggieBar.GetComponent<ProgressBar>().current -= dish.veggieServings;
+    }
+
+
+    public void RemoveServings(Dish dish)
+    {
+        roundWholeGrainServing -= dish.wholeGrainServings;
+        roundProteinServing -= dish.proteinServings;
+        roundVeggieServing -= dish.veggieServings;
+        UpdatePortionUI();
     }
 
     public void updateSummary()
@@ -302,11 +345,34 @@ public class GameManager : MonoBehaviour
 
     public void Serve()
     {
-        isRunning = false;
-        UpdateMoney();
-        //change to current - initial / max
-        updateSummary();
-        TabManager.instance.ViewSummary();
+        if(roundCost!=0 && roundCost <= money)
+        {
+            isRunning = false;
+            money -= roundCost;
+            UpdateMoney();
+            //change to current - initial / max
+            updateSummary();
+            TabManager.instance.ViewSummary();
+        }
+        else
+        {
+            if(roundCost>money) InstantiatePopUp("Uh oh", "Insufficient balance", "Hint: try to remove some dishes!");
+            if(roundCost == 0) InstantiatePopUp("Uh oh", "Are you trying to starve our patient?", "Hint: add some dishes for the patient!");
+        }
+    }
+
+    public void ResetRound()
+    {
+        selectedDishes.Clear();
+        roundCost = 0;
+        UpdateCost();
+        roundWholeGrainServing = 0;
+        roundProteinServing = 0;
+        roundVeggieServing = 0;
+        UpdatePortionUI();
+        ResetDishWindow();
+        ResetPastMeals();
+        ResetStars();
     }
 
     void UpdateLevel(int count)
@@ -343,7 +409,7 @@ public class GameManager : MonoBehaviour
             //Debug.Log(dishWindow.transform.GetChild(i));
             dishWindow.transform.GetChild(i).GetComponent<Toggle>().isOn=false;
         }
-        UpdateDishBtns();
+        //UpdateDishBtns();
     }
 
     public void ResetNutrientBar()
@@ -355,14 +421,10 @@ public class GameManager : MonoBehaviour
 
     public void NewPatient()
     {
-        roundCost = 0;
+        ResetRound();
         AnimatePopUpText(moneyText, $"+$15.00", Color.yellow);
         money += 15;
         UpdateMoney();
-        ResetDishWindow();
-        ResetPastMeals();
-        ResetStars();
-        selectedDishes.Clear();
         TabManager.instance.ViewHelp();
         //instantiate new patient and update patient info tab
         currentPatient = PatientFactory.instance.CreateNewStudent();
