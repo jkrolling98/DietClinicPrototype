@@ -17,6 +17,7 @@ public class InfoManager : MonoBehaviour
     public GameObject detailsWindow;
     public GameObject ingredientsWindow;
 
+    public GameObject dishIcon;
     public TextMeshProUGUI dishName;
     public TextMeshProUGUI wholeGrain;
     public TextMeshProUGUI protein;
@@ -51,10 +52,14 @@ public class InfoManager : MonoBehaviour
     {
         Dish currentDish = gameObject.GetComponent<Dish>();
         //set info panel
+        //icon
+        dishIcon.GetComponent<Image>().sprite = currentDish.image;
+        //headers
         dishName.text = currentDish.dishName;
         wholeGrain.text = currentDish.wholeGrainServings.ToString();
         protein.text = currentDish.proteinServings.ToString();
         veggie.text = currentDish.veggieServings.ToString();
+        //body
         dishDescription.text = currentDish.description;
         dishDetails.text = $"Cost ${currentDish.cost.ToString("0.00")}\n" +
                            $"Calories {currentDish.calories.ToString()}kcal\n" +
