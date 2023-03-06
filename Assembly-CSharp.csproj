@@ -122,6 +122,7 @@
     <None Include="Assets\kenney_platformercharacters\License.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\kenney_tooncharacters1\Female adventurer\Tilesheet\character_femaleAdventurer_sheetHD.xml" />
+    <None Include="Assets\free-emojis-pixelart\Readme.txt" />
     <None Include="Assets\kenney_tooncharacters1\Robot\Tilesheet\character_robot_sheet.xml" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />

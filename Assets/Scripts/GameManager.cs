@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public GameObject moneyText;
     public GameObject costText;
     public GameObject calorieText;
+    public GameObject starText;
 
     public GameObject star1;
     public GameObject star2;
@@ -38,7 +39,7 @@ public class GameManager : MonoBehaviour
     private int initialFruitValue;
 
     // round related variables
-    public int score = 0;
+    public int stars = 0;
     public int roundWholeGrainServing = 0;
     private int roundProteinServing = 0;
     public int roundVeggieServing = 0;
@@ -82,7 +83,7 @@ public class GameManager : MonoBehaviour
         {
             currentTime -= Time.deltaTime;
             timerBar.GetComponent<ProgressBar>().current = (int)currentTime/1;
-            timerText.text = currentTime.ToString("F0")+"s";
+            timerText.text = currentTime>60? $"{((int)currentTime/60).ToString("F0")}m {((int)currentTime %60).ToString("F0")}s":currentTime.ToString("F0")+"s";
             if (currentTime <= 0)
             {
                 isRunning = false;
@@ -405,6 +406,8 @@ public class GameManager : MonoBehaviour
             levelBar.GetComponent<ProgressBar>().maximum += (int)(level * 0.5 * 10);
             //levelBar.GetComponent<ProgressBar>().current = remainder;
         }
+        stars+= count;
+        starText.GetComponent<TextMeshProUGUI>().text = stars.ToString();
     }
 
     public void ResetPastMeals()
