@@ -22,6 +22,11 @@ public class GameManager : MonoBehaviour
     public GameObject wholeGrainPortionUI;
     public GameObject proteinPortionUI;
     public GameObject veggiePortionUI;
+    public GameObject popUpText;
+    public GameObject speechBubble;
+    public GameObject moneyText;
+    public GameObject costText;
+    public GameObject calorieText;
 
     public GameObject star1;
     public GameObject star2;
@@ -32,19 +37,20 @@ public class GameManager : MonoBehaviour
     private int initialProteinValue;
     private int initialFruitValue;
 
+    // round related variables
     public int score = 0;
     public int roundWholeGrainServing = 0;
     private int roundProteinServing = 0;
     public int roundVeggieServing = 0;
     public double roundCost = 0;
     public double money = 0;
-    public GameObject moneyText;
-    public GameObject costText;
     public int level = 1;
     public GameObject levelBar;
     public TextMeshProUGUI levelText;
-    public GameObject popUpText;
-    public GameObject speechBubble;
+    public int roundCalorie = 0;
+    
+    private Patient currentPatient;
+    public List<Dish> selectedDishes;
 
     public float timerDuration = 60f;
     public TextMeshProUGUI timerText;
@@ -55,8 +61,6 @@ public class GameManager : MonoBehaviour
     public Sprite servingReference;
     public Sprite customer_boy;
     public Sprite customer_girl;
-    private Patient currentPatient;
-    public List<Dish> selectedDishes;
 
     // Start is called before the first frame update
     void Start()
@@ -123,6 +127,11 @@ public class GameManager : MonoBehaviour
         costText.GetComponent<TextMeshProUGUI>().text = $"${roundCost.ToString("0.00")}";
     }
 
+    public void UpdateCalorie()
+    {
+        calorieText.GetComponent<TextMeshProUGUI>().text = $"{roundCalorie.ToString()} kcal";
+    }
+
     public void SetDishWindow()
     {
         foreach (Dish dish in allDishes)
@@ -146,14 +155,7 @@ public class GameManager : MonoBehaviour
             if (dish.GetComponent<Toggle>().isOn)
             {
                 AddProgressBars(currentDish);
-                AddServings(currentDish);
-                //money -= currentDish.cost;
-                roundCost += currentDish.cost;
-                UpdateCost();
-                //UpdateDishBtns();
-                //Debug.Log($"Called by {currentDish.dishName} to + round cost");
-                AnimatePopUpText(costText,$"+${currentDish.cost.ToString("0.00")}", Color.yellow);
-                selectedDishes.Add(currentDish);
+                AddDish(currentDish);
                 //string res ="";
                 //foreach(Dish thisDish in selectedDishes)
                 //{
@@ -164,14 +166,8 @@ public class GameManager : MonoBehaviour
             else
             {
                 MinusProgressBars(currentDish);
-                RemoveServings(currentDish);
-                //money += currentDish.cost;
-                roundCost -= currentDish.cost;
-                UpdateCost();
-                //UpdateDishBtns();
+                RemoveDish(currentDish);
                 //Debug.Log($"Called by {currentDish.dishName} to - round cost");
-                AnimatePopUpText(costText, $"-${currentDish.cost.ToString("0.00")}", Color.yellow);
-                selectedDishes.Remove(currentDish);
             }
         }
     }
@@ -248,7 +244,30 @@ public class GameManager : MonoBehaviour
         UpdatePortionUI();
     }
 
-    public void updateSummary()
+    public void AddDish(Dish dish)
+    {
+        AddServings(dish);
+        roundCost += dish.cost;
+        UpdateCost();
+        AnimatePopUpText(costText, $"+${dish.cost.ToString("0.00")}", Color.yellow);
+        roundCalorie += (int)dish.calories;
+        UpdateCalorie();
+        AnimatePopUpText(calorieText, $"+{dish.calories.ToString()} kcal", Color.yellow);
+        selectedDishes.Add(dish);
+    }
+    public void RemoveDish(Dish dish)
+    {
+        RemoveServings(dish);
+        roundCost -= dish.cost;
+        UpdateCost();
+        AnimatePopUpText(costText, $"-${dish.cost.ToString("0.00")}", Color.yellow);
+        roundCalorie -= (int)dish.calories;
+        UpdateCalorie();
+        AnimatePopUpText(calorieText, $"-{dish.calories.ToString()} kcal", Color.yellow);
+        selectedDishes.Remove(dish);
+    }
+
+    public void UpdateSummary()
     {
         double grainConsumed = (double)wholeGrainsBar.GetComponent<ProgressBar>().current - initialGrainValue;
         double proteinConsumed = (double)proteinBar.GetComponent<ProgressBar>().current - initialProteinValue;
@@ -269,7 +288,6 @@ public class GameManager : MonoBehaviour
         List<string> penaltyList = new List<string>();
         foreach (Dish dish in selectedDishes)
         {
-            Debug.Log(dish.dishName);
             if (dish.dishName == currentPatient.meals[0].dishName || dish.dishName == currentPatient.meals[1].dishName)
             {
                 Debug.Log($"Penalty! {dish.dishName} is repeated.");
@@ -351,7 +369,7 @@ public class GameManager : MonoBehaviour
             money -= roundCost;
             UpdateMoney();
             //change to current - initial / max
-            updateSummary();
+            UpdateSummary();
             TabManager.instance.ViewSummary();
         }
         else
@@ -428,6 +446,8 @@ public class GameManager : MonoBehaviour
         TabManager.instance.ViewHelp();
         //instantiate new patient and update patient info tab
         currentPatient = PatientFactory.instance.CreateNewStudent();
+        Debug.Log("Required calories :" + currentPatient.calorie);
+        Debug.Log("current calories :" + currentPatient.GetCurrentCalories());
         currentPatient.allergies = Patient.Allergies.ShellFish;
         patient.GetComponent<Image>().sprite = currentPatient.gender == Patient.Gender.Male ? customer_boy : customer_girl;
         UpdatePatientInfo(currentPatient);
@@ -515,7 +535,6 @@ public class GameManager : MonoBehaviour
 
     void ResetStars()
     {
-        Debug.Log("Resetting stars");
         Vector3 scaleAmount = new Vector3(0f, 0f, 0f);
         LeanTween.scale(star1, scaleAmount, 2f);
         LeanTween.scale(star2, scaleAmount, 2f);

@@ -18,9 +18,7 @@ public class PatientFactory : MonoBehaviour
             return;
         }
         instance = this;
-        Debug.Log("calling get dishes");
         allDishes = DishManager.GetDishes();
-        Debug.Log("done");
     }
 
     private static string[] maleNames = { "John", "Ken", "Mike", "Peter", "Bob", "Sam" };

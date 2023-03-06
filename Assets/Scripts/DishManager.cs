@@ -84,16 +84,14 @@ public class DishManager : MonoBehaviour
 
     public static List<Dish> GetDishes()
     {
-        Debug.Log("getting dishes");
-        Debug.Log(dishes[0].dishName);
+        //Debug.Log("getting dishes");
         List<Dish> dishList = new List<Dish>();
         foreach(DishData dish in dishes)
         {
-            Debug.Log("here");
             Dish dishclass = new Dish(); 
             dishclass.setDishData(dish);
             dishList.Add(dishclass);
-            Debug.Log("adding dish: "+dishclass.dishName);
+            //Debug.Log("adding dish: "+dishclass.dishName);
         }
         return dishList;
     }

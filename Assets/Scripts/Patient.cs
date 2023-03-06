@@ -66,13 +66,24 @@ public class Patient : MonoBehaviour
         this.allergies = allergies;
         this.activityLevel = activityLevel;
         this.meals = meals;
-        if(gender == Gender.Male)
+        int baseCalories = gender == Gender.Male ? (int)(66.5 + (13.75 * weight) + (5.003 * height) - (6.75 * age)) : (int)(655.1 + (9.563 * weight) + (1.850 * height) - (4.676 * age));
+        switch (activityLevel)
         {
-            this.calorie = (int)(66.5 + (13.75 * weight) + (5.003 * height) - (6.75 * age));
-        }
-        else
-        {
-            this.calorie = (int)(655.1 + (9.563 * weight) + (1.850 * height) - (4.676 * age));
+            case ActivityLevel.Sedentary:
+                this.calorie = (int)(baseCalories*1.2);
+                break;
+            case ActivityLevel.Light:
+                this.calorie = (int)(baseCalories * 1.375);
+                break;
+            case ActivityLevel.Moderate:
+                this.calorie = (int)(baseCalories * 1.55);
+                break;
+            case ActivityLevel.Very:
+                this.calorie = (int)(baseCalories * 1.725);
+                break;
+            default:
+                this.calorie = baseCalories;
+                break;
         }
     }
 
@@ -88,5 +99,16 @@ public class Patient : MonoBehaviour
         this.allergies = allergies;
         this.meals = meals;
         this.activityLevel = ActivityLevel.NIL;
+        this.calorie = gender == Gender.Male ? (int)(66.5 + (13.75 * weight) + (5.003 * height) - (6.75 * age)) : (int)(655.1 + (9.563 * weight) + (1.850 * height) - (4.676 * age));
+    }
+
+    public int GetCurrentCalories()
+    {
+        double currentCalories = 0;
+        foreach(Dish meal in meals)
+        {
+            currentCalories += meal.calories;
+        }
+        return (int)currentCalories;
     }
 }
