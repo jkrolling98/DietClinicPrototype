@@ -171,7 +171,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(StartDay());
     }
 
-    public IEnumerator InstantiatePopUp(string headerText, string bodyText, string footerText = null, Sprite hintImage = null)
+    public IEnumerator InstantiatePopUp(string headerText, string bodyText, string footerText = null, Sprite contentImage = null, Sprite hintImage = null)
     {
         isRunning = false;
         Debug.Log("1");
@@ -183,6 +183,12 @@ public class GameManager : MonoBehaviour
         body.text = bodyText;
         footer.text = footerText;
         popUp.transform.Find("PopUpWindow").Find("Footer").gameObject.SetActive(!string.IsNullOrEmpty(footerText));
+        if (contentImage != null)
+        {
+            Image bodyImage = popUp.transform.Find("PopUpWindow").Find("Body").Find("BodyImage").GetComponent<Image>();
+            bodyImage.sprite = contentImage;
+            popUp.transform.Find("PopUpWindow").Find("Body").Find("BodyImage").gameObject.SetActive(true);
+        }
         if (hintImage != null)
         {
             Image hint = popUp.transform.Find("PopUpWindow").Find("HelpWindow").Find("HelpImage").GetComponent<Image>();
