@@ -11,11 +11,18 @@ public class PopUpManager : MonoBehaviour
     public TextMeshProUGUI headerText;
     public TextMeshProUGUI bodyText;
 
+    public IEnumerator WaitForClose()
+    {
+        yield return new WaitUntil(() => !popUpWindow.activeSelf);
+
+        Destroy(popUpWindow);
+    }
+
     public void OnClose()
     {
-        Destroy(popUpWindow);
-        GameManager.isRunning = true;
+        popUpWindow.SetActive(false);
     }
+
 
     public void toggleHelp()
     {

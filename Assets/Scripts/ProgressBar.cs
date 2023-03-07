@@ -12,6 +12,7 @@ public class ProgressBar : MonoBehaviour
     public int current;
     public Image mask;
     public TextMeshProUGUI statusText;
+    public bool isTimer = false;
 
 
     // Start is called before the first frame update
@@ -32,6 +33,6 @@ public class ProgressBar : MonoBehaviour
         float maximumOffset = maximum - minimum;
         float fillAmount = currentOffset / maximumOffset;
         mask.fillAmount = fillAmount;
-        statusText.text = current + "/" + maximum;
+        statusText.text = isTimer? (current > 60 ? $"{((int)current / 60).ToString("F0")}m {((int)current % 60).ToString("F0")}s" : current.ToString("F0") + "s") : current + "/" + maximum;
     }
 }

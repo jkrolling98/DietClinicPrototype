@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public GameObject pastMealWindow;
     public GameObject pastMealTemplate;
     public TextMeshProUGUI summaryText;
+    public TextMeshProUGUI daySummaryText;
     public GameObject dishWindow;
     public GameObject dishTemplate;
     public GameObject wholeGrainsBar;
@@ -28,6 +29,9 @@ public class GameManager : MonoBehaviour
     public GameObject costText;
     public GameObject calorieText;
     public GameObject starText;
+    public GameObject dayCounter;
+    public GameObject customerCounter;
+    public GameObject customerIcon;
 
     public GameObject star1;
     public GameObject star2;
@@ -49,11 +53,16 @@ public class GameManager : MonoBehaviour
     public GameObject levelBar;
     public TextMeshProUGUI levelText;
     public int roundCalorie = 0;
-    
+    public int day = 0;
+    public int customerCount;
+
+    public int totalStars = 0;
+    public int totalCustomerCount = 0;
+
     private Patient currentPatient;
     public List<Dish> selectedDishes;
 
-    public float timerDuration = 60f;
+    public float timerDuration = 120f;
     public TextMeshProUGUI timerText;
     public GameObject timerBar;
     private float currentTime;
@@ -63,18 +72,25 @@ public class GameManager : MonoBehaviour
     public Sprite customer_boy;
     public Sprite customer_girl;
 
-    // Start is called before the first frame update
+    //public static GameManager instance;
+
+    //private void Awake()
+    //{
+    //    if (instance != null && instance != this)
+    //    {
+    //        Destroy(this);
+    //        return;
+    //    }
+    //    instance = this;
+    //}
+
     void Start()
     {
         money = 0;
         UpdateMoney();
-        NewPatient();
         allDishes = DishManager.GetDishes();
         SetDishWindow();
-        string headerText = "Welcome to Diet Clinic";
-        string bodyText = "Help our patient find the ideal meal combinations and aim to get as many 3* reviews as possible!";
-        string footerText = "Hint: click on the ? icon to view recommended servings!";
-        InstantiatePopUp(headerText,bodyText, footerText, servingReference);
+        StartCoroutine(StartDay());
     }
 
     private void Update()
@@ -83,11 +99,16 @@ public class GameManager : MonoBehaviour
         {
             currentTime -= Time.deltaTime;
             timerBar.GetComponent<ProgressBar>().current = (int)currentTime/1;
-            timerText.text = currentTime>60? $"{((int)currentTime/60).ToString("F0")}m {((int)currentTime %60).ToString("F0")}s":currentTime.ToString("F0")+"s";
             if (currentTime <= 0)
             {
                 isRunning = false;
                 OnTimerFinished();
+            }
+
+            if(customerCount == 0)
+            {
+                isRunning=false;
+                OnDayComplete();
             }
         }
     }
@@ -100,22 +121,78 @@ public class GameManager : MonoBehaviour
         ResetDishWindow();
     }
 
-    public void InstantiatePopUp(string headerText, string bodyText, string footerText, Sprite hintImage = null)
+    public void OnDayComplete()
     {
+        Debug.Log("Well done! Day complete!");
+        daySummaryText.text = $"Well done! Day {day} complete!\n" +
+            $"You have gathered a total of {stars} stars!";
+        TabManager.instance.ViewDaySummary();
+        ResetDishWindow();
+    }
+
+    public IEnumerator StartDay()
+    {
+        if (day == 0)
+        {
+            string headerText = "Welcome to Diet Clinic";
+            string bodyText = "Help our patient find the ideal meal combinations and aim to get as many 3* reviews as possible!";
+            string footerText = "Hint: click on the ? icon to view recommended servings!";
+            yield return StartCoroutine(InstantiatePopUp(headerText, bodyText, footerText, servingReference));
+        }
+        day++;
+        dayCounter.transform.GetComponentInChildren<TextMeshProUGUI>().text = "Day " + day.ToString(); 
+        dayCounter.SetActive(true);
+        customerCount = 5;
+        UpdateCustomerCounter();
+        currentTime = timerDuration;
+        NewPatient();
+        yield return StartCoroutine(InstantiatePopUp($"Day {day} Start", "Serve 5 customers within 2 mins!"));
+    }
+
+    public void UpdateCustomerCounter()
+    {
+        for (int i = customerCounter.transform.childCount - 1; i >= 1; i--)
+        {
+            Destroy(customerCounter.transform.GetChild(i).gameObject);
+        }
+        for (int i = 0; i < customerCount; i++)
+        {
+            GameObject customer = Instantiate(customerIcon, customerCounter.transform);
+            customer.SetActive(true);
+        }
+    }
+
+    public void EndDay()
+    {
+        totalStars += stars;
+        totalCustomerCount += customerCount;
+        stars = 0;
+        customerCount = 0;
+        StartCoroutine(StartDay());
+    }
+
+    public IEnumerator InstantiatePopUp(string headerText, string bodyText, string footerText = null, Sprite hintImage = null)
+    {
+        isRunning = false;
+        Debug.Log("1");
         GameObject popUp = Instantiate(popUpWindow, canvas.transform.position, Quaternion.identity, canvas.transform);
         TextMeshProUGUI header = popUp.transform.Find("PopUpWindow").Find("Header").Find("HeaderText").GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI body = popUp.transform.Find("PopUpWindow").Find("BodyText").GetComponent<TextMeshProUGUI>();
-        TextMeshProUGUI footer = popUp.transform.Find("PopUpWindow").Find("FooterText").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI body = popUp.transform.Find("PopUpWindow").Find("Body").Find("BodyText").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI footer = popUp.transform.Find("PopUpWindow").Find("Footer").Find("FooterText").GetComponent<TextMeshProUGUI>();
         header.text = headerText;
         body.text = bodyText;
         footer.text = footerText;
+        popUp.transform.Find("PopUpWindow").Find("Footer").gameObject.SetActive(!string.IsNullOrEmpty(footerText));
         if (hintImage != null)
         {
             Image hint = popUp.transform.Find("PopUpWindow").Find("HelpWindow").Find("HelpImage").GetComponent<Image>();
             hint.sprite = hintImage;
             popUp.transform.Find("PopUpWindow").Find("Header").Find("HintBtn").gameObject.SetActive(true);
         }
-        isRunning = false;
+        Debug.Log("2");
+        yield return StartCoroutine(popUp.GetComponent<PopUpManager>().WaitForClose());
+        Debug.Log("3");
+        isRunning = true;
     }
 
     public void UpdateMoney()
@@ -372,11 +449,15 @@ public class GameManager : MonoBehaviour
             //change to current - initial / max
             UpdateSummary();
             TabManager.instance.ViewSummary();
+            //update customer counter
+            GameObject customerIcon = customerCounter.transform.GetChild(customerCount).gameObject;
+            customerIcon.GetComponent<Image>().color = Color.red;
+            customerCount--;
         }
         else
         {
-            if(roundCost>money) InstantiatePopUp("Uh oh", "Insufficient balance", "Hint: try to remove some dishes!");
-            if(roundCost == 0) InstantiatePopUp("Uh oh", "Are you trying to starve our patient?", "Hint: add some dishes for the patient!");
+            if(roundCost>money) StartCoroutine(InstantiatePopUp("Uh oh", "Insufficient balance", "Hint: try to remove some dishes!"));
+            if(roundCost == 0) StartCoroutine(InstantiatePopUp("Uh oh", "Are you trying to starve our patient?", "Hint: add some dishes for the patient!"));
         }
     }
 
@@ -457,7 +538,7 @@ public class GameManager : MonoBehaviour
         initialGrainValue = wholeGrainsBar.GetComponent<ProgressBar>().current;
         initialProteinValue = proteinBar.GetComponent<ProgressBar>().current;
         initialFruitValue = fruitVeggieBar.GetComponent<ProgressBar>().current;
-        currentTime = timerDuration;
+        //currentTime = timerDuration;
         UpdateSpeechBubble("Can't wait to eat!");
         isRunning = true;
     }
