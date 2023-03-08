@@ -26,13 +26,15 @@ public class GameManager : MonoBehaviour
     public GameObject popUpText;
     public GameObject speechBubble;
     public GameObject emotes;
-    public GameObject moneyText;
+    public GameObject moneyCounter;
     public GameObject costText;
     public GameObject calorieText;
+    public GameObject caloriesBar;
     public GameObject starText;
     public GameObject dayCounter;
     public GameObject customerCounter;
     public GameObject customerIcon;
+    public GameObject paymentUI;
 
     public GameObject star1;
     public GameObject star2;
@@ -57,6 +59,7 @@ public class GameManager : MonoBehaviour
     public int day = 0;
     public int customerCount;
     public int roundGoal;
+    public double payment = 0;
 
     public int totalStars = 0;
     public int totalCustomerCount = 0;
@@ -124,6 +127,7 @@ public class GameManager : MonoBehaviour
     public IEnumerator OnDayComplete()
     {
         ResetDishWindow();
+        //check if in loss
         if (stars >= roundGoal)
         {
             daySummaryText.text = $"Well done! Day {day} complete!\n" +
@@ -215,7 +219,8 @@ public class GameManager : MonoBehaviour
 
     public void UpdateMoney()
     {
-        moneyText.GetComponent<TextMeshProUGUI>().text = $"${money.ToString("0.00")}";
+        moneyCounter.GetComponent<Image>().sprite = money < 0 ? lossSprite : profitSprite;
+        moneyCounter.GetComponentInChildren<TextMeshProUGUI>().text = $"${money.ToString("0.00")}";
     }
 
     public void UpdateCost()
@@ -226,6 +231,7 @@ public class GameManager : MonoBehaviour
     public void UpdateCalorie()
     {
         calorieText.GetComponent<TextMeshProUGUI>().text = $"{roundCalorie.ToString()} kcal";
+        caloriesBar.GetComponent<ProgressBar>().current = roundCalorie;
     }
 
     public void UpdateStars()
@@ -238,6 +244,30 @@ public class GameManager : MonoBehaviour
         dayCounter.transform.GetComponentInChildren<TextMeshProUGUI>().text = "Day " + day.ToString();
         dayCounter.SetActive(true);
     }
+
+    public void UpdatePayment()
+    {
+        paymentUI.SetActive(payment > 0);
+        if(payment > 0)
+        {
+            paymentUI.GetComponent<HoverTip>().tipToShow = $"Click to collect payment! \n\nTotal payment amount: {payment}";
+            //adding vibration effects
+            LeanTween.scale(paymentUI, Vector3.one * 1.05f, 0.5f)
+            .setEase(LeanTweenType.easeInOutSine)
+            .setLoopCount(2)
+            .setLoopPingPong();
+        }
+    }
+
+    public void CollectPayment()
+    {
+        money += payment;
+        UpdateMoney();
+        AnimatePopUpText(moneyCounter.transform.Find("MoneyText").gameObject, $"+${payment.ToString("0.00")}", Color.yellow);
+        payment = 0;
+        UpdatePayment();
+    }
+
     public void SetDishWindow()
     {
         foreach (Dish dish in allDishes)
@@ -375,22 +405,53 @@ public class GameManager : MonoBehaviour
 
     public void UpdateSummary()
     {
-        double grainConsumed = (double)wholeGrainsBar.GetComponent<ProgressBar>().current - initialGrainValue;
-        double proteinConsumed = (double)proteinBar.GetComponent<ProgressBar>().current - initialProteinValue;
-        double fruitConsumed = (double)fruitVeggieBar.GetComponent<ProgressBar>().current - initialFruitValue;
-        double grainsScore = wholeGrainsBar.GetComponent<ProgressBar>().current >= wholeGrainsBar.GetComponent<ProgressBar>().maximum ? 1 : grainConsumed / ((double)wholeGrainsBar.GetComponent<ProgressBar>().maximum - initialGrainValue);
-        double proteinScore = proteinBar.GetComponent<ProgressBar>().current >= proteinBar.GetComponent<ProgressBar>().maximum ? 1 : proteinConsumed / ((double)proteinBar.GetComponent<ProgressBar>().maximum - initialProteinValue);
-        double fruitScore = fruitVeggieBar.GetComponent<ProgressBar>().current >= fruitVeggieBar.GetComponent<ProgressBar>().maximum ? 1 : (fruitConsumed / ((double)fruitVeggieBar.GetComponent<ProgressBar>().maximum - initialFruitValue));
-        string summary = $"Grain consumed : {grainConsumed}\n" +
-            $"Protein consumed : {proteinConsumed}\n" +
-            $"Fruit consumed : {fruitConsumed}\n\n" +
-            $"Grain score : {grainsScore.ToString("0.00")}\n" +
-            $"proteinScore : {proteinScore.ToString("0.00")}\n" +
-            $"fruitnVeggies Score : {fruitScore.ToString("0.00")}\n" +
+        double portionScore=0; //out of 5
+        double calorieScore=0; //out of 5
+        if(roundVeggieServing == 2*roundWholeGrainServing && roundVeggieServing == 2 * roundProteinServing)
+        {
+            portionScore = 5;
+        }
+        else if(roundVeggieServing >= roundWholeGrainServing && roundVeggieServing >= roundProteinServing)
+        {
+            portionScore +=3;
+        }
+        if(roundVeggieServing == 0 || roundProteinServing ==0 | roundWholeGrainServing == 0)
+        {
+            portionScore -= 1;
+        }
+
+        if(roundCalorie <= currentPatient.calorie + 100 || roundCalorie >= currentPatient.calorie - 100)
+        {
+            calorieScore = 5;
+        }
+        else if (roundCalorie <= currentPatient.calorie + 150 || roundCalorie >= currentPatient.calorie - 150)
+        {
+            calorieScore = 4;
+        }
+        else if (roundCalorie <= currentPatient.calorie + 200 || roundCalorie >= currentPatient.calorie - 200)
+        {
+            calorieScore = 3;
+        }
+        else if (roundCalorie <= currentPatient.calorie + 250 || roundCalorie >= currentPatient.calorie - 250)
+        {
+            calorieScore = 2;
+        }
+        else if (roundCalorie <= currentPatient.calorie + 300 || roundCalorie >= currentPatient.calorie - 300)
+        {
+            calorieScore = 1;
+        }
+        else calorieScore = 0;
+        string summary = $"Grain consumed : {roundWholeGrainServing}\n" +
+            $"Protein consumed : {roundProteinServing}\n" +
+            $"Fruit consumed : {roundVeggieServing}\n\n" +
+            $"Portion score : {portionScore}\n\n" +
+            $"Calories score : {calorieScore}\n\n" +
             $"Money spent : ${roundCost.ToString("0.00")}\n\n";
-        double OverallScore = (grainsScore + proteinScore + fruitScore) / 3;
+        double OverallScore = portionScore + calorieScore;
         Debug.Log(OverallScore);
         Debug.Log("checking for repeats");
+        int repeatCounts = 0;
+        bool allergyTriggered = false;
         List<string> penaltyList = new List<string>();
         foreach (Dish dish in selectedDishes)
         {
@@ -398,6 +459,7 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log($"Penalty! {dish.dishName} is repeated.");
                 penaltyList.Add($"{dish.dishName} is repeated.");
+                repeatCounts++;
                 // add penalty
             }
             if (currentPatient.allergies != Patient.Allergies.NIL)
@@ -408,6 +470,7 @@ public class GameManager : MonoBehaviour
                     if (ingredient.allergenOf.ToString() == currentPatient.allergies.ToString())
                     {
                         triggerlist.Add(ingredient.ingredientName);
+                        allergyTriggered = true;
                         //penaltyList.Add($"Patient's {currentPatient.allergies.ToString()} Allergy triggered by {ingredient.ingredientName} present in {dish.dishName}.");
                     }
                 }
@@ -444,8 +507,35 @@ public class GameManager : MonoBehaviour
                 summary += penaltyText + "\n";
             }
         }
-        
-        int starCount = (int)(OverallScore / 0.33);
+        // for each repeat, - 2 from overall score
+        OverallScore -= repeatCounts * 2;
+        if (allergyTriggered) OverallScore = 0;
+        int starCount = 0;
+        if (OverallScore >= 9)
+        {
+            starCount = 3;
+            summary += $"For the awesome service, {currentPatient.patientName} has left a generous tip.";
+            payment += roundCost * 1.5;
+            UpdatePayment();
+        }
+        else if (OverallScore >= 6)
+        {
+            starCount = 2;
+            summary += $"For the good service, {currentPatient.patientName} has left a tip.";
+            payment += roundCost * 1.2;
+            UpdatePayment();
+        }
+        else if (OverallScore >= 3)
+        {
+            starCount = 1;
+            summary += $"For the poor service, {currentPatient.patientName} felt like he is being overcharged.";
+            payment += roundCost * 0.8;
+            UpdatePayment();
+        }
+        else
+        {
+            summary += $"For the poor service, {currentPatient.patientName} has left without paying.";
+        }
         PlayStarsAnim(starCount);
         UpdateLevel(starCount);
         switch (starCount)
@@ -477,7 +567,7 @@ public class GameManager : MonoBehaviour
 
     public void Serve()
     {
-        if(roundCost!=0 && roundCost <= money)
+        if(roundCost!=0)
         {
             isRunning = false;
             money -= roundCost;
@@ -492,8 +582,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if(roundCost>money) StartCoroutine(InstantiatePopUp("Uh oh", "Insufficient balance", "Hint: try to remove some dishes!"));
-            if(roundCost == 0) StartCoroutine(InstantiatePopUp("Uh oh", "Are you trying to starve our patient?", "Hint: add some dishes for the patient!"));
+            //if(roundCost>money) StartCoroutine(InstantiatePopUp("Uh oh", "Insufficient balance", "Hint: try to remove some dishes!"));
+            if(selectedDishes.Count==0) StartCoroutine(InstantiatePopUp("Uh oh", "Are you trying to starve our patient?", "Hint: add some dishes for the patient!"));
         }
     }
 
@@ -562,14 +652,17 @@ public class GameManager : MonoBehaviour
     public void NewPatient()
     {
         ResetRound();
-        AnimatePopUpText(moneyText, $"+$15.00", Color.yellow);
-        money += 15;
+        //AnimatePopUpText(moneyCounter.transform.Find("MoneyText").gameObject, $"+$15.00", Color.yellow);
+        //money += 15;
         UpdateMoney();
         TabManager.instance.ViewHelp();
         //instantiate new patient and update patient info tab
         currentPatient = PatientFactory.instance.CreateNewStudent();
         Debug.Log("Required calories :" + currentPatient.calorie);
+        caloriesBar.GetComponent<ProgressBar>().maximum = currentPatient.calorie;
         Debug.Log("current calories :" + currentPatient.GetCurrentCalories());
+        roundCalorie = currentPatient.GetCurrentCalories();
+        caloriesBar.GetComponent<ProgressBar>().current = roundCalorie;
         currentPatient.allergies = Patient.Allergies.ShellFish;
         SetPatientSprite();
         UpdatePatientInfo(currentPatient);
@@ -693,6 +786,7 @@ public class GameManager : MonoBehaviour
         if (count >= 2) LeanTween.scale(star2, new Vector3(1f, 1f, 1f), 2f).setDelay(.2f).setEase(LeanTweenType.easeOutElastic);
         if (count >= 3) LeanTween.scale(star3, new Vector3(1f, 1f, 1f), 2f).setDelay(.3f).setEase(LeanTweenType.easeOutElastic);
     }
+   
 
     void ResetStars()
     {
