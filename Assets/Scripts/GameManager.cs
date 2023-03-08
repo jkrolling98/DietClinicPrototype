@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public GameObject veggiePortionUI;
     public GameObject popUpText;
     public GameObject speechBubble;
+    public GameObject emotes;
     public GameObject moneyText;
     public GameObject costText;
     public GameObject calorieText;
@@ -55,6 +56,7 @@ public class GameManager : MonoBehaviour
     public int roundCalorie = 0;
     public int day = 0;
     public int customerCount;
+    public int roundGoal;
 
     public int totalStars = 0;
     public int totalCustomerCount = 0;
@@ -69,8 +71,8 @@ public class GameManager : MonoBehaviour
     public static bool isRunning = false;
 
     public Sprite servingReference;
-    public Sprite customer_boy;
-    public Sprite customer_girl;
+    public Sprite profitSprite;
+    public Sprite lossSprite;
 
     //public static GameManager instance;
 
@@ -108,7 +110,7 @@ public class GameManager : MonoBehaviour
             if(customerCount == 0)
             {
                 isRunning=false;
-                OnDayComplete();
+                StartCoroutine(OnDayComplete());
             }
         }
     }
@@ -116,18 +118,27 @@ public class GameManager : MonoBehaviour
     public void OnTimerFinished()
     {
         Debug.Log("times up! gameover...");
-        summaryText.text = "Times up! Gameover!";
-        TabManager.instance.ViewSummary();
-        ResetDishWindow();
+        StartCoroutine(OnDayComplete());
     }
 
-    public void OnDayComplete()
+    public IEnumerator OnDayComplete()
     {
-        Debug.Log("Well done! Day complete!");
-        daySummaryText.text = $"Well done! Day {day} complete!\n" +
-            $"You have gathered a total of {stars} stars!";
-        TabManager.instance.ViewDaySummary();
         ResetDishWindow();
+        if (stars >= roundGoal)
+        {
+            daySummaryText.text = $"Well done! Day {day} complete!\n" +
+            $"You have gathered a total of {stars} stars!";
+            TabManager.instance.ViewDaySummary();
+        }
+        else
+        {
+            yield return StartCoroutine(InstantiatePopUp("Game Over", $"Customers were not impressed...\nYou were {roundGoal - stars} stars short of meeting the requirement."));
+            stars = 0;
+            UpdateStars();
+            day = 0;
+
+            StartCoroutine(StartDay());
+        }
     }
 
     public IEnumerator StartDay()
@@ -136,17 +147,17 @@ public class GameManager : MonoBehaviour
         {
             string headerText = "Welcome to Diet Clinic";
             string bodyText = "Help our patient find the ideal meal combinations and aim to get as many 3* reviews as possible!";
-            string footerText = "Hint: click on the ? icon to view recommended servings!";
+            string footerText = "Hint: Follow the quarter quarter half meal plan!";
             yield return StartCoroutine(InstantiatePopUp(headerText, bodyText, footerText, servingReference));
         }
         day++;
-        dayCounter.transform.GetComponentInChildren<TextMeshProUGUI>().text = "Day " + day.ToString(); 
-        dayCounter.SetActive(true);
+        UpdateDay();
         customerCount = 5;
+        roundGoal = 10;
         UpdateCustomerCounter();
         currentTime = timerDuration;
         NewPatient();
-        yield return StartCoroutine(InstantiatePopUp($"Day {day} Start", "Serve 5 customers within 2 mins!"));
+        yield return StartCoroutine(InstantiatePopUp($"Day {day} Start", $"Serve {customerCount} customers and achieve {roundGoal} stars within 2 mins to progress!"));
     }
 
     public void UpdateCustomerCounter()
@@ -162,11 +173,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void EndDay()
+    public void NextDay()
     {
         totalStars += stars;
         totalCustomerCount += customerCount;
         stars = 0;
+        UpdateStars();
         customerCount = 0;
         StartCoroutine(StartDay());
     }
@@ -216,6 +228,16 @@ public class GameManager : MonoBehaviour
         calorieText.GetComponent<TextMeshProUGUI>().text = $"{roundCalorie.ToString()} kcal";
     }
 
+    public void UpdateStars()
+    {
+        starText.GetComponent<TextMeshProUGUI>().text = stars.ToString()+"/"+roundGoal.ToString();
+    }
+
+    public void UpdateDay()
+    {
+        dayCounter.transform.GetComponentInChildren<TextMeshProUGUI>().text = "Day " + day.ToString();
+        dayCounter.SetActive(true);
+    }
     public void SetDishWindow()
     {
         foreach (Dish dish in allDishes)
@@ -429,16 +451,24 @@ public class GameManager : MonoBehaviour
         switch (starCount)
         {
             case 0:
-                UpdateSpeechBubble("That was the worst!");
+                //StartCoroutine(UpdateSpeechBubble("That was the worst!"));
+                StartCoroutine(UpdateEmotes("E34"));
+                UpdatePatientSprite("upset");
                 break;
             case 1:
-                UpdateSpeechBubble("Could be better...");
+                //StartCoroutine(UpdateSpeechBubble("Could be better..."));
+                StartCoroutine(UpdateEmotes("E25"));
+                UpdatePatientSprite("neutral");
                 break;
             case 2:
-                UpdateSpeechBubble("Not too shabby!");
+                //StartCoroutine(UpdateSpeechBubble("Not too shabby!"));
+                StartCoroutine(UpdateEmotes("E1"));
+                UpdatePatientSprite("happy");
                 break;
             case 3:
-                UpdateSpeechBubble("That was awesome!");
+                //StartCoroutine(UpdateSpeechBubble("That was awesome!"));
+                StartCoroutine(UpdateEmotes("E11"));
+                UpdatePatientSprite("elated");
                 break;
             default: break;
         }
@@ -457,7 +487,7 @@ public class GameManager : MonoBehaviour
             TabManager.instance.ViewSummary();
             //update customer counter
             GameObject customerIcon = customerCounter.transform.GetChild(customerCount).gameObject;
-            customerIcon.GetComponent<Image>().color = Color.red;
+            customerIcon.GetComponent<Image>().color = Color.black;
             customerCount--;
         }
         else
@@ -472,6 +502,8 @@ public class GameManager : MonoBehaviour
         selectedDishes.Clear();
         roundCost = 0;
         UpdateCost();
+        roundCalorie = 0;
+        UpdateCalorie();
         roundWholeGrainServing = 0;
         roundProteinServing = 0;
         roundVeggieServing = 0;
@@ -494,7 +526,7 @@ public class GameManager : MonoBehaviour
             //levelBar.GetComponent<ProgressBar>().current = remainder;
         }
         stars+= count;
-        starText.GetComponent<TextMeshProUGUI>().text = stars.ToString();
+        UpdateStars();
     }
 
     public void ResetPastMeals()
@@ -539,19 +571,58 @@ public class GameManager : MonoBehaviour
         Debug.Log("Required calories :" + currentPatient.calorie);
         Debug.Log("current calories :" + currentPatient.GetCurrentCalories());
         currentPatient.allergies = Patient.Allergies.ShellFish;
-        patient.GetComponent<Image>().sprite = currentPatient.gender == Patient.Gender.Male ? customer_boy : customer_girl;
+        SetPatientSprite();
         UpdatePatientInfo(currentPatient);
         initialGrainValue = wholeGrainsBar.GetComponent<ProgressBar>().current;
         initialProteinValue = proteinBar.GetComponent<ProgressBar>().current;
         initialFruitValue = fruitVeggieBar.GetComponent<ProgressBar>().current;
         //currentTime = timerDuration;
-        UpdateSpeechBubble("Can't wait to eat!");
+        StartCoroutine(UpdateSpeechBubble("Can't wait to eat!"));
         isRunning = true;
     }
 
-    public void UpdateSpeechBubble(string text)
+    public void SetPatientSprite()
     {
-        speechBubble.GetComponentInChildren<TextMeshProUGUI>().text = text;
+        if(currentPatient.gender == Patient.Gender.Male)
+        {
+            patient.GetComponent<Image>().sprite = currentPatient.height % 2 == 0 ? Resources.Load<Sprite>($"Patients/Male_01/" + "neutral") : Resources.Load<Sprite>($"Patients/Male_02/" + "neutral");
+        }
+        else
+        {
+            patient.GetComponent<Image>().sprite = currentPatient.height % 2 == 0 ? Resources.Load<Sprite>($"Patients/Female_01/" + "neutral") : Resources.Load<Sprite>($"Patients/Female_02/" + "neutral");
+        }
+    }
+
+    public void UpdatePatientSprite(string emotion)
+    {
+        if (currentPatient.gender == Patient.Gender.Male)
+        {
+            patient.GetComponent<Image>().sprite = currentPatient.height % 2 == 0 ? Resources.Load<Sprite>($"Patients/Male_01/" + emotion) : Resources.Load<Sprite>($"Patients/Male_02/" + emotion);
+        }
+        else
+        {
+            patient.GetComponent<Image>().sprite = currentPatient.height % 2 == 0 ? Resources.Load<Sprite>($"Patients/Female_01/" + emotion) : Resources.Load<Sprite>($"Patients/Female_02/" + emotion);
+        }
+    }
+
+    public IEnumerator UpdateSpeechBubble(string text, float duration = 5f)
+    {
+        emotes.SetActive(false);
+        speechBubble.transform.Find("SpeechText").GetComponent<TextMeshProUGUI>().text = text;
+        speechBubble.SetActive(true);
+        speechBubble.transform.Find("SpeechText").gameObject.SetActive(true);
+        yield return new WaitForSeconds(duration);
+        speechBubble.SetActive(false);
+    }
+
+    public IEnumerator UpdateEmotes(string emoteName, float duration = 5f)
+    {
+        emotes.GetComponent<Image>().sprite = Resources.Load<Sprite>("Emotes/" + emoteName);
+        emotes.SetActive(true);
+        speechBubble.transform.Find("SpeechText").gameObject.SetActive(false);
+        speechBubble.SetActive(true);
+        yield return new WaitForSeconds(duration);
+        speechBubble.SetActive(false);
     }
 
     public void UpdatePatientInfo(Patient patient)
