@@ -8,8 +8,6 @@ public class TabManager : MonoBehaviour
     public GameObject infoTab;
     public GameObject pastMealsTab;
     public GameObject deviseMealsTab;
-    public GameObject summaryTab;
-    public GameObject daySummaryTab;
 
     public static TabManager instance;
     private void Awake()
@@ -42,24 +40,12 @@ public class TabManager : MonoBehaviour
         EnableTab(deviseMealsTab);
     }
 
-    public void ViewSummary()
-    {
-        EnableTab(summaryTab);
-    }
-
-    public void ViewDaySummary()
-    {
-        EnableTab(daySummaryTab);
-    }
-
     void EnableTab(GameObject tab)
     {
         helpTab.SetActive(false);
         infoTab.SetActive(false);
         pastMealsTab.SetActive(false);
         deviseMealsTab.SetActive(false);
-        summaryTab.SetActive(false);
-        daySummaryTab.SetActive(false);
         tab.SetActive(true);
     }
 }

@@ -11,10 +11,9 @@ public class GameManager : MonoBehaviour
     public Canvas canvas;
     public TextMeshProUGUI patientInfo;
     public GameObject popUpWindow;
+    public GameObject roundSummaryPopUp;
     public GameObject pastMealWindow;
     public GameObject pastMealTemplate;
-    public TextMeshProUGUI summaryText;
-    public TextMeshProUGUI daySummaryText;
     public GameObject dishWindow;
     public GameObject dishTemplate;
     public GameObject wholeGrainsBar;
@@ -36,14 +35,7 @@ public class GameManager : MonoBehaviour
     public GameObject customerIcon;
     public GameObject paymentUI;
 
-    public GameObject star1;
-    public GameObject star2;
-    public GameObject star3;
-
     public static List<Dish> allDishes;
-    private int initialGrainValue;
-    private int initialProteinValue;
-    private int initialFruitValue;
 
     // round related variables
     public int stars = 0;
@@ -76,6 +68,9 @@ public class GameManager : MonoBehaviour
     public Sprite servingReference;
     public Sprite profitSprite;
     public Sprite lossSprite;
+    public Sprite goldMedal;
+    public Sprite silverMedal;
+    public Sprite bronzeMedal;
 
     //public static GameManager instance;
 
@@ -130,9 +125,12 @@ public class GameManager : MonoBehaviour
         //check if in loss
         if (stars >= roundGoal)
         {
-            daySummaryText.text = $"Well done! Day {day} complete!\n" +
+            string daySummary = $"Well done! Day {day} complete!\n" +
             $"You have gathered a total of {stars} stars!";
-            TabManager.instance.ViewDaySummary();
+            string footer = $"Day profits: ${money + payment}";
+            yield return StartCoroutine(InstantiatePopUp("Day Complete!", daySummary, footer, goldMedal));
+            day++;
+            StartCoroutine(StartDay());
         }
         else
         {
@@ -190,7 +188,6 @@ public class GameManager : MonoBehaviour
     public IEnumerator InstantiatePopUp(string headerText, string bodyText, string footerText = null, Sprite contentImage = null, Sprite hintImage = null)
     {
         isRunning = false;
-        Debug.Log("1");
         GameObject popUp = Instantiate(popUpWindow, canvas.transform.position, Quaternion.identity, canvas.transform);
         TextMeshProUGUI header = popUp.transform.Find("PopUpWindow").Find("Header").Find("HeaderText").GetComponent<TextMeshProUGUI>();
         TextMeshProUGUI body = popUp.transform.Find("PopUpWindow").Find("Body").Find("BodyText").GetComponent<TextMeshProUGUI>();
@@ -211,9 +208,20 @@ public class GameManager : MonoBehaviour
             hint.sprite = hintImage;
             popUp.transform.Find("PopUpWindow").Find("Header").Find("HintBtn").gameObject.SetActive(true);
         }
-        Debug.Log("2");
         yield return StartCoroutine(popUp.GetComponent<PopUpManager>().WaitForClose());
-        Debug.Log("3");
+        isRunning = true;
+    }
+
+    public IEnumerator InstantiateRoundSummary(string bodyText, string footerText, int count)
+    {
+        isRunning = false;
+        GameObject popUp = Instantiate(roundSummaryPopUp, canvas.transform.position, Quaternion.identity, canvas.transform);
+        TextMeshProUGUI body = popUp.transform.Find("RoundSummaryWindow").Find("Body").Find("BodyText").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI footer = popUp.transform.Find("RoundSummaryWindow").Find("Body").Find("FooterText").GetComponent<TextMeshProUGUI>();
+        body.text = bodyText;
+        footer.text = footerText;
+        yield return StartCoroutine(popUp.GetComponent<PopUpManager>().WaitForClose(count));
+        NewPatient();
         isRunning = true;
     }
 
@@ -444,9 +452,9 @@ public class GameManager : MonoBehaviour
         string summary = $"Grain consumed : {roundWholeGrainServing}\n" +
             $"Protein consumed : {roundProteinServing}\n" +
             $"Fruit consumed : {roundVeggieServing}\n\n" +
-            $"Portion score : {portionScore}\n\n" +
-            $"Calories score : {calorieScore}\n\n" +
-            $"Money spent : ${roundCost.ToString("0.00")}\n\n";
+            $"Portion score : {portionScore}\n" +
+            $"Calories score : {calorieScore}\n" +
+            $"Money spent : ${roundCost.ToString("0.00")}";
         double OverallScore = portionScore + calorieScore;
         Debug.Log(OverallScore);
         Debug.Log("checking for repeats");
@@ -511,32 +519,36 @@ public class GameManager : MonoBehaviour
         OverallScore -= repeatCounts * 2;
         if (allergyTriggered) OverallScore = 0;
         int starCount = 0;
+        string footer;
+        double tipAmount = 0;
         if (OverallScore >= 9)
         {
             starCount = 3;
-            summary += $"For the awesome service, {currentPatient.patientName} has left a generous tip.";
-            payment += roundCost * 1.5;
+            tipAmount = roundCost * 1.5;
+            footer = $"For the awesome service, {currentPatient.patientName} has left a generous payment of {tipAmount}.";
+            payment += tipAmount;
             UpdatePayment();
         }
         else if (OverallScore >= 6)
         {
             starCount = 2;
-            summary += $"For the good service, {currentPatient.patientName} has left a tip.";
-            payment += roundCost * 1.2;
+            tipAmount = roundCost * 1.2;
+            footer = $"For the good service, {currentPatient.patientName} has left a payment of {tipAmount}.";
+            payment += tipAmount;
             UpdatePayment();
         }
         else if (OverallScore >= 3)
         {
             starCount = 1;
-            summary += $"For the poor service, {currentPatient.patientName} felt like he is being overcharged.";
-            payment += roundCost * 0.8;
+            tipAmount = roundCost * 0.8;
+            footer = $"For the poor service, {currentPatient.patientName} felt like he is being overcharged. Hence only paid {tipAmount}.";
+            payment += tipAmount;
             UpdatePayment();
         }
         else
         {
-            summary += $"For the poor service, {currentPatient.patientName} has left without paying.";
+            footer = $"For the poor service, {currentPatient.patientName} has left without paying.";
         }
-        PlayStarsAnim(starCount);
         UpdateLevel(starCount);
         switch (starCount)
         {
@@ -562,7 +574,7 @@ public class GameManager : MonoBehaviour
                 break;
             default: break;
         }
-        summaryText.text = summary;
+        StartCoroutine(InstantiateRoundSummary(summary, footer, starCount));
     }
 
     public void Serve()
@@ -574,7 +586,6 @@ public class GameManager : MonoBehaviour
             UpdateMoney();
             //change to current - initial / max
             UpdateSummary();
-            TabManager.instance.ViewSummary();
             //update customer counter
             GameObject customerIcon = customerCounter.transform.GetChild(customerCount).gameObject;
             customerIcon.GetComponent<Image>().color = Color.black;
@@ -600,7 +611,6 @@ public class GameManager : MonoBehaviour
         UpdatePortionUI();
         ResetDishWindow();
         ResetPastMeals();
-        ResetStars();
     }
 
     void UpdateLevel(int count)
@@ -663,12 +673,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("current calories :" + currentPatient.GetCurrentCalories());
         roundCalorie = currentPatient.GetCurrentCalories();
         caloriesBar.GetComponent<ProgressBar>().current = roundCalorie;
-        currentPatient.allergies = Patient.Allergies.ShellFish;
         SetPatientSprite();
         UpdatePatientInfo(currentPatient);
-        initialGrainValue = wholeGrainsBar.GetComponent<ProgressBar>().current;
-        initialProteinValue = proteinBar.GetComponent<ProgressBar>().current;
-        initialFruitValue = fruitVeggieBar.GetComponent<ProgressBar>().current;
         //currentTime = timerDuration;
         StartCoroutine(UpdateSpeechBubble("Can't wait to eat!"));
         isRunning = true;
@@ -778,21 +784,5 @@ public class GameManager : MonoBehaviour
         }
 
         return tooltiptext;
-    }
-
-    void PlayStarsAnim(int count)
-    {
-        if (count >= 1) LeanTween.scale(star1, new Vector3(1f, 1f, 1f), 2f).setDelay(.1f).setEase(LeanTweenType.easeOutElastic);
-        if (count >= 2) LeanTween.scale(star2, new Vector3(1f, 1f, 1f), 2f).setDelay(.2f).setEase(LeanTweenType.easeOutElastic);
-        if (count >= 3) LeanTween.scale(star3, new Vector3(1f, 1f, 1f), 2f).setDelay(.3f).setEase(LeanTweenType.easeOutElastic);
-    }
-   
-
-    void ResetStars()
-    {
-        Vector3 scaleAmount = new Vector3(0f, 0f, 0f);
-        LeanTween.scale(star1, scaleAmount, 2f);
-        LeanTween.scale(star2, scaleAmount, 2f);
-        LeanTween.scale(star3, scaleAmount, 2f);
     }
 }
