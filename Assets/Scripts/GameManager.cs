@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
     private Patient currentPatient;
     public List<Dish> selectedDishes;
 
-    public float timerDuration = 120f;
+    private float timerDuration = 180f;
     public TextMeshProUGUI timerText;
     public GameObject timerBar;
     private float currentTime;
@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
         {
             string daySummary = $"Well done! Day {day} complete!\n" +
             $"You have gathered a total of {stars} stars!";
-            string footer = $"Day profits: ${money + payment}";
+            string footer = $"Day profits: ${(money + payment).ToString("0.00")}";
             yield return StartCoroutine(InstantiatePopUp("Day Complete!", daySummary, footer, goldMedal));
             day++;
             StartCoroutine(StartDay());
@@ -136,7 +136,7 @@ public class GameManager : MonoBehaviour
         {
             yield return StartCoroutine(InstantiatePopUp("Game Over", $"Customers were not impressed...\nYou were {roundGoal - stars} stars short of meeting the requirement."));
             stars = 0;
-            UpdateStars();
+            //UpdateStars();
             day = 0;
 
             StartCoroutine(StartDay());
@@ -145,21 +145,32 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator StartDay()
     {
+        UpdateStars();
         if (day == 0)
         {
             string headerText = "Welcome to Diet Clinic";
             string bodyText = "Help our patient find the ideal meal combinations and aim to get as many 3* reviews as possible!";
             string footerText = "Hint: Follow the quarter quarter half meal plan!";
             yield return StartCoroutine(InstantiatePopUp(headerText, bodyText, footerText, servingReference));
+            yield return StartCoroutine(PlayTutorial(1));
         }
         day++;
         UpdateDay();
         customerCount = 5;
-        roundGoal = 10;
+        roundGoal = 8;
         UpdateCustomerCounter();
         currentTime = timerDuration;
         NewPatient();
-        yield return StartCoroutine(InstantiatePopUp($"Day {day} Start", $"Serve {customerCount} customers and achieve {roundGoal} stars within 2 mins to progress!"));
+        yield return StartCoroutine(InstantiatePopUp($"Day {day} Start", $"Serve {customerCount} customers and achieve {roundGoal} stars within 3 mins to progress!"));
+    }
+
+    public IEnumerator PlayTutorial(int num)
+    {
+        isRunning = false;
+        GameObject tutorial = Resources.Load<GameObject>($"Tutorials/Tutorial_{num.ToString()}");
+        GameObject popUp = Instantiate(tutorial, canvas.transform.position, Quaternion.identity, canvas.transform);
+        yield return StartCoroutine(popUp.GetComponent<TutorialManager>().WaitForClose());
+        isRunning = true;
     }
 
     public void UpdateCustomerCounter()
@@ -454,7 +465,7 @@ public class GameManager : MonoBehaviour
             $"Fruit consumed : {roundVeggieServing}\n\n" +
             $"Portion score : {portionScore}\n" +
             $"Calories score : {calorieScore}\n" +
-            $"Money spent : ${roundCost.ToString("0.00")}";
+            $"Money spent : ${roundCost.ToString("0.00")}\n";
         double OverallScore = portionScore + calorieScore;
         Debug.Log(OverallScore);
         Debug.Log("checking for repeats");
@@ -521,7 +532,7 @@ public class GameManager : MonoBehaviour
         int starCount = 0;
         string footer;
         double tipAmount = 0;
-        if (OverallScore >= 9)
+        if (OverallScore >= 8)
         {
             starCount = 3;
             tipAmount = roundCost * 1.5;
