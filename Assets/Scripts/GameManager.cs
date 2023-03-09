@@ -439,23 +439,23 @@ public class GameManager : MonoBehaviour
             portionScore -= 1;
         }
 
-        if(roundCalorie <= currentPatient.calorie + 100 || roundCalorie >= currentPatient.calorie - 100)
+        if(roundCalorie <= currentPatient.calorie + 100 && roundCalorie >= currentPatient.calorie - 100)
         {
             calorieScore = 5;
         }
-        else if (roundCalorie <= currentPatient.calorie + 150 || roundCalorie >= currentPatient.calorie - 150)
+        else if (roundCalorie <= currentPatient.calorie + 150 && roundCalorie >= currentPatient.calorie - 150)
         {
             calorieScore = 4;
         }
-        else if (roundCalorie <= currentPatient.calorie + 200 || roundCalorie >= currentPatient.calorie - 200)
+        else if (roundCalorie <= currentPatient.calorie + 200 && roundCalorie >= currentPatient.calorie - 200)
         {
             calorieScore = 3;
         }
-        else if (roundCalorie <= currentPatient.calorie + 250 || roundCalorie >= currentPatient.calorie - 250)
+        else if (roundCalorie <= currentPatient.calorie + 250 && roundCalorie >= currentPatient.calorie - 250)
         {
             calorieScore = 2;
         }
-        else if (roundCalorie <= currentPatient.calorie + 300 || roundCalorie >= currentPatient.calorie - 300)
+        else if (roundCalorie <= currentPatient.calorie + 300 && roundCalorie >= currentPatient.calorie - 300)
         {
             calorieScore = 1;
         }
@@ -683,6 +683,7 @@ public class GameManager : MonoBehaviour
         caloriesBar.GetComponent<ProgressBar>().maximum = currentPatient.calorie;
         Debug.Log("current calories :" + currentPatient.GetCurrentCalories());
         roundCalorie = currentPatient.GetCurrentCalories();
+        UpdateCalorie();
         caloriesBar.GetComponent<ProgressBar>().current = roundCalorie;
         SetPatientSprite();
         UpdatePatientInfo(currentPatient);
