@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public GameObject wholeGrainsBar;
     public GameObject proteinBar;
     public GameObject fruitVeggieBar;
+    public TextMeshProUGUI deviseMealHint;
     public GameObject wholeGrainPortionUI;
     public GameObject proteinPortionUI;
     public GameObject veggiePortionUI;
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
     public GameObject emotes;
     public GameObject moneyCounter;
     public GameObject costText;
+    public GameObject calorieUI;
     public GameObject calorieText;
     public GameObject caloriesBar;
     public GameObject starText;
@@ -59,7 +61,7 @@ public class GameManager : MonoBehaviour
     private Patient currentPatient;
     public List<Dish> selectedDishes;
 
-    private float timerDuration = 180f;
+    private float timerDuration = 60f;
     public TextMeshProUGUI timerText;
     public GameObject timerBar;
     private float currentTime;
@@ -117,7 +119,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("times up! gameover...");
         StartCoroutine(OnDayComplete());
-    }
+    } 
 
     public IEnumerator OnDayComplete()
     {
@@ -129,12 +131,16 @@ public class GameManager : MonoBehaviour
             $"You have gathered a total of {stars} stars!";
             string footer = $"Day profits: ${(money + payment).ToString("0.00")}";
             yield return StartCoroutine(InstantiatePopUp("Day Complete!", daySummary, footer, goldMedal));
-            day++;
+            totalStars += stars;
+            totalCustomerCount += customerCount;
+            stars = 0;
             StartCoroutine(StartDay());
         }
         else
         {
             yield return StartCoroutine(InstantiatePopUp("Game Over", $"Customers were not impressed...\nYou were {roundGoal - stars} stars short of meeting the requirement."));
+            totalStars = 0;
+            totalCustomerCount = 0;
             stars = 0;
             //UpdateStars();
             day = 0;
@@ -145,8 +151,9 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator StartDay()
     {
+        day++;
         UpdateStars();
-        if (day == 0)
+        if (day == 1)
         {
             string headerText = "Welcome to Diet Clinic";
             string bodyText = "Help our patient find the ideal meal combinations and aim to get as many 3* reviews as possible!";
@@ -154,14 +161,38 @@ public class GameManager : MonoBehaviour
             yield return StartCoroutine(InstantiatePopUp(headerText, bodyText, footerText, servingReference));
             yield return StartCoroutine(PlayTutorial(1));
         }
-        day++;
+        if(day == 2)
+        {
+            yield return StartCoroutine(PlayTutorial(2));
+        }
+        UpdateDeviseMealTab();
         UpdateDay();
-        customerCount = 5;
-        roundGoal = 8;
+        customerCount = (int)3 + (day/3);
+        roundGoal = customerCount*2-3;
         UpdateCustomerCounter();
-        currentTime = timerDuration;
+        UpdateTimer(customerCount*timerDuration);
         NewPatient();
         yield return StartCoroutine(InstantiatePopUp($"Day {day} Start", $"Serve {customerCount} customers and achieve {roundGoal} stars within 3 mins to progress!"));
+    }
+
+    public void UpdateTimer(float time)
+    {
+        timerBar.GetComponent<ProgressBar>().maximum = (int)time;
+        currentTime = time;
+    }
+
+    public void UpdateDeviseMealTab()
+    {
+        calorieUI.SetActive(day > 1);
+        caloriesBar.SetActive(day > 1);
+        if (day == 1)
+        {
+            deviseMealHint.text = "Hint: Obtain perfect portion score by following the quarter, quarter, half rule! Also make sure to avoid repeating dishes!\n\nChoose among of the following dishes:";
+        }
+        if (day > 1)
+        {
+            deviseMealHint.text = "Hint: Calculate calories consumed and design the perfect meal for our patient!\n\nChoose among of the following dishes:";
+        }
     }
 
     public IEnumerator PlayTutorial(int num)
@@ -425,7 +456,6 @@ public class GameManager : MonoBehaviour
     public void UpdateSummary()
     {
         double portionScore=0; //out of 5
-        double calorieScore=0; //out of 5
         if(roundVeggieServing == 2*roundWholeGrainServing && roundVeggieServing == 2 * roundProteinServing)
         {
             portionScore = 5;
@@ -438,8 +468,8 @@ public class GameManager : MonoBehaviour
         {
             portionScore -= 1;
         }
-
-        if(roundCalorie <= currentPatient.calorie + 100 && roundCalorie >= currentPatient.calorie - 100)
+        double calorieScore; //out of 5
+        if (roundCalorie <= currentPatient.calorie + 100 && roundCalorie >= currentPatient.calorie - 100)
         {
             calorieScore = 5;
         }
@@ -460,13 +490,29 @@ public class GameManager : MonoBehaviour
             calorieScore = 1;
         }
         else calorieScore = 0;
-        string summary = $"Grain consumed : {roundWholeGrainServing}\n" +
-            $"Protein consumed : {roundProteinServing}\n" +
-            $"Fruit consumed : {roundVeggieServing}\n\n" +
-            $"Portion score : {portionScore}\n" +
-            $"Calories score : {calorieScore}\n" +
-            $"Money spent : ${roundCost.ToString("0.00")}\n";
-        double OverallScore = portionScore + calorieScore;
+
+        string summary;
+        double OverallScore;
+        if (day == 1)
+        {
+            summary = $"Grain consumed : {roundWholeGrainServing}\n" +
+                $"Protein consumed : {roundProteinServing}\n" +
+                $"Fruit consumed : {roundVeggieServing}\n\n" +
+                $"Portion score : {portionScore}\n" +
+                $"Money spent : ${roundCost.ToString("0.00")}\n";
+            OverallScore = portionScore*2;
+        }
+        else
+        {
+            summary = $"Grain consumed : {roundWholeGrainServing}\n" +
+                $"Protein consumed : {roundProteinServing}\n" +
+                $"Fruit consumed : {roundVeggieServing}\n\n" +
+                $"Portion score : {portionScore}\n" +
+                $"Calories score : {calorieScore}\n" +
+                $"Money spent : ${roundCost.ToString("0.00")}\n";
+            OverallScore = portionScore + calorieScore;
+        }
+        
         Debug.Log(OverallScore);
         Debug.Log("checking for repeats");
         int repeatCounts = 0;
@@ -678,7 +724,7 @@ public class GameManager : MonoBehaviour
         UpdateMoney();
         TabManager.instance.ViewHelp();
         //instantiate new patient and update patient info tab
-        currentPatient = PatientFactory.instance.CreateNewStudent();
+        currentPatient = PatientFactory.instance.CreateNewStudent(day);
         Debug.Log("Required calories :" + currentPatient.calorie);
         caloriesBar.GetComponent<ProgressBar>().maximum = currentPatient.calorie;
         Debug.Log("current calories :" + currentPatient.GetCurrentCalories());

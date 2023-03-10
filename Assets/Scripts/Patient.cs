@@ -51,7 +51,7 @@ public class Patient : MonoBehaviour
         Sedentary,
         Light,
         Moderate,
-        Very
+        VeryActive
     }
 
     public Patient(string patientName, int age, int weight, int height, Gender gender, Occupation occupation, FoodPref preference, Allergies allergies, ActivityLevel activityLevel, Dish[] meals)
@@ -66,7 +66,7 @@ public class Patient : MonoBehaviour
         this.allergies = allergies;
         this.activityLevel = activityLevel;
         this.meals = meals;
-        int baseCalories = gender == Gender.Male ? (int)(66.5 + (13.75 * weight) + (5.003 * height) - (6.75 * age)) : (int)(655.1 + (9.563 * weight) + (1.850 * height) - (4.676 * age));
+        int baseCalories = (gender == Gender.Male) ? (int)((10 * weight) + (6.25 * height) - (5 * age)+5) : (int)((10 * weight) + (6.25 * height) - (5 * age)-161);
         switch (activityLevel)
         {
             case ActivityLevel.Sedentary:
@@ -78,7 +78,7 @@ public class Patient : MonoBehaviour
             case ActivityLevel.Moderate:
                 this.calorie = (int)(baseCalories * 1.55);
                 break;
-            case ActivityLevel.Very:
+            case ActivityLevel.VeryActive:
                 this.calorie = (int)(baseCalories * 1.725);
                 break;
             default:
@@ -99,7 +99,7 @@ public class Patient : MonoBehaviour
         this.allergies = allergies;
         this.meals = meals;
         this.activityLevel = ActivityLevel.NIL;
-        this.calorie = gender == Gender.Male ? (int)(66.5 + (13.75 * weight) + (5.003 * height) - (6.75 * age)) : (int)(655.1 + (9.563 * weight) + (1.850 * height) - (4.676 * age));
+        this.calorie = (gender == Gender.Male) ? (int)((10 * weight) + (6.25 * height) - (5 * age) + 5) : (int)((10 * weight) + (6.25 * height) - (5 * age) - 161);
     }
 
     public int GetCurrentCalories()

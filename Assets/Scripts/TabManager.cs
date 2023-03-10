@@ -6,7 +6,6 @@ public class TabManager : MonoBehaviour
 {
     public GameObject helpTab;
     public GameObject infoTab;
-    public GameObject pastMealsTab;
     public GameObject deviseMealsTab;
 
     public static TabManager instance;
@@ -25,11 +24,6 @@ public class TabManager : MonoBehaviour
         EnableTab(helpTab);
     }
 
-    public void ViewPastMeals()
-    {
-        EnableTab(pastMealsTab);
-    }
-
     public void ViewInfo()
     {
         EnableTab(infoTab);
@@ -44,7 +38,6 @@ public class TabManager : MonoBehaviour
     {
         helpTab.SetActive(false);
         infoTab.SetActive(false);
-        pastMealsTab.SetActive(false);
         deviseMealsTab.SetActive(false);
         tab.SetActive(true);
     }

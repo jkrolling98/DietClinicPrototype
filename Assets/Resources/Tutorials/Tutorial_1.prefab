@@ -33,7 +33,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5438416170932503720, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 640
       objectReference: {fileID: 0}
     - target: {fileID: 5438416170932503720, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_SizeDelta.y
@@ -41,7 +41,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5438416170932503720, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 5438416171238551087, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -57,7 +57,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5438416171238551087, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 5438416171238551087, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -101,7 +101,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5438416171565115210, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 5438416171565115210, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -137,7 +137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5438416171846397579, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 5438416171846397579, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -153,7 +153,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172047565140, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 640
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172047565140, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_SizeDelta.y
@@ -161,7 +161,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172047565140, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172047565140, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -181,11 +181,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172071636866, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 72.50339
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172071636866, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5438416172071636878, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
+      propertyPath: m_text
+      value: Tutorial (Day 1)
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172077351519, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -213,7 +217,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172458334225, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 640
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172458334225, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_SizeDelta.y
@@ -221,7 +225,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172458334225, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172458334225, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -229,7 +233,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: bodyTexts.Array.size
-      value: 11
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: bodyTexts.Array.data[0]
@@ -238,46 +242,45 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: bodyTexts.Array.data[1]
-      value: Next, click on the past meal button below to view patient's meal history.
-      objectReference: {fileID: 0}
-    - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
-      propertyPath: bodyTexts.Array.data[2]
-      value: Take note of the dishes displayed in the Past Meal tab as repeated dishes
-        will result in a score penalty.
-      objectReference: {fileID: 0}
-    - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
-      propertyPath: bodyTexts.Array.data[3]
       value: Once ready, click on the red tray in the middle to enter the devise
         meal tab.
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
-      propertyPath: bodyTexts.Array.data[4]
+      propertyPath: bodyTexts.Array.data[2]
       value: Hover over any dish to view the overview of the dish detail and click
         on them to add them to the meal plan.
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
-      propertyPath: bodyTexts.Array.data[5]
+      propertyPath: bodyTexts.Array.data[3]
       value: To view detailed information about the dish, click on the info button
         on the top left.
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
-      propertyPath: bodyTexts.Array.data[6]
+      propertyPath: bodyTexts.Array.data[4]
+      value: Take note of the dishes displayed in the Past Meal tab as repeated dishes
+        will result in a score penalty.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
+      propertyPath: bodyTexts.Array.data[5]
       value: To achieve maximum portion score, follow the quarter, quarter, half
         rule!
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
-      propertyPath: bodyTexts.Array.data[7]
-      value: To achieve maximum calorie score, try to match the required calories
-        displayed.
-      objectReference: {fileID: 0}
-    - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
-      propertyPath: bodyTexts.Array.data[8]
+      propertyPath: bodyTexts.Array.data[6]
       value: Once ready, click on the "Serve" button to serve the meal to patient.
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
+      propertyPath: bodyTexts.Array.data[7]
+      value: Based on your portion score you will be awarded with stars and tips,
+        make sure to avoid penalties!
+      objectReference: {fileID: 0}
+    - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
+      propertyPath: bodyTexts.Array.data[8]
+      value: Lastly, dont forget to collect the payments from customers!
+      objectReference: {fileID: 0}
+    - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: bodyTexts.Array.data[9]
-      value: Based on your portion score and calorie score, you will be awarded with
-        stars and tips, make sure to avoid penalties!
+      value: Lastly, dont forget to collect the payments from customers!
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: bodyTexts.Array.data[10]
@@ -285,7 +288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: tutorialImages.Array.size
-      value: 11
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: tutorialImages.Array.data[0]
@@ -294,39 +297,39 @@ PrefabInstance:
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: tutorialImages.Array.data[1]
       value: 
-      objectReference: {fileID: 21300000, guid: e1fac6927dc0d3d4d87c95b745dc9505, type: 3}
+      objectReference: {fileID: 21300000, guid: 98c3b668d093bb54986f5cd62e28fc4a, type: 3}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: tutorialImages.Array.data[2]
       value: 
-      objectReference: {fileID: 21300000, guid: 0d8804b7468aa1f4597186341647d9ed, type: 3}
+      objectReference: {fileID: 21300000, guid: 6d87ec35b38658948829b2c7e79a3890, type: 3}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: tutorialImages.Array.data[3]
       value: 
-      objectReference: {fileID: 21300000, guid: 98c3b668d093bb54986f5cd62e28fc4a, type: 3}
+      objectReference: {fileID: 21300000, guid: 1b5af5514ffb08f4cb51439089d8cac7, type: 3}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: tutorialImages.Array.data[4]
       value: 
-      objectReference: {fileID: 21300000, guid: 6d87ec35b38658948829b2c7e79a3890, type: 3}
+      objectReference: {fileID: 21300000, guid: 0d8804b7468aa1f4597186341647d9ed, type: 3}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: tutorialImages.Array.data[5]
       value: 
-      objectReference: {fileID: 21300000, guid: 1b5af5514ffb08f4cb51439089d8cac7, type: 3}
+      objectReference: {fileID: 21300000, guid: c0dc7bbf8da44854996e536922e2cd7b, type: 3}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: tutorialImages.Array.data[6]
       value: 
-      objectReference: {fileID: 21300000, guid: c0dc7bbf8da44854996e536922e2cd7b, type: 3}
+      objectReference: {fileID: 21300000, guid: a002213026e36b94291a129c19061691, type: 3}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: tutorialImages.Array.data[7]
       value: 
-      objectReference: {fileID: 21300000, guid: ef2c2a9faf7e99b419bdee76b68e0e97, type: 3}
+      objectReference: {fileID: 21300000, guid: e455bd489612bbf46bc8ee5b2f9fcb4f, type: 3}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: tutorialImages.Array.data[8]
       value: 
-      objectReference: {fileID: 21300000, guid: a002213026e36b94291a129c19061691, type: 3}
+      objectReference: {fileID: 21300000, guid: 5df843c70e8acfe46a1995bcf1ad6e99, type: 3}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: tutorialImages.Array.data[9]
       value: 
-      objectReference: {fileID: 21300000, guid: 39ee9abbf963e3d4a8f42f3ccafd413b, type: 3}
+      objectReference: {fileID: 21300000, guid: 5df843c70e8acfe46a1995bcf1ad6e99, type: 3}
     - target: {fileID: 5438416172880475361, guid: b965539d788f39b4ba8b05b546415b5d, type: 3}
       propertyPath: tutorialImages.Array.data[10]
       value: 

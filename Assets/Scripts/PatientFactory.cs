@@ -51,35 +51,71 @@ public class PatientFactory : MonoBehaviour
         return result.ToArray();
     }
 
-    public Patient CreateNewStudent()
+    public Patient CreateNewStudent(int day)
     {
-        if(Random.Range(0, 2) == 0)
+        if (day <= 2)
         {
-            string name = RandomMaleName();
-            int age = Random.Range(11, 20);
-            int weight = Random.Range(45, 100);
-            int height = Random.Range(140, 190);
-            Patient.FoodPref pref = Patient.FoodPref.NIL; //to be changed
-            Patient.Allergies allergies = Patient.Allergies.NIL; //to be changed
+            if (Random.Range(0, 2) == 0)
+            {
+                string name = RandomMaleName();
+                int age = Random.Range(11, 20);
+                int weight = Random.Range(45, 100);
+                int height = Random.Range(140, 190);
+                Patient.FoodPref pref = Patient.FoodPref.NIL; //to be changed
+                Patient.Allergies allergies = Patient.Allergies.NIL; //to be changed
+                Patient.ActivityLevel activityLevel = (Patient.ActivityLevel)Random.Range(1, Enum.GetValues(typeof(Patient.ActivityLevel)).Length);
 
-            //generate meals
-            Dish[] meals = GenerateRandomMeals(2);
+                //generate meals
+                Dish[] meals = GenerateRandomMeals(2);
 
-            return new Patient(name, age, weight, height, Patient.Gender.Male, Patient.Occupation.Student, pref, allergies, meals);
+                return new Patient(name, age, weight, height, Patient.Gender.Male, Patient.Occupation.Student, pref, allergies, activityLevel, meals);
+            }
+            else
+            {
+                string name = RandomFemaleName();
+                int age = Random.Range(11, 20);
+                int weight = Random.Range(40, 80);
+                int height = Random.Range(130, 180);
+                Patient.FoodPref pref = Patient.FoodPref.NIL; //to be changed
+                Patient.Allergies allergies = Patient.Allergies.NIL; //to be changed
+                Patient.ActivityLevel activityLevel = (Patient.ActivityLevel)Random.Range(1, Enum.GetValues(typeof(Patient.ActivityLevel)).Length);
+
+                //generate meals
+                Dish[] meals = GenerateRandomMeals(2);
+
+                return new Patient(name, age, weight, height, Patient.Gender.Female, Patient.Occupation.Student, pref, allergies, activityLevel, meals);
+            }
         }
         else
         {
-            string name = RandomFemaleName();
-            int age = Random.Range(11, 20);
-            int weight = Random.Range(40, 80);
-            int height = Random.Range(130, 180);
-            Patient.FoodPref pref = Patient.FoodPref.NIL; //to be changed
-            Patient.Allergies allergies = Patient.Allergies.NIL; //to be changed
+            if (Random.Range(0, 2) == 0)
+            {
+                string name = RandomMaleName();
+                int age = Random.Range(11, 20);
+                int weight = Random.Range(45, 100);
+                int height = Random.Range(140, 190);
+                Patient.FoodPref pref = Patient.FoodPref.NIL; //to be changed
+                Patient.Allergies allergies = Patient.Allergies.NIL; //to be changed
 
-            //generate meals
-            Dish[] meals = GenerateRandomMeals(2);
+                //generate meals
+                Dish[] meals = GenerateRandomMeals(2);
 
-            return new Patient(name, age, weight, height, Patient.Gender.Female, Patient.Occupation.Student, pref, allergies, meals);
+                return new Patient(name, age, weight, height, Patient.Gender.Male, Patient.Occupation.Student, pref, allergies, meals);
+            }
+            else
+            {
+                string name = RandomFemaleName();
+                int age = Random.Range(11, 20);
+                int weight = Random.Range(40, 80);
+                int height = Random.Range(130, 180);
+                Patient.FoodPref pref = Patient.FoodPref.NIL; //to be changed
+                Patient.Allergies allergies = Patient.Allergies.NIL; //to be changed
+
+                //generate meals
+                Dish[] meals = GenerateRandomMeals(2);
+
+                return new Patient(name, age, weight, height, Patient.Gender.Female, Patient.Occupation.Student, pref, allergies, meals);
+            }
         }
     }
 }

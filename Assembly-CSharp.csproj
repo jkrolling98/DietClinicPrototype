@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\DishManager.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\GeneralSimpleUI.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\TutorialManager.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\PathSplineEndless.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\PathBezier.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\PathSpline.cs" />
@@ -103,7 +104,6 @@
     <Compile Include="Assets\LeanTween\Examples\Archived\TestingRigidbodyCS.cs" />
     <Compile Include="Assets\LeanTween\Examples\Scripts\Following.cs" />
     <Compile Include="Assets\Scripts\HoverTipManager.cs" />
-    <Compile Include="Assets\Scripts\TutorialManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
