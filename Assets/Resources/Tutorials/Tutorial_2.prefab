@@ -37,8 +37,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2447533340658066630, guid: 181f1a3720e145440a45bf5d8bc07d14, type: 3}
       propertyPath: bodyTexts.Array.data[0]
-      value: Good job out there on day 1! Hope you didn't think that was it tho.
-        We have more requirements coming up!
+      value: Good job out there on day 1! Hope you didn't think that was it. We have
+        more requirements coming up!
       objectReference: {fileID: 0}
     - target: {fileID: 2447533340658066630, guid: 181f1a3720e145440a45bf5d8bc07d14, type: 3}
       propertyPath: bodyTexts.Array.data[1]

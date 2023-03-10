@@ -305,15 +305,15 @@
             "sodium": 171.0,
             "ingredients": [
                 {
-                    "ingredientName": "Chicken",
-                    "allergenOf": 0,
-                    "isVegan": false,
-                    "isVegetarian": false
-                },
-                {
-                    "ingredientName": "Seaweed",
+                    "ingredientName": "WholeGrain Cereal",
                     "allergenOf": 0,
                     "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Milk",
+                    "allergenOf": 1,
+                    "isVegan": false,
                     "isVegetarian": true
                 }
             ]

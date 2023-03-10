@@ -32,8 +32,7 @@ public class Patient : MonoBehaviour
     {
         NIL,
         Vegan,
-        Vegetarian,
-        Paleo
+        Vegetarian
     }
 
     public enum Allergies

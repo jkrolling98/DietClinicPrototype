@@ -40,23 +40,25 @@ public class GameManager : MonoBehaviour
     public static List<Dish> allDishes;
 
     // round related variables
-    public int stars = 0;
-    public int roundWholeGrainServing = 0;
+    private int stars = 0;
+    private int roundWholeGrainServing = 0;
     private int roundProteinServing = 0;
-    public int roundVeggieServing = 0;
-    public double roundCost = 0;
-    public double money = 0;
+    private int roundVeggieServing = 0;
+    private double roundCost = 0;
+    private double money = 0;
     public int level = 1;
     public GameObject levelBar;
     public TextMeshProUGUI levelText;
-    public int roundCalorie = 0;
-    public int day = 0;
-    public int customerCount;
-    public int roundGoal;
-    public double payment = 0;
+    private int roundCalorie = 0;
+    private int day = 0;
+    private int customerCount;
+    private int roundGoal;
+    private double payment = 0;
 
-    public int totalStars = 0;
-    public int totalCustomerCount = 0;
+    public GameObject totalStarText;
+    public GameObject totalCustomerText;
+    private int totalStars = 0;
+    private int totalCustomerCount = 0;
 
     private Patient currentPatient;
     public List<Dish> selectedDishes;
@@ -132,7 +134,6 @@ public class GameManager : MonoBehaviour
             string footer = $"Day profits: ${(money + payment).ToString("0.00")}";
             yield return StartCoroutine(InstantiatePopUp("Day Complete!", daySummary, footer, goldMedal));
             totalStars += stars;
-            totalCustomerCount += customerCount;
             stars = 0;
             StartCoroutine(StartDay());
         }
@@ -164,6 +165,10 @@ public class GameManager : MonoBehaviour
         if(day == 2)
         {
             yield return StartCoroutine(PlayTutorial(2));
+        }
+        if (day == 3)
+        {
+            yield return StartCoroutine(PlayTutorial(3));
         }
         UpdateDeviseMealTab();
         UpdateDay();
@@ -284,9 +289,27 @@ public class GameManager : MonoBehaviour
         caloriesBar.GetComponent<ProgressBar>().current = roundCalorie;
     }
 
+    public void AddStars(int count)
+    {
+        stars += count;
+        totalStars += count;
+        UpdateStars();
+        UpdateTotalStars();
+    }
+
     public void UpdateStars()
     {
         starText.GetComponent<TextMeshProUGUI>().text = stars.ToString()+"/"+roundGoal.ToString();
+    }
+
+    public void UpdateTotalStars()
+    {
+        totalStarText.GetComponent<TextMeshProUGUI>().text = totalStars.ToString();
+    }
+
+    public void UpdateTotalCustomers()
+    {
+        totalCustomerText.GetComponent<TextMeshProUGUI>().text = totalCustomerCount.ToString();
     }
 
     public void UpdateDay()
@@ -517,6 +540,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("checking for repeats");
         int repeatCounts = 0;
         bool allergyTriggered = false;
+        bool foodPrefTriggered = false;
         List<string> penaltyList = new List<string>();
         foreach (Dish dish in selectedDishes)
         {
@@ -563,6 +587,54 @@ public class GameManager : MonoBehaviour
                     penaltyList.Add($"Patient's {currentPatient.allergies.ToString()} Allergy triggered by {triggers} present in {dish.dishName}.");
                 }
             }
+            if (currentPatient.preference != Patient.FoodPref.NIL)
+            {
+                List<string> triggerlist = new List<string>();
+                foreach (Ingredient ingredient in dish.ingredients)
+                {
+                    if(currentPatient.preference == Patient.FoodPref.Vegan)
+                    {
+                        if (ingredient.isVegan != true)
+                        {
+                            triggerlist.Add(ingredient.ingredientName);
+                            foodPrefTriggered = true;
+                            //penaltyList.Add($"Patient's {currentPatient.allergies.ToString()} Allergy triggered by {ingredient.ingredientName} present in {dish.dishName}.");
+                        }
+                    }
+                    if (currentPatient.preference == Patient.FoodPref.Vegetarian)
+                    {
+                        if (ingredient.isVegetarian != true)
+                        {
+                            triggerlist.Add(ingredient.ingredientName);
+                            foodPrefTriggered = true;
+                            //penaltyList.Add($"Patient's {currentPatient.allergies.ToString()} Allergy triggered by {ingredient.ingredientName} present in {dish.dishName}.");
+                        }
+                    }
+                }
+                if (triggerlist.Count != 0)
+                {
+                    string triggers = "";
+                    for (int i = 0; i < triggerlist.Count; i++)
+                    {
+                        if (i > 0)
+                        {
+                            if (i == triggerlist.Count - 1)
+                            {
+                                triggers += $" and {triggerlist[i]}";
+                            }
+                            else
+                            {
+                                triggers += $", {triggerlist[i]}";
+                            }
+                        }
+                        else
+                        {
+                            triggers += triggerlist[i];
+                        }
+                    }
+                    penaltyList.Add($"{triggers} present in {dish.dishName} does not conform to patient's {currentPatient.preference.ToString()} food preference.");
+                }
+            }
         }
         if(penaltyList.Count > 0)
         {
@@ -606,7 +678,8 @@ public class GameManager : MonoBehaviour
         {
             footer = $"For the poor service, {currentPatient.patientName} has left without paying.";
         }
-        UpdateLevel(starCount);
+        //UpdateLevel(starCount);
+        AddStars(starCount);
         switch (starCount)
         {
             case 0:
@@ -647,6 +720,8 @@ public class GameManager : MonoBehaviour
             GameObject customerIcon = customerCounter.transform.GetChild(customerCount).gameObject;
             customerIcon.GetComponent<Image>().color = Color.black;
             customerCount--;
+            totalCustomerCount++;
+            UpdateTotalCustomers();
         }
         else
         {

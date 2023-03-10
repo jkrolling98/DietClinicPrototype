@@ -63,4 +63,45 @@ public class Dish : MonoBehaviour
         this.sodium = data.sodium;
         this.ingredients = data.ingredients;
     }
+
+    public bool IsVegan()
+    {
+        foreach(Ingredient ingredient in ingredients)
+        {
+            if (ingredient.isVegan == false)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public bool IsVegetarian()
+    {
+        foreach (Ingredient ingredient in ingredients)
+        {
+            if (ingredient.isVegetarian == false)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public List<string> GetAllergenList()
+    {
+        List<string> allergenList = new List<string>();
+        foreach (Ingredient ingredient in ingredients)
+        {
+            if (ingredient.allergenOf != Ingredient.allergen.NIL)
+            {
+                if (!allergenList.Contains(ingredient.allergenOf.ToString()))
+                {
+                    allergenList.Add(ingredient.allergenOf.ToString());
+                }
+            }
+        }
+        return allergenList;
+    }
+
 }
