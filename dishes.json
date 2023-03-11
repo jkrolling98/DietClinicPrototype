@@ -317,6 +317,78 @@
                     "isVegetarian": true
                 }
             ]
+        },
+        {
+            "dishName": "Tofu",
+            "description": "A creamy, high-protein, low-fat soy product also known as bean curd.",
+            "cost": 1.0,
+            "wholeGrainServings": 0,
+            "proteinServings": 2,
+            "veggieServings": 0,
+            "calories": 123.15,
+            "protein": 12.31,
+            "totalFats": 5.62,
+            "saturatedFats": 0.91,
+            "dietaryFibre": 0.61,
+            "carbohydrate": 5.78,
+            "cholesterol": 0.0,
+            "sodium": 10.94,
+            "ingredients": [
+                {
+                    "ingredientName": "tofu",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
+        },
+        {
+            "dishName": "Roasted Chicken Breast Salad",
+            "description": "A salad that features roasted chicken breast with fresh greens.",
+            "cost": 4.0,
+            "wholeGrainServings": 0,
+            "proteinServings": 1,
+            "veggieServings": 2,
+            "calories": 136.04,
+            "protein": 17.9,
+            "totalFats": 2.61,
+            "saturatedFats": 0.72,
+            "dietaryFibre": 4.01,
+            "carbohydrate": 10.99,
+            "cholesterol": 50.12,
+            "sodium": 282.82,
+            "ingredients": [
+                {
+                    "ingredientName": "Chicken Breast",
+                    "allergenOf": 0,
+                    "isVegan": false,
+                    "isVegetarian": false
+                },
+                {
+                    "ingredientName": "Lettuce",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Tomatoes",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Onions",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Green Peppers",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
         }
     ]
 }

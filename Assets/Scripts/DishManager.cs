@@ -70,6 +70,10 @@ public class DishManager : MonoBehaviour
         DishData seaweedChicken = new DishData("Seaweed Chicken", "Sliced chicken coated with seasoned flourand wrapped with seaweed, deep fried. Comes in 5.", 2, 0, 2, 0, 214.2, 15.95, 12.15, 3.85, 2.05, 10.45, 31.5, 652.5, seaweedChickenIngredients);
         Ingredient[] wholeGrainCerealIngredients = new Ingredient[] { new Ingredient("WholeGrain Cereal"), new Ingredient("Milk", Ingredient.allergen.Milk, false, true) };
         DishData wholeGrainCereal = new DishData("WholeGrain Cereal", "Wholegrain breakfast cereal.", 2.5, 2, 0, 0, 95.4, 2.25, 0.93, 0.2, 1.74, 19.47, 0, 171, wholeGrainCerealIngredients);
+        Ingredient[] tofuIngredients = new Ingredient[] { new Ingredient("tofu")};
+        DishData tofu = new DishData("Tofu", "A creamy, high-protein, low-fat soy product also known as bean curd.", 1, 0, 2, 0, 123.15, 12.31, 5.62, 0.91, 0.61, 5.78, 0, 10.94, tofuIngredients);
+        Ingredient[] roastedChickenBreastSaladIngredients = new Ingredient[] { new Ingredient("Chicken Breast",Ingredient.allergen.NIL, false, false), new Ingredient("Lettuce"), new Ingredient("Tomatoes"), new Ingredient("Onions"), new Ingredient("Green Peppers") };
+        DishData roastedChickenBreastSalad = new DishData("Roasted Chicken Breast Salad", "A salad that features roasted chicken breast with fresh greens.", 4, 0, 1, 2, 136.04, 17.9, 2.61, 0.72, 4.01, 10.99, 50.12, 282.82, roastedChickenBreastSaladIngredients);
         dishes.Add(banana);
         dishes.Add(chickenBriyani);
         dishes.Add(chickenRice);
@@ -79,6 +83,8 @@ public class DishManager : MonoBehaviour
         dishes.Add(hokkienMee);
         dishes.Add(seaweedChicken);
         dishes.Add(wholeGrainCereal);
+        dishes.Add(tofu);
+        dishes.Add(roastedChickenBreastSalad);
         Save();
     }
 

@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI patientInfo;
     public GameObject popUpWindow;
     public GameObject roundSummaryPopUp;
+    public GameObject optionsWindow;
     public GameObject pastMealWindow;
     public GameObject pastMealTemplate;
     public GameObject dishWindow;
@@ -269,6 +270,19 @@ public class GameManager : MonoBehaviour
         footer.text = footerText;
         yield return StartCoroutine(popUp.GetComponent<PopUpManager>().WaitForClose(count));
         NewPatient();
+        isRunning = true;
+    }
+
+    public void OpenOptionsWindow()
+    {
+        StartCoroutine(OptionsWindow());
+    }
+
+    public IEnumerator OptionsWindow()
+    {
+        isRunning = false;
+        GameObject popUp = Instantiate(optionsWindow, canvas.transform.position, Quaternion.identity, canvas.transform);
+        yield return StartCoroutine(popUp.GetComponent<OptionsManager>().WaitForClose());
         isRunning = true;
     }
 
