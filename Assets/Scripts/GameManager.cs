@@ -46,20 +46,20 @@ public class GameManager : MonoBehaviour
     private int roundProteinServing = 0;
     private int roundVeggieServing = 0;
     private double roundCost = 0;
-    private double money = 0;
+    private static double money = 0;
     public int level = 1;
     public GameObject levelBar;
     public TextMeshProUGUI levelText;
     private int roundCalorie = 0;
-    private int day = 0;
+    private static int day = 0;
     private int customerCount;
     private int roundGoal;
     private double payment = 0;
 
     public GameObject totalStarText;
     public GameObject totalCustomerText;
-    private int totalStars = 0;
-    private int totalCustomerCount = 0;
+    private static int totalStars = 0;
+    private static int totalCustomerCount = 0;
 
     private Patient currentPatient;
     public List<Dish> selectedDishes;
@@ -79,6 +79,8 @@ public class GameManager : MonoBehaviour
 
     public static bool musicEnabled = true;
     public static bool sfxEnabled = true;
+    public static bool load = false;
+    public static string savePath = Application.persistentDataPath + "/saveData.json";
     //public static GameManager instance;
 
     //private void Awake()
@@ -93,11 +95,29 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        money = 0;
-        UpdateMoney();
         allDishes = DishManager.GetDishes();
         SetDishWindow();
-        StartCoroutine(StartDay());
+        if (load)
+        {
+            string saveJson = System.IO.File.ReadAllText(savePath);
+            SaveData saveData = JsonUtility.FromJson<SaveData>(saveJson);
+            money = saveData.money;
+            UpdateMoney();
+            day = saveData.day - 1;
+            totalCustomerCount = saveData.totalCustomerCount;
+            UpdateTotalCustomers();
+            totalStars = saveData.totalStars;
+            UpdateTotalStars();
+            System.IO.File.Delete(savePath);
+            StartCoroutine(StartDay());
+        }
+        else
+        {
+            money = 0;
+            UpdateMoney();
+            day = 0;
+            StartCoroutine(StartDay());
+        }
     }
 
     private void Update()
@@ -933,5 +953,16 @@ public class GameManager : MonoBehaviour
         }
 
         return tooltiptext;
+    }
+
+
+    public static void SaveGame()
+    {
+        if (day > 1)
+        {
+            SaveData newSave = new SaveData(day, money, totalStars, totalCustomerCount);
+            string jsonSave = JsonUtility.ToJson(newSave, true);
+            System.IO.File.WriteAllText(savePath, jsonSave);
+        }
     }
 }

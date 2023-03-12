@@ -12,6 +12,12 @@ public class MainMenuManager : MonoBehaviour
     private float _x, _y;
     public Canvas canvas;
     public GameObject optionsWindow;
+    public GameObject continueBtn;
+
+    private void Start()
+    {
+        continueBtn.SetActive(System.IO.File.Exists(GameManager.savePath));
+    }
 
     private void Update()
     {
@@ -20,6 +26,8 @@ public class MainMenuManager : MonoBehaviour
         if(background.uvRect.x <= -0.1) { _x = -_x; }
         if (background.uvRect.y >= 0.1) { _y = -_y; }
         if (background.uvRect.y <= -0.1) { _y = -_y; }
+
+        continueBtn.SetActive(System.IO.File.Exists(GameManager.savePath));
     }
 
     public void OnStartGame()
@@ -29,7 +37,8 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnContinue()
     {
-
+        GameManager.load = true;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void OnSettings()

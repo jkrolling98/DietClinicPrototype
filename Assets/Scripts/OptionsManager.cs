@@ -52,6 +52,8 @@ public class OptionsManager : MonoBehaviour
 
     public void OnExitToMainMenu()
     {
+        // call save
+        GameManager.SaveGame();
         SceneManager.LoadScene(0);
     }
 }
