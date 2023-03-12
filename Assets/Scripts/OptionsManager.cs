@@ -3,10 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class OptionsManager : MonoBehaviour
 {
     public GameObject popUpWindow;
+    public Sprite toggleOn;
+    public Sprite toggleOff;
+    public GameObject musicOnUI;
+    public GameObject musicOffUI;
+    public GameObject sfxOnUI;
+    public GameObject sfxOffUI; 
+
+
+    private void Start()
+    {
+        musicOnUI.SetActive(GameManager.musicEnabled);
+        musicOffUI.SetActive(!GameManager.musicEnabled); 
+        sfxOnUI.SetActive(GameManager.sfxEnabled);
+        sfxOffUI.SetActive(!GameManager.sfxEnabled);
+    }
 
     public IEnumerator WaitForClose()
     {
@@ -22,17 +38,20 @@ public class OptionsManager : MonoBehaviour
 
     public void OnToggleMusic()
     {
-        
+        GameManager.musicEnabled = !GameManager.musicEnabled;
+        musicOnUI.SetActive(GameManager.musicEnabled);
+        musicOffUI.SetActive(!GameManager.musicEnabled);
     }
 
     public void OnToggleSfx()
     {
-
+        GameManager.sfxEnabled = !GameManager.sfxEnabled;
+        sfxOnUI.SetActive(GameManager.sfxEnabled);
+        sfxOffUI.SetActive(!GameManager.sfxEnabled);
     }
 
     public void OnExitToMainMenu()
     {
-
-
+        SceneManager.LoadScene(0);
     }
 }

@@ -77,6 +77,8 @@ public class GameManager : MonoBehaviour
     public Sprite silverMedal;
     public Sprite bronzeMedal;
 
+    public static bool musicEnabled = true;
+    public static bool sfxEnabled = true;
     //public static GameManager instance;
 
     //private void Awake()
@@ -814,9 +816,9 @@ public class GameManager : MonoBehaviour
         TabManager.instance.ViewHelp();
         //instantiate new patient and update patient info tab
         currentPatient = PatientFactory.instance.CreateNewStudent(day);
-        Debug.Log("Required calories :" + currentPatient.calorie);
+        //Debug.Log("Required calories :" + currentPatient.calorie);
         caloriesBar.GetComponent<ProgressBar>().maximum = currentPatient.calorie;
-        Debug.Log("current calories :" + currentPatient.GetCurrentCalories());
+        //Debug.Log("current calories :" + currentPatient.GetCurrentCalories());
         roundCalorie = currentPatient.GetCurrentCalories();
         UpdateCalorie();
         caloriesBar.GetComponent<ProgressBar>().current = roundCalorie;
