@@ -12,9 +12,11 @@ public class PlayFabManager : MonoBehaviour
     [Header("UI")]
     public GameObject playFabBtn;
     public GameObject loginScreen;
+    public GameObject usernamePopup;
     public TextMeshProUGUI messageText;
     public TMP_InputField emailInput;
     public TMP_InputField passwordInput;
+    public TMP_InputField usernameInput;
 
     //leader board 
     public GameObject leaderBoardBtn;
@@ -71,9 +73,10 @@ public class PlayFabManager : MonoBehaviour
 
     private void OnRegisterSuccess(RegisterPlayFabUserResult result)
     {
-        StartCoroutine(DisplayMessage("Registered and logged in!"));
-        isLoggedIn = true;
-        StartCoroutine(WaitAndClose(2f));
+        usernamePopup.SetActive(true);
+        //StartCoroutine(DisplayMessage("Registered and logged in!"));
+        //isLoggedIn = true;
+        //StartCoroutine(WaitAndClose(2f));
     }
 
     public void OnLogin()
@@ -86,7 +89,11 @@ public class PlayFabManager : MonoBehaviour
         var request = new LoginWithEmailAddressRequest
         {
             Email = emailInput.text,
-            Password = passwordInput.text
+            Password = passwordInput.text,
+            InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
+            {
+                GetPlayerProfile = true
+            }
         };
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnError);
         StartCoroutine(DisplayMessage("processing...", 0.5f));
@@ -94,10 +101,59 @@ public class PlayFabManager : MonoBehaviour
 
     void OnLoginSuccess(LoginResult result)
     {
-        StartCoroutine(DisplayMessage("Logged in succesfully"));
-        Debug.Log("Successful login/ account create!");
         isLoggedIn = true;
+        string name = null;
+        if(result.InfoResultPayload != null)
+        {
+            name = result.InfoResultPayload.PlayerProfile.DisplayName;
+        }
+        if(name == null)
+        {
+            //ask for name
+            usernamePopup.SetActive(true);
+        }
+        else
+        {
+            StartCoroutine(DisplayMessage("Logged in succesfully"));
+            Debug.Log("Successful login/ account create!");
+            isLoggedIn = true;
+            StartCoroutine(WaitAndClose(2f));
+        }
+    }
+
+    public void SubmitUsername()
+    {
+        if (String.IsNullOrEmpty(usernameInput.text))
+        {
+            StartCoroutine(DisplayMessage("Invalid Inputs!"));
+            return;
+        }
+        // Set up the update request
+        UpdateUserTitleDisplayNameRequest request = new UpdateUserTitleDisplayNameRequest
+        {
+            DisplayName = usernameInput.text
+        };
+
+        // Update the user's display name
+        PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnUsernameSuccess, OnUsernameFailure);
+    }
+
+    private void OnUsernameSuccess(UpdateUserTitleDisplayNameResult result)
+    {
+        // Display name update was successful
+        StartCoroutine(DisplayMessage("Logged in successfully!"));
+        Debug.Log("Logged in successfully.");
+        isLoggedIn = true;
+        usernamePopup.SetActive(false);
         StartCoroutine(WaitAndClose(2f));
+    }
+
+    private void OnUsernameFailure(PlayFabError error)
+    {
+        // Display name update failed
+        Debug.LogError("Failed to add username: " + error.ErrorMessage);
+        // Delete the player to undo the registration process
+        StartCoroutine(DisplayMessage("Failed to add username: " + error.ErrorMessage));
     }
 
     public void OnForgetPassword()
@@ -181,7 +237,7 @@ public class PlayFabManager : MonoBehaviour
             GameObject row = Instantiate(LeaderBoardRowTemplate, rowsParent);
             TextMeshProUGUI[] texts = row.GetComponentsInChildren<TextMeshProUGUI>();
             texts[0].text = (item.Position +1).ToString();
-            texts[1].text = item.PlayFabId.ToString();
+            texts[1].text = item.DisplayName==null? item.PlayFabId.ToString() : item.DisplayName;
             texts[2].text = item.StatValue.ToString();
             row.SetActive(true);
         }

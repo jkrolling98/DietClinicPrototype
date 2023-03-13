@@ -111,7 +111,6 @@ public class GameManager : MonoBehaviour
             UpdateTotalCustomers();
             totalStars = saveData.totalStars;
             UpdateTotalStars();
-            System.IO.File.Delete(savePath);
             StartCoroutine(StartDay());
         }
         else
@@ -120,6 +119,10 @@ public class GameManager : MonoBehaviour
             UpdateMoney();
             day = 0;
             StartCoroutine(StartDay());
+        }
+        if (System.IO.File.Exists(savePath))
+        {
+            System.IO.File.Delete(savePath);
         }
     }
 
