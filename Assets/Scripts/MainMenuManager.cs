@@ -13,10 +13,12 @@ public class MainMenuManager : MonoBehaviour
     public Canvas canvas;
     public GameObject optionsWindow;
     public GameObject continueBtn;
+    public static string savePath;
 
     private void Start()
     {
-        continueBtn.SetActive(System.IO.File.Exists(GameManager.savePath));
+        savePath = Application.persistentDataPath + "/saveData.json";
+        continueBtn.SetActive(System.IO.File.Exists(savePath));
     }
 
     private void Update()
@@ -27,7 +29,7 @@ public class MainMenuManager : MonoBehaviour
         if (background.uvRect.y >= 0.1) { _y = -_y; }
         if (background.uvRect.y <= -0.1) { _y = -_y; }
 
-        continueBtn.SetActive(System.IO.File.Exists(GameManager.savePath));
+        continueBtn.SetActive(System.IO.File.Exists(savePath));
     }
 
     public void OnStartGame()

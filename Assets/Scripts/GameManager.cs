@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using PlayFab.ClientModels;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class GameManager : MonoBehaviour
     public Canvas canvas;
     public TextMeshProUGUI patientInfo;
     public GameObject popUpWindow;
+    public GameObject leaderBoardPopup;
     public GameObject roundSummaryPopUp;
     public GameObject optionsWindow;
     public GameObject pastMealWindow;
@@ -80,7 +82,7 @@ public class GameManager : MonoBehaviour
     public static bool musicEnabled = true;
     public static bool sfxEnabled = true;
     public static bool load = false;
-    public static string savePath = Application.persistentDataPath + "/saveData.json";
+    public string savePath;
     //public static GameManager instance;
 
     //private void Awake()
@@ -95,6 +97,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        savePath = MainMenuManager.savePath;
         allDishes = DishManager.GetDishes();
         SetDishWindow();
         if (load)
@@ -156,7 +159,6 @@ public class GameManager : MonoBehaviour
             $"You have gathered a total of {stars} stars!";
             string footer = $"Day profits: ${(money + payment).ToString("0.00")}";
             yield return StartCoroutine(InstantiatePopUp("Day Complete!", daySummary, footer, goldMedal));
-            totalStars += stars;
             stars = 0;
             StartCoroutine(StartDay());
         }
@@ -164,7 +166,9 @@ public class GameManager : MonoBehaviour
         {
             yield return StartCoroutine(InstantiatePopUp("Game Over", $"Customers were not impressed...\nYou were {roundGoal - stars} stars short of meeting the requirement."));
             totalStars = 0;
+            UpdateTotalStars();
             totalCustomerCount = 0;
+            UpdateTotalCustomers();
             stars = 0;
             //UpdateStars();
             day = 0;
@@ -243,16 +247,6 @@ public class GameManager : MonoBehaviour
             GameObject customer = Instantiate(customerIcon, customerCounter.transform);
             customer.SetActive(true);
         }
-    }
-
-    public void NextDay()
-    {
-        totalStars += stars;
-        totalCustomerCount += customerCount;
-        stars = 0;
-        UpdateStars();
-        customerCount = 0;
-        StartCoroutine(StartDay());
     }
 
     public IEnumerator InstantiatePopUp(string headerText, string bodyText, string footerText = null, Sprite contentImage = null, Sprite hintImage = null)
@@ -341,6 +335,11 @@ public class GameManager : MonoBehaviour
     public void UpdateTotalStars()
     {
         totalStarText.GetComponent<TextMeshProUGUI>().text = totalStars.ToString();
+        if (PlayFabManager.isLoggedIn)
+        {
+            PlayFabManager.instance.SendLeaderBoard(totalStars);
+        }
+        
     }
 
     public void UpdateTotalCustomers()
@@ -955,14 +954,23 @@ public class GameManager : MonoBehaviour
         return tooltiptext;
     }
 
+    public void GetLeaderBoard()
+    {
+        PlayFabManager.instance.GetLeaderboard();
+        leaderBoardPopup.SetActive(true);
+    }
 
     public static void SaveGame()
     {
         if (day > 1)
         {
+            // local save
             SaveData newSave = new SaveData(day, money, totalStars, totalCustomerCount);
             string jsonSave = JsonUtility.ToJson(newSave, true);
-            System.IO.File.WriteAllText(savePath, jsonSave);
+            System.IO.File.WriteAllText(MainMenuManager.savePath, jsonSave);
+
+            // Online save
+
         }
     }
 }

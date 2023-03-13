@@ -770,6 +770,18 @@
       <Project>{9A37107F-6AE3-3295-9BB7-46F486970017}</Project>
       <Name>Assembly-CSharp</Name>
     </ProjectReference>
+    <ProjectReference Include="PlayFabSDKEditor.csproj">
+      <Project>{482BC4FC-CDCE-8BB8-2E61-B75AA8E6013C}</Project>
+      <Name>PlayFabSDKEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="PlayFabEditorExtensions.csproj">
+      <Project>{B580AB80-A0F2-F215-B739-339FA28B5D66}</Project>
+      <Name>PlayFabEditorExtensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="PlayFab.csproj">
+      <Project>{0F644AAE-F353-293B-F758-544073B7CDF7}</Project>
+      <Name>PlayFab</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
