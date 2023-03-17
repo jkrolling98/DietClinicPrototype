@@ -23,10 +23,12 @@ public class PlayFabManager : MonoBehaviour
     public GameObject leaderBoardBtn;
     public GameObject leaderBoardPopUp;
     public GameObject LeaderBoardRowTemplate;
+    public GameObject PlayerRank;
     public Transform rowsParent;
 
     public static bool isLoggedIn = false;
     public static bool isLoading = false;
+    private string playFabId;
 
     public static PlayFabManager instance;
     private void Awake()
@@ -99,7 +101,8 @@ public class PlayFabManager : MonoBehaviour
             Password = passwordInput.text,
             InfoRequestParameters = new GetPlayerCombinedInfoRequestParams
             {
-                GetPlayerProfile = true
+                GetPlayerProfile = true,
+                GetUserAccountInfo = true
             }
         };
         isLoading = true;
@@ -114,6 +117,7 @@ public class PlayFabManager : MonoBehaviour
         if(result.InfoResultPayload != null)
         {
             name = result.InfoResultPayload.PlayerProfile.DisplayName;
+            playFabId = result.InfoResultPayload.AccountInfo.PlayFabId;
         }
         if(name == null)
         {
@@ -255,6 +259,27 @@ public class PlayFabManager : MonoBehaviour
             row.SetActive(true);
         }
 
+        var request = new GetLeaderboardAroundPlayerRequest
+        {
+            StatisticName = "StarScore",
+            MaxResultsCount = 1
+        };
+
+        PlayFabClientAPI.GetLeaderboardAroundPlayer(request, OnGetPlayerLeaderboardSuccess, OnError);
+    }
+
+    private void OnGetPlayerLeaderboardSuccess(GetLeaderboardAroundPlayerResult result)
+    {
+        foreach (var items in result.Leaderboard)
+        {
+            if (items.PlayFabId == playFabId)
+            {
+                TextMeshProUGUI[] texts = PlayerRank.GetComponentsInChildren<TextMeshProUGUI>();
+                texts[0].text = (items.Position + 1).ToString();
+                texts[1].text = items.DisplayName == null ? items.PlayFabId.ToString() : items.DisplayName;
+                texts[2].text = items.StatValue.ToString();
+            }
+        }
     }
 
     //public void SaveGameData(int day, double money, int totalStars, int totalCustomerCount)
