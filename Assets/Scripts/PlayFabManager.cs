@@ -17,6 +17,7 @@ public class PlayFabManager : MonoBehaviour
     public TMP_InputField emailInput;
     public TMP_InputField passwordInput;
     public TMP_InputField usernameInput;
+    public List<Button> buttonList;
 
     //leader board 
     public GameObject leaderBoardBtn;
@@ -25,6 +26,7 @@ public class PlayFabManager : MonoBehaviour
     public Transform rowsParent;
 
     public static bool isLoggedIn = false;
+    public static bool isLoading = false;
 
     public static PlayFabManager instance;
     private void Awake()
@@ -42,6 +44,10 @@ public class PlayFabManager : MonoBehaviour
     {
         playFabBtn.SetActive(!isLoggedIn);
         leaderBoardBtn.SetActive(isLoggedIn);
+        foreach(Button button in buttonList)
+        {
+            button.interactable = !isLoading;
+        }
     }
 
     public void OpenLoginScreen()
@@ -67,8 +73,9 @@ public class PlayFabManager : MonoBehaviour
             Password = passwordInput.text,
             RequireBothUsernameAndEmail = false
         };
+        isLoading = true;
         PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnError);
-        StartCoroutine(DisplayMessage("processing...", 0.5f));
+        messageText.text = "processing...";
     }
 
     private void OnRegisterSuccess(RegisterPlayFabUserResult result)
@@ -95,8 +102,9 @@ public class PlayFabManager : MonoBehaviour
                 GetPlayerProfile = true
             }
         };
+        isLoading = true;
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnError);
-        StartCoroutine(DisplayMessage("processing...", 0.5f));
+        messageText.text = "processing...";
     }
 
     void OnLoginSuccess(LoginResult result)
@@ -133,7 +141,7 @@ public class PlayFabManager : MonoBehaviour
         {
             DisplayName = usernameInput.text
         };
-
+        isLoading = true;
         // Update the user's display name
         PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnUsernameSuccess, OnUsernameFailure);
     }
@@ -154,6 +162,7 @@ public class PlayFabManager : MonoBehaviour
         Debug.LogError("Failed to add username: " + error.ErrorMessage);
         // Delete the player to undo the registration process
         StartCoroutine(DisplayMessage("Failed to add username: " + error.ErrorMessage));
+        isLoading = false;
     }
 
     public void OnForgetPassword()
@@ -168,12 +177,14 @@ public class PlayFabManager : MonoBehaviour
             Email = emailInput.text,
             TitleId = "795FA"
         };
+        isLoading = true;
         PlayFabClientAPI.SendAccountRecoveryEmail(request, OnSendRecoveryEmail, OnError);
-        StartCoroutine(DisplayMessage("processing...",0.5f));
+        messageText.text = "processing...";
     }
 
     private void OnSendRecoveryEmail(SendAccountRecoveryEmailResult result)
     {
+        isLoading = false;
         StartCoroutine(DisplayMessage("Password reset mail is sent!"));
     }
 
@@ -181,9 +192,10 @@ public class PlayFabManager : MonoBehaviour
     {
         StartCoroutine(DisplayMessage(error.ErrorMessage));
         Debug.Log(error.GenerateErrorReport());
+        isLoading = false;
     }
 
-    public IEnumerator DisplayMessage(string msg, float seconds=2)
+    public IEnumerator DisplayMessage(string msg, float seconds=5f)
     {
         messageText.text = msg;
         yield return new WaitForSeconds(seconds);
@@ -193,6 +205,7 @@ public class PlayFabManager : MonoBehaviour
     public IEnumerator WaitAndClose(float seconds)
     {
         yield return new WaitForSeconds(seconds);
+        isLoading = false;
         loginScreen.SetActive(false);
     }
 
@@ -270,7 +283,9 @@ public class PlayFabManager : MonoBehaviour
 
     public void OnContinueAsGuest()
     {
+        isLoading = true;
         StartCoroutine(DisplayMessage("Continuing as guest, progress will not be saved."));
+        isLoading = false;
         StartCoroutine(WaitAndClose(2f));
     }
 }

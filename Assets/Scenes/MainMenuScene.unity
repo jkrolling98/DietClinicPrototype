@@ -705,7 +705,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 812088086}
+  m_TargetGraphic: {fileID: 301695690}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -1872,6 +1872,11 @@ MonoBehaviour:
   emailInput: {fileID: 696362463}
   passwordInput: {fileID: 282013739}
   usernameInput: {fileID: 2021307953}
+  buttonList:
+  - {fileID: 1642591659}
+  - {fileID: 462989380}
+  - {fileID: 1671754217}
+  - {fileID: 5488745278782060657}
   leaderBoardBtn: {fileID: 6006751214238655662}
   leaderBoardPopUp: {fileID: 943056441}
   LeaderBoardRowTemplate: {fileID: 1961688963}
@@ -7203,7 +7208,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &7156286597988535783
 GameObject:
   m_ObjectHideFlags: 0

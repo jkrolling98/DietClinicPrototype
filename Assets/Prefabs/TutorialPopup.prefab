@@ -2328,7 +2328,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popUpWindow: {fileID: 5438416172880475374}
-  count: 3
   current: 1
   headerText: {fileID: 5438416172071636878}
   bodyText: {fileID: 5438416171846397576}

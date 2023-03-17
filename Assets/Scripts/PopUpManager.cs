@@ -10,6 +10,9 @@ public class PopUpManager : MonoBehaviour
     public GameObject helpWindow = null;
     public TextMeshProUGUI headerText;
     public TextMeshProUGUI bodyText;
+    public GameObject patientUI = null;
+    public GameObject speechBubble = null;
+    public GameObject emotes = null;
 
     // for round summary
     public GameObject star1 = null;
@@ -23,8 +26,40 @@ public class PopUpManager : MonoBehaviour
         Destroy(popUpWindow);
     }
 
-    public IEnumerator WaitForClose(int count)
+    public IEnumerator WaitForClose(int count, string emotion)
     {
+        if(patientUI != null)
+        {
+            // set patient sprite
+            if (GameManager.currentPatient.gender == Patient.Gender.Male)
+            {
+                patientUI.GetComponent<Image>().sprite = GameManager.currentPatient.height % 2 == 0 ? Resources.Load<Sprite>($"Patients/Male_01/" + emotion) : Resources.Load<Sprite>($"Patients/Male_02/" + emotion);
+            }
+            else
+            {
+                patientUI.GetComponent<Image>().sprite = GameManager.currentPatient.height % 2 == 0 ? Resources.Load<Sprite>($"Patients/Female_01/" + emotion) : Resources.Load<Sprite>($"Patients/Female_02/" + emotion);
+            }
+            // set emote
+            string emoteName = "";
+            switch (emotion)
+            {
+                case ("upset"):
+                    emoteName = "E34";
+                    break;
+                case ("neutral"):
+                    emoteName = "E25";
+                    break;
+                case ("happy"):
+                    emoteName = "E1";
+                    break;
+                case ("elated"):
+                    emoteName = "E11";
+                    break;
+            }
+            emotes.GetComponent<Image>().sprite = Resources.Load<Sprite>("Emotes/" + emoteName);
+            emotes.SetActive(true);
+            speechBubble.SetActive(true);
+        }
         if (star1 != null && star2 != null && star3 != null)
         {
             if (count >= 1) LeanTween.scale(star1, new Vector3(1f, 1f, 1f), 2f).setDelay(.1f).setEase(LeanTweenType.easeOutElastic);

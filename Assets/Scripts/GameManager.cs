@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
     private static int totalStars = 0;
     private static int totalCustomerCount = 0;
 
-    private Patient currentPatient;
+    public static Patient currentPatient;
     public List<Dish> selectedDishes;
 
     private float timerDuration = 60f;
@@ -175,7 +175,10 @@ public class GameManager : MonoBehaviour
             stars = 0;
             //UpdateStars();
             day = 0;
-
+            money = 0;
+            UpdateMoney();
+            payment = 0;
+            UpdatePayment();
             StartCoroutine(StartDay());
         }
     }
@@ -279,7 +282,7 @@ public class GameManager : MonoBehaviour
         isRunning = true;
     }
 
-    public IEnumerator InstantiateRoundSummary(string bodyText, string footerText, int count)
+    public IEnumerator InstantiateRoundSummary(string bodyText, string footerText, int count, string emotion)
     {
         isRunning = false;
         GameObject popUp = Instantiate(roundSummaryPopUp, canvas.transform.position, Quaternion.identity, canvas.transform);
@@ -287,7 +290,7 @@ public class GameManager : MonoBehaviour
         TextMeshProUGUI footer = popUp.transform.Find("RoundSummaryWindow").Find("Body").Find("FooterText").GetComponent<TextMeshProUGUI>();
         body.text = bodyText;
         footer.text = footerText;
-        yield return StartCoroutine(popUp.GetComponent<PopUpManager>().WaitForClose(count));
+        yield return StartCoroutine(popUp.GetComponent<PopUpManager>().WaitForClose(count,emotion));
         NewPatient();
         isRunning = true;
     }
@@ -676,7 +679,7 @@ public class GameManager : MonoBehaviour
         }
         if(penaltyList.Count > 0)
         {
-            summary += "Penalties\n";
+            summary += "\nPenalties\n";
             foreach (string penaltyText in penaltyList)
             {
                 summary += penaltyText + "\n";
@@ -718,31 +721,36 @@ public class GameManager : MonoBehaviour
         }
         //UpdateLevel(starCount);
         AddStars(starCount);
+        string emotion = "";
         switch (starCount)
         {
             case 0:
                 //StartCoroutine(UpdateSpeechBubble("That was the worst!"));
-                StartCoroutine(UpdateEmotes("E34"));
-                UpdatePatientSprite("upset");
+                emotion = "upset";
+                //StartCoroutine(UpdateEmotes("E34"));
+                //UpdatePatientSprite(emotion);
                 break;
             case 1:
                 //StartCoroutine(UpdateSpeechBubble("Could be better..."));
-                StartCoroutine(UpdateEmotes("E25"));
-                UpdatePatientSprite("neutral");
+                emotion = "neutral";
+                //StartCoroutine(UpdateEmotes("E25"));
+                //UpdatePatientSprite(emotion);
                 break;
             case 2:
                 //StartCoroutine(UpdateSpeechBubble("Not too shabby!"));
-                StartCoroutine(UpdateEmotes("E1"));
-                UpdatePatientSprite("happy");
+                emotion = "happy";
+                //StartCoroutine(UpdateEmotes("E1"));
+                //UpdatePatientSprite(emotion);
                 break;
             case 3:
                 //StartCoroutine(UpdateSpeechBubble("That was awesome!"));
-                StartCoroutine(UpdateEmotes("E11"));
-                UpdatePatientSprite("elated");
+                emotion = "elated";
+                //StartCoroutine(UpdateEmotes("E11"));
+                //UpdatePatientSprite(emotion);
                 break;
             default: break;
         }
-        StartCoroutine(InstantiateRoundSummary(summary, footer, starCount));
+        StartCoroutine(InstantiateRoundSummary(summary, footer, starCount, emotion));
     }
 
     public void Serve()
