@@ -55,7 +55,7 @@ public class DishManager : MonoBehaviour
         Ingredient[] popiahIngredients = new Ingredient[] { new Ingredient("Radish"), new Ingredient("Egg",Ingredient.allergen.Eggs), new Ingredient("Chinese Sausage",Ingredient.allergen.NIL,false,false), new Ingredient("Flour") };
         DishData popiah = new DishData("Popiah", "Radish, eggs, chinese dried sausage and sweet black sauce wrapped in a flour-based skin", 3.5, 1, 1, 1, 187.57, 7.55, 11.19, 3.64, 4.06, 14.27, 44.76, 675.67, popiahIngredients);
         Ingredient[] gardenSaladIngredients = new Ingredient[] { new Ingredient("Lettuce"), new Ingredient("Tomatoes"), new Ingredient("Spinach") };
-        DishData gardenSalad = new DishData("GardenSalad", "Salad with 3 vegetable toppings, no salad dressing.", 4, 0, 0, 2, 53.19, 4.05, 1.37, 0.25, 4.3, 7.59, 0, 326.37, gardenSaladIngredients);
+        DishData gardenSalad = new DishData("Garden Salad", "Salad with 3 vegetable toppings, no salad dressing.", 4, 0, 0, 2, 53.19, 4.05, 1.37, 0.25, 4.3, 7.59, 0, 326.37, gardenSaladIngredients);
         Ingredient[] hokkienMeeIngredients = new Ingredient[] { new Ingredient("Yellow Noodle"), new Ingredient("Rice Vermicelli"), new Ingredient("Prawn",Ingredient.allergen.ShellFish,false,false), new Ingredient("Cuttle Fish", Ingredient.allergen.ShellFish, false, false) };
         DishData hokkienMee = new DishData("Hokkien Mee", "Fried mixture of yellow noodle and thick rice vermicelli, with added prawn and cuttlefish.", 5.5, 2, 1, 0, 521.56, 18.12, 19.01, 7.34, 4.42, 69.39, 132.6, 1423.24, hokkienMeeIngredients);
         Ingredient[] seaweedChickenIngredients = new Ingredient[] { new Ingredient("Chicken",Ingredient.allergen.NIL,false,false), new Ingredient("Seaweed") };
@@ -63,20 +63,26 @@ public class DishManager : MonoBehaviour
         Ingredient[] wholeGrainCerealIngredients = new Ingredient[] { new Ingredient("WholeGrain Cereal"), new Ingredient("Milk", Ingredient.allergen.Milk, false, true) };
         DishData wholeGrainCereal = new DishData("WholeGrain Cereal", "Wholegrain breakfast cereal.", 2.5, 2, 0, 0, 95.4, 2.25, 0.93, 0.2, 1.74, 19.47, 0, 171, wholeGrainCerealIngredients);
         Ingredient[] tofuIngredients = new Ingredient[] { new Ingredient("tofu")};
-        DishData tofu = new DishData("Tofu", "A creamy, high-protein, low-fat soy product also known as bean curd.", 1, 0, 2, 0, 123.15, 12.31, 5.62, 0.91, 0.61, 5.78, 0, 10.94, tofuIngredients);
+        DishData tofu = new DishData("Tofu", "A creamy, high-protein, low-fat soy product also known as bean curd.", 1.5, 0, 2, 0, 123.15, 12.31, 5.62, 0.91, 0.61, 5.78, 0, 10.94, tofuIngredients);
         Ingredient[] roastedChickenBreastSaladIngredients = new Ingredient[] { new Ingredient("Chicken Breast",Ingredient.allergen.NIL, false, false), new Ingredient("Lettuce"), new Ingredient("Tomatoes"), new Ingredient("Onions"), new Ingredient("Green Peppers") };
         DishData roastedChickenBreastSalad = new DishData("Roasted Chicken Breast Salad", "A salad that features roasted chicken breast with fresh greens.", 4, 0, 1, 2, 136.04, 17.9, 2.61, 0.72, 4.01, 10.99, 50.12, 282.82, roastedChickenBreastSaladIngredients);
-        dishes.Add(banana);
+        Ingredient[] appleIngredients = new Ingredient[] { new Ingredient("Apple") };
+        DishData apple = new DishData("Apple", "a round or oval-shaped fruit with a red, green, or yellow skin and a firm, juicy flesh inside.", 0.6, 0, 0, 1, 79.21, 0.41, 0.28, 0, 3.17, 16.84, 0, 1.38, appleIngredients);
+        Ingredient[] thunderTeaRiceIngredients = new Ingredient[] { new Ingredient("Brown rice"), new Ingredient("tea"), new Ingredient("vegetables"), new Ingredient("beancurd") };
+        DishData thunderTeaRice = new DishData("Thunder Tea Rice", "a vegetarian variation of thunder tea rice.", 5.5, 2, 1, 2, 642, 26.54, 33.94, 10.19, 15.41, 57.78, 0, 1335.36, thunderTeaRiceIngredients);
         dishes.Add(chickenBriyani);
-        dishes.Add(chickenRice);
-        dishes.Add(muttonBriyani);
         dishes.Add(popiah);
+        dishes.Add(banana);
+        dishes.Add(chickenRice);
         dishes.Add(gardenSalad);
         dishes.Add(hokkienMee);
         dishes.Add(seaweedChicken);
         dishes.Add(wholeGrainCereal);
+        dishes.Add(muttonBriyani);
         dishes.Add(tofu);
         dishes.Add(roastedChickenBreastSalad);
+        dishes.Add(apple);
+        dishes.Add(thunderTeaRice);
         Save();
     }
 
@@ -100,9 +106,4 @@ public class DishManager : MonoBehaviour
         public List<DishData> dishes;
     }
 
-    [Serializable]
-    private class IngredientWrapper
-    {
-        public List<Ingredient> ingredients;
-    }
 }

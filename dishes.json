@@ -1,30 +1,6 @@
 {
     "dishes": [
         {
-            "dishName": "Banana",
-            "description": "A curved, yellow fruit with a thick skin and soft sweet flesh.",
-            "cost": 0.6,
-            "wholeGrainServings": 0,
-            "proteinServings": 0,
-            "veggieServings": 1,
-            "calories": 93.0,
-            "protein": 1.08,
-            "totalFats": 0.15,
-            "saturatedFats": 0.05,
-            "dietaryFibre": 2.0,
-            "carbohydrate": 21.91,
-            "cholesterol": 0.0,
-            "sodium": 16.91,
-            "ingredients": [
-                {
-                    "ingredientName": "Banana",
-                    "allergenOf": 0,
-                    "isVegan": true,
-                    "isVegetarian": true
-                }
-            ]
-        },
-        {
             "dishName": "Chicken Briyani",
             "description": "Rice cooked with ghee and spices, served with spicy chicken",
             "cost": 6.0,
@@ -48,84 +24,6 @@
                 },
                 {
                     "ingredientName": "Chicken",
-                    "allergenOf": 0,
-                    "isVegan": false,
-                    "isVegetarian": false
-                },
-                {
-                    "ingredientName": "Ghee",
-                    "allergenOf": 1,
-                    "isVegan": true,
-                    "isVegetarian": true
-                }
-            ]
-        },
-        {
-            "dishName": "Chicken Rice",
-            "description": "A dish of poached chicken and seasoned rice, served with chilli sauce and usually with cucumber garnishes.",
-            "cost": 4.5,
-            "wholeGrainServings": 2,
-            "proteinServings": 1,
-            "veggieServings": 0,
-            "calories": 557.7,
-            "protein": 28.05,
-            "totalFats": 13.86,
-            "saturatedFats": 4.95,
-            "dietaryFibre": 3.3,
-            "carbohydrate": 80.19,
-            "cholesterol": 36.63,
-            "sodium": 697.95,
-            "ingredients": [
-                {
-                    "ingredientName": "Rice",
-                    "allergenOf": 0,
-                    "isVegan": true,
-                    "isVegetarian": true
-                },
-                {
-                    "ingredientName": "Chicken",
-                    "allergenOf": 0,
-                    "isVegan": false,
-                    "isVegetarian": false
-                },
-                {
-                    "ingredientName": "Cucumber",
-                    "allergenOf": 0,
-                    "isVegan": true,
-                    "isVegetarian": true
-                },
-                {
-                    "ingredientName": "Chilli",
-                    "allergenOf": 0,
-                    "isVegan": true,
-                    "isVegetarian": true
-                }
-            ]
-        },
-        {
-            "dishName": "Mutton Briyani",
-            "description": "Rice cooked with ghee and spices, served with spicy mutton",
-            "cost": 7.0,
-            "wholeGrainServings": 2,
-            "proteinServings": 1,
-            "veggieServings": 0,
-            "calories": 751.95,
-            "protein": 35.85,
-            "totalFats": 24.75,
-            "saturatedFats": 12.12,
-            "dietaryFibre": 8.08,
-            "carbohydrate": 96.46,
-            "cholesterol": 95.95,
-            "sodium": 1858.4,
-            "ingredients": [
-                {
-                    "ingredientName": "Rice",
-                    "allergenOf": 0,
-                    "isVegan": true,
-                    "isVegetarian": true
-                },
-                {
-                    "ingredientName": "Mutton",
                     "allergenOf": 0,
                     "isVegan": false,
                     "isVegetarian": false
@@ -181,7 +79,73 @@
             ]
         },
         {
-            "dishName": "GardenSalad",
+            "dishName": "Banana",
+            "description": "A curved, yellow fruit with a thick skin and soft sweet flesh.",
+            "cost": 0.6,
+            "wholeGrainServings": 0,
+            "proteinServings": 0,
+            "veggieServings": 1,
+            "calories": 93.0,
+            "protein": 1.08,
+            "totalFats": 0.15,
+            "saturatedFats": 0.05,
+            "dietaryFibre": 2.0,
+            "carbohydrate": 21.91,
+            "cholesterol": 0.0,
+            "sodium": 16.91,
+            "ingredients": [
+                {
+                    "ingredientName": "Banana",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
+        },
+        {
+            "dishName": "Chicken Rice",
+            "description": "A dish of poached chicken and seasoned rice, served with chilli sauce and usually with cucumber garnishes.",
+            "cost": 4.5,
+            "wholeGrainServings": 2,
+            "proteinServings": 1,
+            "veggieServings": 0,
+            "calories": 557.7,
+            "protein": 28.05,
+            "totalFats": 13.86,
+            "saturatedFats": 4.95,
+            "dietaryFibre": 3.3,
+            "carbohydrate": 80.19,
+            "cholesterol": 36.63,
+            "sodium": 697.95,
+            "ingredients": [
+                {
+                    "ingredientName": "Rice",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Chicken",
+                    "allergenOf": 0,
+                    "isVegan": false,
+                    "isVegetarian": false
+                },
+                {
+                    "ingredientName": "Cucumber",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Chilli",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
+        },
+        {
+            "dishName": "Garden Salad",
             "description": "Salad with 3 vegetable toppings, no salad dressing.",
             "cost": 4.0,
             "wholeGrainServings": 0,
@@ -319,9 +283,45 @@
             ]
         },
         {
+            "dishName": "Mutton Briyani",
+            "description": "Rice cooked with ghee and spices, served with spicy mutton",
+            "cost": 7.0,
+            "wholeGrainServings": 2,
+            "proteinServings": 1,
+            "veggieServings": 0,
+            "calories": 751.95,
+            "protein": 35.85,
+            "totalFats": 24.75,
+            "saturatedFats": 12.12,
+            "dietaryFibre": 8.08,
+            "carbohydrate": 96.46,
+            "cholesterol": 95.95,
+            "sodium": 1858.4,
+            "ingredients": [
+                {
+                    "ingredientName": "Rice",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Mutton",
+                    "allergenOf": 0,
+                    "isVegan": false,
+                    "isVegetarian": false
+                },
+                {
+                    "ingredientName": "Ghee",
+                    "allergenOf": 1,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
+        },
+        {
             "dishName": "Tofu",
             "description": "A creamy, high-protein, low-fat soy product also known as bean curd.",
-            "cost": 1.0,
+            "cost": 1.5,
             "wholeGrainServings": 0,
             "proteinServings": 2,
             "veggieServings": 0,
@@ -384,6 +384,72 @@
                 },
                 {
                     "ingredientName": "Green Peppers",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
+        },
+        {
+            "dishName": "Apple",
+            "description": "a round or oval-shaped fruit with a red, green, or yellow skin and a firm, juicy flesh inside.",
+            "cost": 0.6,
+            "wholeGrainServings": 0,
+            "proteinServings": 0,
+            "veggieServings": 1,
+            "calories": 79.21,
+            "protein": 0.41,
+            "totalFats": 0.28,
+            "saturatedFats": 0.0,
+            "dietaryFibre": 3.17,
+            "carbohydrate": 16.84,
+            "cholesterol": 0.0,
+            "sodium": 1.38,
+            "ingredients": [
+                {
+                    "ingredientName": "Apple",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
+        },
+        {
+            "dishName": "Thunder Tea Rice",
+            "description": "a vegetarian variation of thunder tea rice.",
+            "cost": 5.5,
+            "wholeGrainServings": 2,
+            "proteinServings": 1,
+            "veggieServings": 2,
+            "calories": 642.0,
+            "protein": 26.54,
+            "totalFats": 33.94,
+            "saturatedFats": 10.19,
+            "dietaryFibre": 15.41,
+            "carbohydrate": 57.78,
+            "cholesterol": 0.0,
+            "sodium": 1335.36,
+            "ingredients": [
+                {
+                    "ingredientName": "Brown rice",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "tea",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "vegetables",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "beancurd",
                     "allergenOf": 0,
                     "isVegan": true,
                     "isVegetarian": true

@@ -28,7 +28,8 @@ public class PlayFabManager : MonoBehaviour
 
     public static bool isLoggedIn = false;
     public static bool isLoading = false;
-    private string playFabId;
+    public static string playFabId;
+    public static string username;
 
     public static PlayFabManager instance;
     private void Awake()
@@ -38,10 +39,9 @@ public class PlayFabManager : MonoBehaviour
             Destroy(this);
             return;
         }
-        instance = this;
+        instance = this;   
     }
 
-    // Start is called before the first frame update
     void Update()
     {
         playFabBtn.SetActive(!isLoggedIn);
@@ -126,6 +126,7 @@ public class PlayFabManager : MonoBehaviour
         }
         else
         {
+            username = name;
             StartCoroutine(DisplayMessage("Logged in succesfully"));
             Debug.Log("Successful login/ account create!");
             isLoggedIn = true;
@@ -153,6 +154,7 @@ public class PlayFabManager : MonoBehaviour
     private void OnUsernameSuccess(UpdateUserTitleDisplayNameResult result)
     {
         // Display name update was successful
+        username = result.DisplayName;
         StartCoroutine(DisplayMessage("Logged in successfully!"));
         Debug.Log("Logged in successfully.");
         isLoggedIn = true;
@@ -270,11 +272,12 @@ public class PlayFabManager : MonoBehaviour
 
     private void OnGetPlayerLeaderboardSuccess(GetLeaderboardAroundPlayerResult result)
     {
+        TextMeshProUGUI[] texts = PlayerRank.GetComponentsInChildren<TextMeshProUGUI>();
+        texts[1].text = username;
         foreach (var items in result.Leaderboard)
         {
             if (items.PlayFabId == playFabId)
             {
-                TextMeshProUGUI[] texts = PlayerRank.GetComponentsInChildren<TextMeshProUGUI>();
                 texts[0].text = (items.Position + 1).ToString();
                 texts[1].text = items.DisplayName == null ? items.PlayFabId.ToString() : items.DisplayName;
                 texts[2].text = items.StatValue.ToString();

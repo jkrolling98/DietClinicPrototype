@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
     private int roundCalorie = 0;
     private static int day = 0;
     private int customerCount;
+    private int maxCustomerCount = 10;
     private int roundGoal;
     private double payment = 0;
 
@@ -205,12 +206,12 @@ public class GameManager : MonoBehaviour
         }
         UpdateDeviseMealTab();
         UpdateDay();
-        customerCount = (int)3 + (day/3);
+        customerCount = Mathf.Min((int)3+(day/3) , maxCustomerCount);
         roundGoal = customerCount*2-3;
         UpdateCustomerCounter();
         UpdateTimer(customerCount*timerDuration);
         NewPatient();
-        yield return StartCoroutine(InstantiatePopUp($"Day {day} Start", $"Serve {customerCount} customers and achieve {roundGoal} stars within 3 mins to progress!"));
+        yield return StartCoroutine(InstantiatePopUp($"Day {day} Start", $"Serve {customerCount} patients and achieve {roundGoal} stars within {customerCount} mins to progress!"));
     }
 
     public void UpdateTimer(float time)
@@ -533,23 +534,23 @@ public class GameManager : MonoBehaviour
             portionScore -= 1;
         }
         double calorieScore; //out of 5
-        if (roundCalorie <= currentPatient.calorie + 100 && roundCalorie >= currentPatient.calorie - 100)
+        if (roundCalorie <= currentPatient.calorie + 150 && roundCalorie >= currentPatient.calorie - 150)
         {
             calorieScore = 5;
         }
-        else if (roundCalorie <= currentPatient.calorie + 150 && roundCalorie >= currentPatient.calorie - 150)
+        else if (roundCalorie <= currentPatient.calorie + 250 && roundCalorie >= currentPatient.calorie - 250)
         {
             calorieScore = 4;
         }
-        else if (roundCalorie <= currentPatient.calorie + 200 && roundCalorie >= currentPatient.calorie - 200)
+        else if (roundCalorie <= currentPatient.calorie + 350 && roundCalorie >= currentPatient.calorie - 350)
         {
             calorieScore = 3;
         }
-        else if (roundCalorie <= currentPatient.calorie + 250 && roundCalorie >= currentPatient.calorie - 250)
+        else if (roundCalorie <= currentPatient.calorie + 450 && roundCalorie >= currentPatient.calorie - 450)
         {
             calorieScore = 2;
         }
-        else if (roundCalorie <= currentPatient.calorie + 300 && roundCalorie >= currentPatient.calorie - 300)
+        else if (roundCalorie <= currentPatient.calorie + 550 && roundCalorie >= currentPatient.calorie - 550)
         {
             calorieScore = 1;
         }
@@ -685,8 +686,11 @@ public class GameManager : MonoBehaviour
                 summary += penaltyText + "\n";
             }
         }
-        // for each repeat, - 2 from overall score
-        OverallScore -= repeatCounts * 2;
+        // if dish repeated, - 3 from overall score
+        if (repeatCounts > 0)
+        {
+            OverallScore -= 3;
+        }
         if (allergyTriggered) OverallScore = 0;
         int starCount = 0;
         string footer;
