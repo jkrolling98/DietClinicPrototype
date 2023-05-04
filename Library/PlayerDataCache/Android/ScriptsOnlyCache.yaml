@@ -22,7 +22,6 @@ ScriptsOnlyBuild:
     - UnityEditor.U2D.Animation.BoneGizmo
     Unity.2D.IK.Editor.dll:
     - UnityEditor.U2D.IK.IKEditorManager
-    - UnityEditor.U2D.IK.IKGizmos
     Unity.2D.Tilemap.Editor.dll:
     - UnityEditor.Tilemaps.GridPaintingState
     - UnityEditor.Tilemaps.GridPaletteBrushes
@@ -232,7 +231,7 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 5764}
     - Class: 114
-      Script: {instanceID: 126938}
+      Script: {instanceID: 48744}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -558,7 +557,7 @@ ScriptsOnlyBuild:
     className: LimbSolver2D
   - hash:
       serializedVersion: 2
-      Hash: 13f66c8865e06f8fb5f61248b5ae2510
+      Hash: ecc0653308a806782de0942671eee707
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayFabManager
@@ -738,7 +737,7 @@ ScriptsOnlyBuild:
     className: EventTrigger
   - hash:
       serializedVersion: 2
-      Hash: d17165543b904b748ee4a8114e721c91
+      Hash: 4c44427fdd594aef7ac0853b6c1498e2
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PopUpManager
@@ -1024,14 +1023,8 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: HoverTipManager
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: LeaderBoardManager
   platform: 13
   scenePathNames:
   - Assets/Scenes/MainMenuScene.unity
   - Assets/Scenes/GameScene.unity
-  playerPath: C:/Users/Hoojk/Documents/Unity/DietClinic_V1.1.apk
+  playerPath: C:/Users/Hoojk/Documents/Unity/DietClinic_V1.2.apk

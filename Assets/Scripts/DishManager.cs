@@ -68,21 +68,30 @@ public class DishManager : MonoBehaviour
         DishData roastedChickenBreastSalad = new DishData("Roasted Chicken Breast Salad", "A salad that features roasted chicken breast with fresh greens.", 4, 0, 1, 2, 136.04, 17.9, 2.61, 0.72, 4.01, 10.99, 50.12, 282.82, roastedChickenBreastSaladIngredients);
         Ingredient[] appleIngredients = new Ingredient[] { new Ingredient("Apple") };
         DishData apple = new DishData("Apple", "a round or oval-shaped fruit with a red, green, or yellow skin and a firm, juicy flesh inside.", 0.6, 0, 0, 1, 79.21, 0.41, 0.28, 0, 3.17, 16.84, 0, 1.38, appleIngredients);
-        Ingredient[] thunderTeaRiceIngredients = new Ingredient[] { new Ingredient("Brown rice"), new Ingredient("tea"), new Ingredient("vegetables"), new Ingredient("beancurd") };
+        Ingredient[] thunderTeaRiceIngredients = new Ingredient[] { new Ingredient("Brown rice"), new Ingredient("Tea"), new Ingredient("Vegetables"), new Ingredient("Beancurd") };
         DishData thunderTeaRice = new DishData("Thunder Tea Rice", "a vegetarian variation of thunder tea rice.", 5.5, 2, 1, 2, 642, 26.54, 33.94, 10.19, 15.41, 57.78, 0, 1335.36, thunderTeaRiceIngredients);
+        Ingredient[] lentilStewIngredients = new Ingredient[] { new Ingredient("Lentil"), new Ingredient("Spinach"), new Ingredient("Tomato"), new Ingredient("Onion") };
+        DishData lentilStew = new DishData("Lentil Stew", "A hearty soup made with lentils, vegetables such as spinach and tomato, and seasoned with delicious spices.", 4.0, 1, 1, 1, 450, 24.49, 16.41, 6.36, 14.38, 49.22, 0, 1535.36, lentilStewIngredients);
+        Ingredient[] padThaiIngredients = new Ingredient[] { new Ingredient("Rice Noodle"), new Ingredient("Tofu"), new Ingredient("Bean Sprouts")};
+        DishData padThai = new DishData("Pad Thai", "A Staple Thai noodle dish made with stir-fried rice noodles, tofu, bean sprouts, and other vegetables.", 5.0, 2, 1, 1, 844.36, 39.19, 45.65, 10.91, 7.68, 66.26, 262.6, 2464.4, padThaiIngredients);
+        Ingredient[] papayaIngredients = new Ingredient[] { new Ingredient("Papaya") };
+        DishData papaya = new DishData("Papaya", "A tropical fruit with sweet and musky flesh, high in vitamins.", 0.8, 0, 0, 1, 76.43, 0.9, 0.23, 0, 5.18, 15.53, 0, 15.75, papayaIngredients);
         dishes.Add(chickenBriyani);
         dishes.Add(popiah);
         dishes.Add(banana);
+        dishes.Add(tofu);
+        dishes.Add(roastedChickenBreastSalad);
         dishes.Add(chickenRice);
         dishes.Add(gardenSalad);
         dishes.Add(hokkienMee);
+        dishes.Add(lentilStew);
         dishes.Add(seaweedChicken);
         dishes.Add(wholeGrainCereal);
-        dishes.Add(muttonBriyani);
-        dishes.Add(tofu);
-        dishes.Add(roastedChickenBreastSalad);
-        dishes.Add(apple);
         dishes.Add(thunderTeaRice);
+        dishes.Add(muttonBriyani);
+        dishes.Add(apple);
+        dishes.Add(padThai);
+        dishes.Add(papaya);
         Save();
     }
 

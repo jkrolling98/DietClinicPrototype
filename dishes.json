@@ -103,6 +103,78 @@
             ]
         },
         {
+            "dishName": "Tofu",
+            "description": "A creamy, high-protein, low-fat soy product also known as bean curd.",
+            "cost": 1.5,
+            "wholeGrainServings": 0,
+            "proteinServings": 2,
+            "veggieServings": 0,
+            "calories": 123.15,
+            "protein": 12.31,
+            "totalFats": 5.62,
+            "saturatedFats": 0.91,
+            "dietaryFibre": 0.61,
+            "carbohydrate": 5.78,
+            "cholesterol": 0.0,
+            "sodium": 10.94,
+            "ingredients": [
+                {
+                    "ingredientName": "tofu",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
+        },
+        {
+            "dishName": "Roasted Chicken Breast Salad",
+            "description": "A salad that features roasted chicken breast with fresh greens.",
+            "cost": 4.0,
+            "wholeGrainServings": 0,
+            "proteinServings": 1,
+            "veggieServings": 2,
+            "calories": 136.04,
+            "protein": 17.9,
+            "totalFats": 2.61,
+            "saturatedFats": 0.72,
+            "dietaryFibre": 4.01,
+            "carbohydrate": 10.99,
+            "cholesterol": 50.12,
+            "sodium": 282.82,
+            "ingredients": [
+                {
+                    "ingredientName": "Chicken Breast",
+                    "allergenOf": 0,
+                    "isVegan": false,
+                    "isVegetarian": false
+                },
+                {
+                    "ingredientName": "Lettuce",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Tomatoes",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Onions",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Green Peppers",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
+        },
+        {
             "dishName": "Chicken Rice",
             "description": "A dish of poached chicken and seasoned rice, served with chilli sauce and usually with cucumber garnishes.",
             "cost": 4.5,
@@ -223,6 +295,48 @@
             ]
         },
         {
+            "dishName": "Lentil Stew",
+            "description": "A hearty soup made with lentils, vegetables such as spinach and tomato, and seasoned with delicious spices.",
+            "cost": 4.0,
+            "wholeGrainServings": 1,
+            "proteinServings": 1,
+            "veggieServings": 1,
+            "calories": 450.0,
+            "protein": 24.49,
+            "totalFats": 16.41,
+            "saturatedFats": 6.36,
+            "dietaryFibre": 14.38,
+            "carbohydrate": 49.22,
+            "cholesterol": 0.0,
+            "sodium": 1535.36,
+            "ingredients": [
+                {
+                    "ingredientName": "Lentil",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Spinach",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Tomato",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Onion",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
+        },
+        {
             "dishName": "Seaweed Chicken",
             "description": "Sliced chicken coated with seasoned flourand wrapped with seaweed, deep fried. Comes in 5.",
             "cost": 2.0,
@@ -283,6 +397,48 @@
             ]
         },
         {
+            "dishName": "Thunder Tea Rice",
+            "description": "a vegetarian variation of thunder tea rice.",
+            "cost": 5.5,
+            "wholeGrainServings": 2,
+            "proteinServings": 1,
+            "veggieServings": 2,
+            "calories": 642.0,
+            "protein": 26.54,
+            "totalFats": 33.94,
+            "saturatedFats": 10.19,
+            "dietaryFibre": 15.41,
+            "carbohydrate": 57.78,
+            "cholesterol": 0.0,
+            "sodium": 1335.36,
+            "ingredients": [
+                {
+                    "ingredientName": "Brown rice",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Tea",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Vegetables",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                },
+                {
+                    "ingredientName": "Beancurd",
+                    "allergenOf": 0,
+                    "isVegan": true,
+                    "isVegetarian": true
+                }
+            ]
+        },
+        {
             "dishName": "Mutton Briyani",
             "description": "Rice cooked with ghee and spices, served with spicy mutton",
             "cost": 7.0,
@@ -319,78 +475,6 @@
             ]
         },
         {
-            "dishName": "Tofu",
-            "description": "A creamy, high-protein, low-fat soy product also known as bean curd.",
-            "cost": 1.5,
-            "wholeGrainServings": 0,
-            "proteinServings": 2,
-            "veggieServings": 0,
-            "calories": 123.15,
-            "protein": 12.31,
-            "totalFats": 5.62,
-            "saturatedFats": 0.91,
-            "dietaryFibre": 0.61,
-            "carbohydrate": 5.78,
-            "cholesterol": 0.0,
-            "sodium": 10.94,
-            "ingredients": [
-                {
-                    "ingredientName": "tofu",
-                    "allergenOf": 0,
-                    "isVegan": true,
-                    "isVegetarian": true
-                }
-            ]
-        },
-        {
-            "dishName": "Roasted Chicken Breast Salad",
-            "description": "A salad that features roasted chicken breast with fresh greens.",
-            "cost": 4.0,
-            "wholeGrainServings": 0,
-            "proteinServings": 1,
-            "veggieServings": 2,
-            "calories": 136.04,
-            "protein": 17.9,
-            "totalFats": 2.61,
-            "saturatedFats": 0.72,
-            "dietaryFibre": 4.01,
-            "carbohydrate": 10.99,
-            "cholesterol": 50.12,
-            "sodium": 282.82,
-            "ingredients": [
-                {
-                    "ingredientName": "Chicken Breast",
-                    "allergenOf": 0,
-                    "isVegan": false,
-                    "isVegetarian": false
-                },
-                {
-                    "ingredientName": "Lettuce",
-                    "allergenOf": 0,
-                    "isVegan": true,
-                    "isVegetarian": true
-                },
-                {
-                    "ingredientName": "Tomatoes",
-                    "allergenOf": 0,
-                    "isVegan": true,
-                    "isVegetarian": true
-                },
-                {
-                    "ingredientName": "Onions",
-                    "allergenOf": 0,
-                    "isVegan": true,
-                    "isVegetarian": true
-                },
-                {
-                    "ingredientName": "Green Peppers",
-                    "allergenOf": 0,
-                    "isVegan": true,
-                    "isVegetarian": true
-                }
-            ]
-        },
-        {
             "dishName": "Apple",
             "description": "a round or oval-shaped fruit with a red, green, or yellow skin and a firm, juicy flesh inside.",
             "cost": 0.6,
@@ -415,41 +499,59 @@
             ]
         },
         {
-            "dishName": "Thunder Tea Rice",
-            "description": "a vegetarian variation of thunder tea rice.",
-            "cost": 5.5,
+            "dishName": "Pad Thai",
+            "description": "A Staple Thai noodle dish made with stir-fried rice noodles, tofu, bean sprouts, and other vegetables.",
+            "cost": 5.0,
             "wholeGrainServings": 2,
             "proteinServings": 1,
-            "veggieServings": 2,
-            "calories": 642.0,
-            "protein": 26.54,
-            "totalFats": 33.94,
-            "saturatedFats": 10.19,
-            "dietaryFibre": 15.41,
-            "carbohydrate": 57.78,
-            "cholesterol": 0.0,
-            "sodium": 1335.36,
+            "veggieServings": 1,
+            "calories": 844.36,
+            "protein": 39.19,
+            "totalFats": 45.65,
+            "saturatedFats": 10.91,
+            "dietaryFibre": 7.68,
+            "carbohydrate": 66.26,
+            "cholesterol": 262.6,
+            "sodium": 2464.4,
             "ingredients": [
                 {
-                    "ingredientName": "Brown rice",
+                    "ingredientName": "Rice Noodle",
                     "allergenOf": 0,
                     "isVegan": true,
                     "isVegetarian": true
                 },
                 {
-                    "ingredientName": "tea",
+                    "ingredientName": "Tofu",
                     "allergenOf": 0,
                     "isVegan": true,
                     "isVegetarian": true
                 },
                 {
-                    "ingredientName": "vegetables",
+                    "ingredientName": "Bean Sprouts",
                     "allergenOf": 0,
                     "isVegan": true,
                     "isVegetarian": true
-                },
+                }
+            ]
+        },
+        {
+            "dishName": "Papaya",
+            "description": "A tropical fruit with sweet and musky flesh, high in vitamins.",
+            "cost": 0.8,
+            "wholeGrainServings": 0,
+            "proteinServings": 0,
+            "veggieServings": 1,
+            "calories": 76.43,
+            "protein": 0.9,
+            "totalFats": 0.23,
+            "saturatedFats": 0.0,
+            "dietaryFibre": 5.18,
+            "carbohydrate": 15.53,
+            "cholesterol": 0.0,
+            "sodium": 15.75,
+            "ingredients": [
                 {
-                    "ingredientName": "beancurd",
+                    "ingredientName": "Papaya",
                     "allergenOf": 0,
                     "isVegan": true,
                     "isVegetarian": true
